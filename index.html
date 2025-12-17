@@ -58,7 +58,7 @@ h1{
   max-width:760px;
   font-size:1.05rem;
   line-height:1.7;
-  min-height:3.5em;
+  min-height:3.8em;
 }
 .cursor{
   display:inline-block;
@@ -133,6 +133,20 @@ h1{
   font-weight:800;
   cursor:pointer;
 }
+
+/* INFO SECTION */
+section{
+  padding:80px 20px;
+  background:#050505;
+  text-align:center;
+}
+.info{
+  max-width:900px;
+  margin:auto;
+  opacity:.9;
+  line-height:1.8;
+}
+.info p{margin:6px 0}
 </style>
 </head>
 
@@ -154,6 +168,8 @@ h1{
     <div class="btns">
       <button class="small" onclick="showIntro()">Token Intro</button>
       <button class="small" onclick="showVision()">Projects</button>
+      <button class="small" onclick="showSupply()">Supply Details</button>
+      <button class="small" onclick="showExpect()">Our Expectations</button>
     </div>
 
     <div class="buy">BUY AND HOLD</div>
@@ -165,6 +181,16 @@ h1{
     </div>
   </div>
 </div>
+
+<section>
+  <div class="info">
+    <p><b>Token:</b> Ape Mood (APEM)</p>
+    <p><b>Chain:</b> BNB Chain (BEP-20)</p>
+    <p><b>Total Supply:</b> 150,000,000</p>
+    <p><b>Compatibility:</b> EVM / ERC-20</p>
+    <p><b>Contract:</b> 0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</p>
+  </div>
+</section>
 
 <script>
 /* typing system */
@@ -180,32 +206,46 @@ function typeText(text){
       typed.textContent=text.slice(0,i++);
       timer=setTimeout(run, text[i-1]=='.'?220:35);
     }else{
-      setTimeout(()=>typed.textContent="",1500);
+      setTimeout(()=>typed.textContent="",1600);
     }
   }
   run();
 }
 
-/* default typing */
+/* default */
 typeText(
   "Initializing Ape Mood protocol... " +
   "Deployed on BNB Chain (BEP-20)... " +
-  "EVM compatible... System online."
+  "System ready."
 );
 
-/* token intro */
+/* texts */
 function showIntro(){
   typeText(
-    "APE MOOD is a community-driven token focused on ethical growth, " +
-    "long-term sustainability, and responsible development within the Web3 ecosystem."
+    "Ape Mood is a community-driven project focused on ethical growth, long-term stability, " +
+    "and responsible participation within the Web3 ecosystem."
   );
 }
 
-/* vision / projects */
 function showVision(){
   typeText(
-    "The project vision explores blockchain innovation, real-world utility, " +
-    "and community-led initiatives designed for long-term relevance."
+    "Our vision explores sustainable blockchain innovation, real-world utility, " +
+    "and community-led development built for long-term relevance."
+  );
+}
+
+function showSupply(){
+  typeText(
+    "The total supply of Ape Mood is 150 million tokens. " +
+    "Only a portion is released for trading, while the remaining supply is introduced gradually " +
+    "to support market stability and healthy long-term growth."
+  );
+}
+
+function showExpect(){
+  typeText(
+    "We encourage responsible participation. Small and steady swaps help reduce risk, " +
+    "avoid panic, and contribute positively to the long-term growth of the project."
   );
 }
 
