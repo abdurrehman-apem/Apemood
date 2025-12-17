@@ -1,357 +1,274 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ape Mood (APEM)</title>
 
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-  body{background:#000;color:#fff;overflow-x:hidden}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,Helvetica,sans-serif}
+body{background:#000;color:#fff;overflow-x:hidden}
 
-  /* HERO */
+/* ================= NAV ================= */
+nav{
+  position:fixed;top:0;left:0;width:100%;
+  z-index:10;
+  padding:16px 28px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(0,0,0,0.35);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+nav .brand{font-weight:800;letter-spacing:2px}
+nav a{
+  color:#fff;text-decoration:none;
+  margin-left:18px;
+  opacity:.85;font-weight:600;
+}
+nav a:hover{opacity:1}
+
+/* ================= HERO ================= */
+.hero{
+  min-height:100svh;
+  padding-top:90px;
+  background:#000;
+  background-image:url("assets/APEM_Hero_Mobile_1080x1350.jpg");
+  background-size:contain;
+  background-position:center bottom;
+  background-repeat:no-repeat;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+}
+
+@media(min-width:768px){
   .hero{
-    position:relative;
-    min-height:100svh;
-    background:#000;
-    background-image:url("assets/APEM_Hero_Mobile_1080x1350.jpg");
-    background-size:contain;            /* FULL image */
-    background-position:center bottom;  /* show cars */
-    background-repeat:no-repeat;
-    background-attachment:scroll;       /* mobile safe */
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:22px;
-    overflow:hidden;
+    background-image:url("assets/APEM_Hero_Desktop_1920x1080_NO_CROP.jpg");
+    background-position:center;
   }
+}
 
-  @media (min-width: 768px){
-    .hero{
-      background-image:url("assets/APEM_Hero_Desktop_1920x1080_NO_CROP.jpg");
-      background-size:contain;
-      background-position:center center;
-      background-attachment:fixed;
-    }
-  }
+/* particles */
+canvas{
+  position:absolute;inset:0;z-index:0;
+}
 
-  /* LIGHT OVERLAY (background must stay visible) */
-  .hero::before{
-    content:"";
-    position:absolute; inset:0;
-    background:
-      /* slight vignette only */
-      radial-gradient(circle at 50% 60%, rgba(0,0,0,0.15), rgba(0,0,0,0.35)),
-      /* sci-fi glow */
-      radial-gradient(circle at 18% 28%, rgba(0,255,255,0.14), transparent 46%),
-      radial-gradient(circle at 82% 72%, rgba(255,215,0,0.12), transparent 46%),
-      /* thin “tech lines” */
-      repeating-linear-gradient(
-        90deg,
-        rgba(0,255,255,0.06) 0px,
-        rgba(0,255,255,0.06) 1px,
-        transparent 1px,
-        transparent 22px
-      );
-    animation: drift 12s ease-in-out infinite;
-    z-index:0;
-  }
+/* content */
+.hero-content{
+  position:relative;
+  z-index:2;
+  width:min(900px,100%);
+  padding:28px;
+  border-radius:18px;
+  background:rgba(0,0,0,0.38);
+  backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,0.08);
+  text-align:center;
+}
 
-  @keyframes drift{
-    0%{transform:translate3d(0,0,0)}
-    50%{transform:translate3d(1.5%, -1.5%, 0)}
-    100%{transform:translate3d(0,0,0)}
-  }
+h1{
+  font-size:2.3rem;
+  letter-spacing:3px;
+  margin-bottom:14px;
+}
+@media(min-width:768px){h1{font-size:3.2rem}}
 
-  /* CONTENT CARD */
-  .content{
-    position:relative; z-index:1;
-    width:min(860px, 100%);
-    background:rgba(0,0,0,0.45); /* lighter so bg shows */
-    border:1px solid rgba(0,255,255,0.22);
-    box-shadow: 0 0 34px rgba(0,255,255,0.10);
-    backdrop-filter: blur(6px);
-    border-radius:18px;
-    padding:26px 20px;
-    text-align:center;
-  }
+.type{
+  font-size:1.05rem;
+  line-height:1.7;
+  opacity:.92;
+  min-height:3.5em;
+}
+.caret{
+  display:inline-block;width:8px;height:1.2em;
+  background:#FFD700;margin-left:4px;
+  animation:blink .8s infinite;
+}
+@keyframes blink{50%{opacity:0}}
 
-  @media (min-width:768px){
-    .content{padding:34px 30px}
-  }
+.buttons{
+  margin-top:22px;
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
 
-  h1{
-    font-size:2.2rem;
-    letter-spacing:3px;
-    margin-bottom:12px;
-    text-shadow:0 0 18px rgba(0,255,255,0.20);
-  }
-  @media (min-width:768px){ h1{font-size:3.1rem} }
+.btn{
+  padding:14px 28px;
+  border-radius:999px;
+  font-weight:800;
+  text-decoration:none;
+  color:#000;
+  background:linear-gradient(135deg,#FFD700,#FFB800);
+  box-shadow:0 0 20px rgba(255,215,0,.6);
+}
+.btn.secondary{
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+  box-shadow:none;
+  border:1px solid rgba(255,255,255,0.2);
+}
 
-  /* TYPEWRITER AREA */
-  .typeBox{
-    width:100%;
-    max-width:760px;
-    margin:0 auto;
-    padding:14px 14px;
-    border-radius:14px;
-    background:rgba(0,0,0,0.28);
-    border:1px solid rgba(255,215,0,0.20);
-  }
+/* contract */
+.contract{
+  margin-top:18px;
+  padding:12px;
+  border-radius:14px;
+  background:rgba(0,0,0,0.3);
+  border:1px solid rgba(255,255,255,0.1);
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.contract code{word-break:break-all}
+.contract button{
+  padding:8px 14px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  font-weight:800;
+  background:#FFD700;
+}
 
-  .typeText{
-    font-size:1.02rem;
-    line-height:1.7;
-    opacity:0.95;
-    text-align:center;
-    min-height:3.6em;
-  }
+/* sound */
+.sound{
+  margin-top:14px;
+  padding:10px 16px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
 
-  .caret{
-    display:inline-block;
-    width:10px;
-    height:1.2em;
-    margin-left:4px;
-    background:rgba(255,215,0,0.95);
-    animation: blink 0.8s steps(1) infinite;
-    vertical-align:-0.2em;
-  }
-
-  @keyframes blink{
-    0%,49%{opacity:1}
-    50%,100%{opacity:0}
-  }
-
-  /* BUTTONS */
-  .btnRow{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:16px}
-  .btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    padding:14px 22px;
-    border-radius:999px;
-    text-decoration:none;
-    font-weight:900;
-    letter-spacing:0.4px;
-    color:#0a0a0a;
-    background:linear-gradient(135deg,#FFD700,#FFB800);
-    box-shadow:0 0 18px rgba(255,215,0,0.55);
-    border:1px solid rgba(255,215,0,0.35);
-    transition:transform .22s ease, box-shadow .22s ease;
-  }
-  .btn:hover{transform:scale(1.04);box-shadow:0 0 32px rgba(255,215,0,0.95)}
-  .btn.secondary{
-    color:rgba(255,255,255,0.92);
-    background:rgba(0,255,255,0.10);
-    border:1px solid rgba(0,255,255,0.30);
-    box-shadow:0 0 18px rgba(0,255,255,0.14);
-  }
-  .btn.secondary:hover{box-shadow:0 0 34px rgba(0,255,255,0.28)}
-
-  /* Contract box */
-  .contract{
-    margin-top:16px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    align-items:center;
-    justify-content:center;
-    padding:12px 12px;
-    border-radius:14px;
-    background:rgba(0,0,0,0.22);
-    border:1px solid rgba(0,255,255,0.20);
-  }
-  .contract code{
-    font-size:0.92rem;
-    word-break:break-all;
-    color:rgba(255,255,255,0.92);
-  }
-  .copyBtn{
-    cursor:pointer;
-    padding:10px 14px;
-    border-radius:999px;
-    font-weight:900;
-    border:1px solid rgba(255,215,0,0.35);
-    background:linear-gradient(135deg,#FFD700,#FFB800);
-    color:#0a0a0a;
-  }
-  .mini{opacity:.88;font-weight:800}
-
-  /* Typing sound toggle */
-  .soundBtn{
-    margin-top:12px;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    padding:12px 16px;
-    border-radius:999px;
-    border:1px solid rgba(0,255,255,0.25);
-    background:rgba(0,255,255,0.10);
-    color:rgba(255,255,255,0.92);
-    font-weight:900;
-    cursor:pointer;
-  }
-
-  /* SECTION */
-  section{padding:70px 20px;background:#050505;text-align:center}
-  .sectionWrap{width:min(980px, 100%);margin:0 auto}
-  h2{font-size:2rem;margin-bottom:14px;letter-spacing:1px}
-  .info{opacity:0.92;line-height:1.75;font-size:1.05rem}
-  .pillRow{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
-  .pill{
-    padding:10px 14px;border-radius:999px;
-    border:1px solid rgba(0,255,255,0.18);
-    background:rgba(0,255,255,0.06);
-    color:rgba(255,255,255,0.88);
-    font-weight:800;
-  }
+/* section */
+section{
+  padding:80px 20px;
+  background:#050505;
+  text-align:center;
+}
+section h2{font-size:2rem;margin-bottom:16px}
+.info{max-width:900px;margin:auto;opacity:.9;line-height:1.7}
 </style>
 </head>
 
 <body>
 
-<div class="hero">
-  <div class="content">
-    <h1>APE MOOD (APEM)</h1>
+<nav>
+  <div class="brand">APEM</div>
+  <div>
+    <a href="#info">Token</a>
+    <a href="APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank">Whitepaper</a>
+  </div>
+</nav>
 
-    <!-- Typewriter intro -->
-    <div class="typeBox">
-      <div class="typeText">
-        <span id="typed"></span><span class="caret"></span>
-      </div>
+<div class="hero">
+  <canvas id="particles"></canvas>
+
+  <div class="hero-content">
+    <h1>APE MOOD</h1>
+
+    <div class="type">
+      <span id="typed"></span><span class="caret"></span>
     </div>
 
-    <div class="btnRow">
-      <!-- swap link later -->
-      <a class="btn" href="#" target="_blank" rel="noopener">Swap APEM</a>
-      <a class="btn secondary" href="APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank" rel="noopener">Whitepaper</a>
+    <div class="buttons">
+      <a class="btn" href="#">Swap APEM</a>
+      <a class="btn secondary" href="APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank">Whitepaper</a>
     </div>
 
     <div class="contract">
-      <span class="mini">Contract:</span>
       <code id="ca">0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</code>
-      <button class="copyBtn" id="copyBtn">Copy</button>
-      <span id="copyStatus" class="mini"></span>
+      <button onclick="copyCA()">Copy</button>
+      <span id="copyMsg"></span>
     </div>
 
-    <button class="soundBtn" id="soundBtn">🔊 Typing Sound: OFF</button>
+    <button class="sound" id="soundBtn">🔊 Typing sound OFF</button>
   </div>
 </div>
 
-<section>
-  <div class="sectionWrap">
-    <h2>Token Information</h2>
-    <div class="info">
-      <p><b>Name:</b> Ape Mood</p>
-      <p><b>Symbol:</b> APEM</p>
-      <p><b>Chain:</b> BNB Chain (BEP-20) — <b>EVM / ERC-20 compatible</b></p>
-      <p><b>Total Supply:</b> 150,000,000</p>
-      <p style="margin-top:12px">
-        Built for transparency, community participation, and ethical principles — no guaranteed returns.
-      </p>
-    </div>
-
-    <div class="pillRow">
-      <div class="pill">AI-style Motion UI</div>
-      <div class="pill">Tech / Scientific Theme</div>
-      <div class="pill">Community-Driven</div>
-      <div class="pill">BNB Chain • EVM</div>
-    </div>
+<section id="info">
+  <h2>Token Information</h2>
+  <div class="info">
+    <p><b>Name:</b> Ape Mood</p>
+    <p><b>Symbol:</b> APEM</p>
+    <p><b>Chain:</b> BNB Chain (BEP-20) — EVM / ERC-20 compatible</p>
+    <p><b>Total Supply:</b> 150,000,000</p>
+    <p>Community-driven, ethical and long-term focused project.</p>
   </div>
 </section>
 
 <script>
-  // Copy contract address
-  const copyBtn = document.getElementById("copyBtn");
-  const ca = document.getElementById("ca");
-  const statusEl = document.getElementById("copyStatus");
+/* ========= TYPEWRITER ========= */
+const text =
+"Initializing Ape Mood protocol... " +
+"Deploying on BNB Chain... " +
+"EVM compatibility verified... " +
+"System online.";
 
-  copyBtn.addEventListener("click", async () => {
-    try{
-      await navigator.clipboard.writeText(ca.textContent.trim());
-      statusEl.textContent = "✅ Copied";
-      setTimeout(()=> statusEl.textContent = "", 1500);
-    }catch(e){
-      statusEl.textContent = "❌ Copy failed";
-      setTimeout(()=> statusEl.textContent = "", 1500);
-    }
+let i=0;
+const el=document.getElementById("typed");
+function type(){
+  if(i<=text.length){
+    el.textContent=text.slice(0,i++);
+    beep();
+    setTimeout(type, text[i-1]=='.'?200:35);
+  }
+}
+window.onload=type;
+
+/* ========= SOUND ========= */
+let sound=false,ctx;
+document.getElementById("soundBtn").onclick=()=>{
+  sound=!sound;
+  if(sound){
+    ctx=new (window.AudioContext||window.webkitAudioContext)();
+    document.getElementById("soundBtn").textContent="🔊 Typing sound ON";
+  }else{
+    document.getElementById("soundBtn").textContent="🔊 Typing sound OFF";
+  }
+};
+function beep(){
+  if(!sound||!ctx)return;
+  const o=ctx.createOscillator(),g=ctx.createGain();
+  o.type="square";o.frequency.value=900+Math.random()*200;
+  g.gain.value=.02;
+  o.connect(g);g.connect(ctx.destination);
+  o.start();o.stop(ctx.currentTime+.03);
+}
+
+/* ========= COPY ========= */
+function copyCA(){
+  navigator.clipboard.writeText(document.getElementById("ca").innerText);
+  document.getElementById("copyMsg").innerText="Copied";
+  setTimeout(()=>copyMsg.innerText="",1200);
+}
+
+/* ========= PARTICLES ========= */
+const c=document.getElementById("particles"),x=c.getContext("2d");
+let w,h,p=[];
+function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
+window.onresize=resize;resize();
+for(let i=0;i<70;i++)p.push({x:Math.random()*w,y:Math.random()*h,v:Math.random()*.4});
+function draw(){
+  x.clearRect(0,0,w,h);
+  p.forEach(a=>{
+    a.y+=a.v;if(a.y>h)a.y=0;
+    x.fillStyle="rgba(0,255,255,.4)";
+    x.fillRect(a.x,a.y,1,1);
   });
-
-  // Typing sound (must be user-enabled due to browser autoplay rules)
-  let soundOn = false;
-  let audioCtx = null;
-
-  function ensureAudio(){
-    if(audioCtx) return;
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-
-  function clickBeep(){
-    if(!soundOn) return;
-    ensureAudio();
-
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-
-    osc.type = "square";
-    osc.frequency.value = 900 + Math.random()*220; // tiny variation
-
-    gain.gain.value = 0.0;
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-
-    const now = audioCtx.currentTime;
-    gain.gain.setValueAtTime(0.0, now);
-    gain.gain.linearRampToValueAtTime(0.02, now + 0.005);
-    gain.gain.linearRampToValueAtTime(0.0, now + 0.03);
-
-    osc.start(now);
-    osc.stop(now + 0.04);
-  }
-
-  const soundBtn = document.getElementById("soundBtn");
-  soundBtn.addEventListener("click", async () => {
-    soundOn = !soundOn;
-    if(soundOn){
-      ensureAudio();
-      if(audioCtx.state === "suspended") await audioCtx.resume();
-      soundBtn.textContent = "🔊 Typing Sound: ON";
-    }else{
-      soundBtn.textContent = "🔊 Typing Sound: OFF";
-    }
-  });
-
-  // Typewriter intro (AI/scientific feel) — no extra labels
-  const typedEl = document.getElementById("typed");
-  const intro =
-    "Initializing Ape Mood interface... " +
-    "Deploying on BNB Chain (BEP-20). " +
-    "EVM / ERC-20 compatible tooling enabled. " +
-    "Community-driven, ethical, long-term vision.";
-
-  let i = 0;
-  function typeNext(){
-    if(i <= intro.length){
-      typedEl.textContent = intro.slice(0, i);
-      // sound on non-space chars
-      const ch = intro[i-1];
-      if(ch && ch !== " " && ch !== "." && ch !== ",") clickBeep();
-
-      i++;
-      const speed = (ch === "." ? 220 : 28 + Math.random()*22); // pauses at dots
-      setTimeout(typeNext, speed);
-    }
-  }
-
-  // Start typing on load (visual), sound only if user enabled
-  window.addEventListener("load", typeNext);
+  requestAnimationFrame(draw);
+}
+draw();
 </script>
 
 </body>
 </html>
-
-
-
-
