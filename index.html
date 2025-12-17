@@ -204,14 +204,14 @@ function typeText(text){
   function run(){
     if(i<=text.length){
       typed.textContent=text.slice(0,i++);
-      // slower typing + longer pause on full stop
-      timer=setTimeout(run, text[i-1]=='.'?420:65);
+      timer=setTimeout(run, 65); // same speed for all characters
     }else{
       setTimeout(()=>typed.textContent="",2200);
     }
   }
   run();
 }
+
 
 
 /* default */
