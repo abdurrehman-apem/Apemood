@@ -6,85 +6,80 @@
 <title>Ape Mood (APEM)</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,Helvetica,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
 body{background:#000;color:#fff;overflow-x:hidden}
 
-/* ================= HERO ================= */
+/* HERO */
 .hero{
   min-height:100svh;
-  padding-top:90px;
-  background:#000;
-  background-image:url("assets/APEM_Hero_Mobile_1080x1350.jpg");
+  padding:90px 20px 40px;
+  background:#000 url("assets/APEM_Hero_Mobile_1080x1350.jpg") no-repeat;
   background-size:contain;
   background-position:center bottom;
-  background-repeat:no-repeat;
-  background-attachment:fixed; /* background stays */
+  background-attachment:scroll;
   display:flex;
-  align-items:center;
   justify-content:center;
-  position:relative;
-  overflow:hidden;
+  align-items:center;
 }
-
 @media(min-width:768px){
   .hero{
     background-image:url("assets/APEM_Hero_Desktop_1920x1080_NO_CROP.jpg");
     background-position:center;
+    background-attachment:fixed;
   }
 }
 
-/* subtle sci-fi particles */
-canvas{position:absolute;inset:0;z-index:0}
-
-/* content */
-.hero-content{
-  position:relative;
-  z-index:2;
+/* CONTENT */
+.box{
   width:min(900px,100%);
-  padding:32px;
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.08);
   border-radius:20px;
-  background:rgba(0,0,0,0.42);
-  backdrop-filter:blur(6px);
-  border:1px solid rgba(255,255,255,0.08);
+  padding:28px;
   text-align:center;
 }
 
-/* GOLDEN ANIMATED TITLE */
+/* TITLE */
 h1{
-  font-size:2.4rem;
-  letter-spacing:4px;
-  margin-bottom:16px;
   color:#FFD700;
-  text-shadow:0 0 20px rgba(255,215,0,.6);
-  animation:goldPulse 3s infinite;
+  letter-spacing:4px;
+  font-size:2.3rem;
+  text-shadow:0 0 25px rgba(255,215,0,.8);
+  animation:goldGlow 3s infinite;
 }
 @media(min-width:768px){h1{font-size:3.4rem}}
-
-@keyframes goldPulse{
-  0%{text-shadow:0 0 18px rgba(255,215,0,.6)}
-  50%{text-shadow:0 0 35px rgba(255,215,0,1)}
-  100%{text-shadow:0 0 18px rgba(255,215,0,.6)}
+@keyframes goldGlow{
+  50%{text-shadow:0 0 45px rgba(255,215,0,1)}
 }
 
-/* description */
-.desc{
+/* TYPE TEXT */
+.type{
+  margin:18px auto;
+  max-width:760px;
   font-size:1.05rem;
-  opacity:.9;
   line-height:1.7;
-  margin-bottom:26px;
+  min-height:3.5em;
 }
+.cursor{
+  display:inline-block;
+  width:8px;
+  height:1.2em;
+  background:#FFD700;
+  margin-left:4px;
+  animation:blink .8s infinite;
+}
+@keyframes blink{50%{opacity:0}}
 
 /* BUTTONS */
-.buttons{
+.btns{
   display:flex;
-  gap:14px;
   justify-content:center;
+  gap:12px;
   flex-wrap:wrap;
-  margin-bottom:14px;
+  margin-top:10px;
 }
-
 .btn{
-  padding:14px 30px;
+  padding:14px 28px;
   border-radius:999px;
   font-weight:800;
   text-decoration:none;
@@ -94,84 +89,76 @@ h1{
   animation:pulse 2.8s infinite;
 }
 @keyframes pulse{
-  0%{box-shadow:0 0 18px rgba(255,215,0,.6)}
-  50%{box-shadow:0 0 36px rgba(255,215,0,1)}
-  100%{box-shadow:0 0 18px rgba(255,215,0,.6)}
+  50%{box-shadow:0 0 38px rgba(255,215,0,1)}
 }
 
-/* Buy & Hold */
+/* small buttons */
+.small{
+  padding:8px 14px;
+  font-size:.85rem;
+  background:rgba(255,255,255,.1);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:none;
+  animation:none;
+  cursor:pointer;
+}
+
+/* Buy text */
 .buy{
-  margin-top:6px;
-  display:inline-block;
-  padding:16px 40px;
-  border-radius:999px;
-  font-weight:900;
+  margin-top:12px;
+  color:#FFD700;
+  font-weight:800;
   letter-spacing:1px;
-  color:#000;
-  background:linear-gradient(135deg,#FFD700,#FFA500);
-  box-shadow:0 0 30px rgba(255,215,0,.9);
-  animation:pulse 2.4s infinite;
+  text-shadow:0 0 18px rgba(255,215,0,.6);
 }
 
 /* contract */
 .contract{
-  margin-top:20px;
-  padding:14px;
+  margin-top:16px;
+  padding:12px;
+  background:rgba(0,0,0,.3);
+  border:1px solid rgba(255,255,255,.15);
   border-radius:14px;
-  background:rgba(0,0,0,0.3);
-  border:1px solid rgba(255,255,255,0.12);
   display:flex;
-  gap:10px;
   justify-content:center;
-  align-items:center;
+  gap:10px;
   flex-wrap:wrap;
 }
-.contract code{word-break:break-all}
 .contract button{
-  padding:8px 14px;
-  border-radius:999px;
-  border:none;
-  cursor:pointer;
-  font-weight:800;
   background:#FFD700;
+  border:none;
+  border-radius:999px;
+  padding:6px 12px;
+  font-weight:800;
+  cursor:pointer;
 }
-
-/* SCROLL ANIMATIONS (text/buttons only) */
-.reveal{opacity:0;transform:translateY(30px);transition:.7s ease}
-.reveal.show{opacity:1;transform:none}
-
-/* INFO */
-section{
-  padding:90px 20px;
-  background:#050505;
-  text-align:center;
-}
-section h2{font-size:2rem;margin-bottom:18px}
-.info{max-width:900px;margin:auto;opacity:.9;line-height:1.8}
 </style>
 </head>
 
 <body>
 
 <div class="hero">
-  <canvas id="particles"></canvas>
+  <div class="box">
+    <h1>APE MOOD</h1>
 
-  <div class="hero-content">
-    <h1 class="reveal">APE MOOD</h1>
+    <div class="type">
+      <span id="typed"></span><span class="cursor"></span>
+    </div>
 
-    <p class="desc reveal">
-      Community-driven token on BNB Chain (BEP-20),
-      EVM / ERC-20 compatible, focused on ethical long-term growth.
-    </p>
-
-    <div class="buttons reveal">
+    <div class="btns">
       <a class="btn" href="#">Swap APEM</a>
       <a class="btn" href="APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank">Whitepaper</a>
     </div>
 
-    <a class="buy reveal" href="#">Buy And Hold</a>
+    <div class="btns">
+      <button class="small" onclick="showIntro()">Token Intro</button>
+      <button class="small" onclick="showVision()">Projects</button>
+    </div>
 
-    <div class="contract reveal">
+    <div class="buy">BUY AND HOLD</div>
+
+    <div class="contract">
       <code id="ca">0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</code>
       <button onclick="copyCA()">Copy</button>
       <span id="copyMsg"></span>
@@ -179,47 +166,55 @@ section h2{font-size:2rem;margin-bottom:18px}
   </div>
 </div>
 
-<section>
-  <h2 class="reveal">Token Information</h2>
-  <div class="info reveal">
-    <p><b>Name:</b> Ape Mood</p>
-    <p><b>Symbol:</b> APEM</p>
-    <p><b>Chain:</b> BNB Chain (BEP-20) — ERC-20 compatible</p>
-    <p><b>Total Supply:</b> 150,000,000</p>
-  </div>
-</section>
-
 <script>
-/* COPY */
+/* typing system */
+const typed=document.getElementById("typed");
+let timer;
+
+function typeText(text){
+  clearTimeout(timer);
+  typed.textContent="";
+  let i=0;
+  function run(){
+    if(i<=text.length){
+      typed.textContent=text.slice(0,i++);
+      timer=setTimeout(run, text[i-1]=='.'?220:35);
+    }else{
+      setTimeout(()=>typed.textContent="",1500);
+    }
+  }
+  run();
+}
+
+/* default typing */
+typeText(
+  "Initializing Ape Mood protocol... " +
+  "Deployed on BNB Chain (BEP-20)... " +
+  "EVM compatible... System online."
+);
+
+/* token intro */
+function showIntro(){
+  typeText(
+    "APE MOOD is a community-driven token focused on ethical growth, " +
+    "long-term sustainability, and responsible development within the Web3 ecosystem."
+  );
+}
+
+/* vision / projects */
+function showVision(){
+  typeText(
+    "The project vision explores blockchain innovation, real-world utility, " +
+    "and community-led initiatives designed for long-term relevance."
+  );
+}
+
+/* copy */
 function copyCA(){
   navigator.clipboard.writeText(document.getElementById("ca").innerText);
   document.getElementById("copyMsg").innerText="Copied";
   setTimeout(()=>copyMsg.innerText="",1200);
 }
-
-/* PARTICLES */
-const c=document.getElementById("particles"),x=c.getContext("2d");
-let w,h,p=[];
-function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
-window.onresize=resize;resize();
-for(let i=0;i<60;i++)p.push({x:Math.random()*w,y:Math.random()*h,v:Math.random()*.35});
-function draw(){
-  x.clearRect(0,0,w,h);
-  p.forEach(a=>{
-    a.y+=a.v;if(a.y>h)a.y=0;
-    x.fillStyle="rgba(255,215,0,.4)";
-    x.fillRect(a.x,a.y,1,1);
-  });
-  requestAnimationFrame(draw);
-}
-draw();
-
-/* REVEAL ON SCROLL */
-const els=document.querySelectorAll(".reveal");
-const obs=new IntersectionObserver(e=>{
-  e.forEach(v=>{if(v.isIntersecting)v.target.classList.add("show")})
-},{threshold:.2});
-els.forEach(el=>obs.observe(el));
 </script>
 
 </body>
