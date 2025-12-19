@@ -6,36 +6,31 @@
 <title>Ape Mood (APEM)</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
-body{background:#000;color:#fff;overflow-x:hidden}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{
+  background:#000;
+  color:#fff;
+  min-height:100vh;
+}
 
 /* HERO */
 .hero{
-  min-height:100svh;
-  padding:90px 20px 40px;
-  background:#000 url("assets/APEM_Hero_Mobile_1080x1350.jpg") no-repeat;
-  background-size:contain;
-  background-position:center bottom;
-  background-attachment:scroll;
+  min-height:100vh;
+  padding:80px 20px;
   display:flex;
   justify-content:center;
   align-items:center;
-}
-@media(min-width:768px){
-  .hero{
-    background-image:url("assets/APEM_Hero_Desktop_1920x1080_NO_CROP.jpg");
-    background-position:center;
-    background-attachment:fixed;
-  }
+  background:radial-gradient(circle at top,#222,#000);
 }
 
-/* CONTENT */
+/* BOX */
 .box{
-  width:min(900px,100%);
-  background:rgba(0,0,0,.35);
-  border:1px solid rgba(255,255,255,.08);
+  max-width:900px;
+  width:100%;
+  background:rgba(0,0,0,.6);
+  border:1px solid rgba(255,255,255,.15);
   border-radius:20px;
-  padding:28px;
+  padding:30px;
   text-align:center;
 }
 
@@ -43,212 +38,20 @@ body{background:#000;color:#fff;overflow-x:hidden}
 h1{
   color:#FFD700;
   letter-spacing:4px;
-  font-size:2.3rem;
+  font-size:2.8rem;
   text-shadow:0 0 25px rgba(255,215,0,.8);
-  animation:goldGlow 3s infinite;
+  margin-bottom:20px;
 }
-@media(min-width:768px){h1{font-size:3.4rem}}
-@keyframes goldGlow{50%{text-shadow:0 0 45px rgba(255,215,0,1)}}
 
 /* TYPE TEXT */
 .type{
-  margin:18px auto;
-  max-width:760px;
   font-size:1.05rem;
   line-height:1.7;
-  min-height:3.8em;
+  min-height:80px;
+  margin-bottom:20px;
 }
 .cursor{
   display:inline-block;
   width:8px;
   height:1.2em;
-  background:#FFD700;
-  margin-left:4px;
-  animation:blink .8s infinite;
-}
-@keyframes blink{50%{opacity:0}}
-
-/* BUTTONS */
-.btns{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-top:10px;
-}
-.btn{
-  padding:14px 28px;
-  border-radius:999px;
-  font-weight:800;
-  text-decoration:none;
-  color:#000;
-  background:linear-gradient(135deg,#FFD700,#FFB800);
-  box-shadow:0 0 22px rgba(255,215,0,.7);
-  animation:pulse 2.8s infinite;
-}
-@keyframes pulse{50%{box-shadow:0 0 38px rgba(255,215,0,1)}}
-
-/* small buttons */
-.small{
-  padding:8px 14px;
-  font-size:.85rem;
-  background:rgba(255,255,255,.1);
-  color:#fff;
-  border:1px solid rgba(255,255,255,.25);
-  box-shadow:none;
-  animation:none;
-  cursor:pointer;
-}
-
-/* Buy text */
-.buy{
-  margin-top:12px;
-  color:#FFD700;
-  font-weight:800;
-  letter-spacing:1px;
-  text-shadow:0 0 18px rgba(255,215,0,.6);
-}
-
-/* contract */
-.contract{
-  margin-top:16px;
-  padding:12px;
-  background:rgba(0,0,0,.3);
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:14px;
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
-.contract button{
-  background:#FFD700;
-  border:none;
-  border-radius:999px;
-  padding:6px 12px;
-  font-weight:800;
-  cursor:pointer;
-}
-
-/* INFO SECTION */
-section{
-  padding:80px 20px;
-  background:#050505;
-  text-align:center;
-}
-.info{
-  max-width:900px;
-  margin:auto;
-  opacity:.9;
-  line-height:1.8;
-}
-.info p{margin:6px 0}
-</style>
-</head>
-
-<body>
-
-<div class="hero">
-  <div class="box">
-    <h1>APE MOOD</h1>
-
-    <div class="type">
-      <span id="typed"></span><span class="cursor"></span>
-    </div>
-
-    <div class="btns">
-      <a class="btn" href="#">Swap APEM</a>
-      <a class="btn" href="APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank">Whitepaper</a>
-    </div>
-
-    <div class="btns">
-      <button class="small" onclick="showIntro()">Token Intro</button>
-      <button class="small" onclick="showVision()">Projects</button>
-      <button class="small" onclick="showSupply()">Supply Details</button>
-      <button class="small" onclick="showExpect()">Our Expectations</button>
-    </div>
-
-    <div class="buy">BUY AND HOLD</div>
-
-    <div class="contract">
-      <code id="ca">0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</code>
-      <button onclick="copyCA()">Copy</button>
-      <span id="copyMsg"></span>
-    </div>
-  </div>
-</div>
-
-<section>
-  <div class="info">
-    <p><b>Token:</b> Ape Mood (APEM)</p>
-    <p><b>Chain:</b> BNB Smart Chain (BEP-20)</p>
-    <p><b>Total Supply:</b> 150,000,000</p>
-    <p><b>Compatibility:</b> EVM / ERC-20</p>
-    <p><b>Contract:</b> 0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</p>
-  </div>
-</section>
-
-<script>
-const typed=document.getElementById("typed");
-let timer;
-
-function typeText(text){
-  clearTimeout(timer);
-  typed.textContent="";
-  let i=0;
-  function run(){
-    if(i<=text.length){
-      typed.textContent=text.slice(0,i++);
-      timer=setTimeout(run,65);
-    }else{
-      setTimeout(()=>typed.textContent="",2200);
-    }
-  }
-  run();
-}
-
-/* DEFAULT */
-typeText(
-  "Ape Mood (APEM) is a community-driven, next-generation digital asset built on BNB Smart Chain."
-);
-
-function showIntro(){
-  typeText(
-    "Ape Mood (APEM) is a community-driven, next-generation digital asset built on BNB Smart Chain. " +
-    "It is designed as the foundation of a future ecosystem spanning blockchain technology, " +
-    "artificial intelligence, digital platforms, and ethical real-world business initiatives."
-  );
-}
-
-function showVision(){
-  typeText(
-    "The Ape Mood vision focuses on responsible growth, community-led development, " +
-    "and long-term sustainability across blockchain, AI, and real-world initiatives."
-  );
-}
-
-/* ✅ ONLY THIS TEXT CHANGED */
-function showSupply(){
-  typeText(
-    "The total supply of Ape Mood is fixed at 150 million tokens. " +
-    "No additional tokens can ever be minted. The smart contract does not include any minting or inflation mechanisms."
-  );
-}
-
-function showExpect(){
-  typeText(
-    "We encourage responsible participation. Small and steady swaps, and a long term holding mindset help reduce risk, " +
-    "avoid panic behavior, and support long-term project growth."
-  );
-}
-
-function copyCA(){
-  navigator.clipboard.writeText(document.getElementById("ca").innerText);
-  document.getElementById("copyMsg").innerText="Copied";
-  setTimeout(()=>copyMsg.innerText="",1200);
-}
-</script>
-
-</body>
-</html>
-
+  backgroun
