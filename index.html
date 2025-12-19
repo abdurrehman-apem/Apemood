@@ -1,89 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Ape Mood (APEM)</title>
 
 <style>
-:root{--neon:#FFD700}
+:root{
+  --neon:#FFD700;          /* single color everywhere */
+  --neonSoft: rgba(255,215,0,.45);
+  --glass: rgba(0,0,0,.48);
+  --glass2: rgba(0,0,0,.62);
+}
+
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
 body{background:#000;color:var(--neon);overflow-x:hidden}
 
-/* HERO */
+/* ===== HERO (bandar background) ===== */
 .hero{
   position:relative;
   min-height:100svh;
   padding:90px 20px 40px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+
+  /* Mobile: show full image (no crop) */
   background:#000 url("assets/APEM_Hero_Mobile_1080x1350.jpg") no-repeat;
   background-size:contain;
   background-position:center bottom;
-  overflow:hidden;
 }
 @media(min-width:768px){
-.hero{
-  background-image:url("assets/APEM_Hero_Desktop_1920x1080_NO_CROP.jpg");
-  background-size:cover;
-  background-position:center;
-}
+  .hero{
+    /* Desktop: full feel */
+    background-image:url("assets/APEM_Hero_Desktop_1920x1080_NO_CROP.jpg");
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+  }
 }
 
-/* BACKGROUND MOVING NEON LINES */
+/* ===== Neon lines behind the content (over wallpaper) ===== */
 .bg-lines{
   position:absolute;
   inset:0;
   z-index:1;
   pointer-events:none;
+
+  /* vertical-ish sci-fi streams */
   background:
     repeating-linear-gradient(
       0deg,
-      rgba(255,215,0,.35),
-      rgba(255,215,0,.35) 1px,
+      rgba(255,215,0,.34),
+      rgba(255,215,0,.34) 1px,
       transparent 1px,
-      transparent 70px
+      transparent 78px
     );
-  animation:linesMove 5s linear infinite;
-  opacity:.65;
+  opacity:.55;                /* stronger than before */
   mix-blend-mode:overlay;
+  filter: blur(.2px);
+  animation:linesDown 5.8s linear infinite;
 }
-@keyframes linesMove{
-  from{background-position:0 -100%}
-  to{background-position:0 100%}
+@keyframes linesDown{
+  from{background-position:0 -120%}
+  to{background-position:0 120%}
 }
 
-/* CONTENT */
+/* ===== Content box ===== */
 .box{
   position:relative;
   z-index:2;
-  width:min(900px,100%);
-  background:rgba(0,0,0,.6);
-  border:1px solid rgba(255,215,0,.45);
-  border-radius:24px;
+  width:min(920px,100%);
+  background:var(--glass);
+  border:1px solid rgba(255,215,0,.38);
+  border-radius:22px;
   padding:28px;
   text-align:center;
-  box-shadow:0 0 70px rgba(255,215,0,.45);
+  box-shadow:0 0 70px rgba(255,215,0,.22);
+  backdrop-filter: blur(3px);
 }
 
-/* TITLE */
+/* ===== Title + neon style ===== */
 h1{
-  font-size:2.4rem;
+  color:var(--neon);
   letter-spacing:4px;
-  animation:titleGlow 3s infinite;
+  font-size:2.35rem;
+  text-shadow: 0 0 14px rgba(255,215,0,.85), 0 0 38px rgba(255,215,0,.35);
+  animation:titleGlow 3.2s ease-in-out infinite;
 }
+@media(min-width:768px){h1{font-size:3.6rem}}
 @keyframes titleGlow{
-  50%{text-shadow:0 0 40px var(--neon)}
+  50%{text-shadow: 0 0 22px rgba(255,215,0,1), 0 0 55px rgba(255,215,0,.45);}
 }
 
-/* TYPING TEXT */
+/* ===== Intro typing line ===== */
 .type{
-  margin:18px auto;
-  max-width:760px;
-  min-height:3.8em;
+  margin:16px auto 6px;
+  max-width:780px;
+  font-size:1.05rem;
   line-height:1.7;
-  animation:textGlow 4s infinite;
+  min-height:3.8em;
+  color:rgba(255,241,186,.95);
+  text-shadow: 0 0 12px rgba(255,215,0,.35);
+  animation:textPulse 4.2s ease-in-out infinite;
 }
-@keyframes textGlow{
-  50%{text-shadow:0 0 18px var(--neon)}
+@keyframes textPulse{
+  50%{text-shadow:0 0 18px rgba(255,215,0,.55)}
 }
 .cursor{
   display:inline-block;
@@ -91,11 +114,11 @@ h1{
   height:1.2em;
   background:var(--neon);
   margin-left:4px;
-  animation:blink .8s infinite;
+  animation:blink .85s infinite;
 }
 @keyframes blink{50%{opacity:0}}
 
-/* BUTTONS */
+/* ===== Buttons ===== */
 .btns{
   display:flex;
   justify-content:center;
@@ -103,68 +126,155 @@ h1{
   flex-wrap:wrap;
   margin-top:12px;
 }
-.btn,.small{
+
+.btn, .small{
   border-radius:999px;
   cursor:pointer;
-  transition:transform .25s, box-shadow .25s;
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  user-select:none;
+  -webkit-tap-highlight-color: transparent;
 }
+
+/* Swap + Whitepaper (same look) */
 .btn{
   padding:14px 30px;
   font-weight:900;
+  text-decoration:none;
   color:#000;
   background:linear-gradient(135deg,var(--neon),#ffb800);
-  box-shadow:0 0 25px rgba(255,215,0,.9);
-  animation:btnGlow 3s infinite;
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow: 0 0 22px rgba(255,215,0,.75), inset 0 0 10px rgba(255,255,255,.22);
+  animation:btnGlow 3.1s ease-in-out infinite;
 }
 @keyframes btnGlow{
-  50%{box-shadow:0 0 45px rgba(255,215,0,1)}
+  50%{box-shadow:0 0 42px rgba(255,215,0,1), inset 0 0 14px rgba(255,255,255,.26)}
 }
-.small{
-  padding:8px 16px;
-  font-size:.85rem;
-  background:rgba(0,0,0,.65);
-  color:var(--neon);
-  border:1px solid var(--neon);
-  box-shadow:0 0 18px rgba(255,215,0,.55);
-}
-.btn:hover,.small:hover{transform:scale(1.07)}
+.btn:hover, .small:hover{transform:scale(1.06); filter:brightness(1.03)}
+.btn:active, .small:active{transform:scale(1.02) translateY(1px)}
 
+/* Lower buttons */
+.small{
+  padding:9px 16px;
+  font-size:.86rem;
+  background:rgba(0,0,0,.55);
+  color:var(--neon);
+  border:1px solid rgba(255,215,0,.55);
+  box-shadow: 0 0 16px rgba(255,215,0,.35);
+  animation:chipGlow 3.4s ease-in-out infinite;
+}
+@keyframes chipGlow{
+  50%{box-shadow:0 0 26px rgba(255,215,0,.65)}
+}
+
+/* BUY AND HOLD text (not a button) */
 .buy{
   margin-top:14px;
+  color:var(--neon);
   font-weight:900;
-  animation:titleGlow 3s infinite;
+  letter-spacing:1px;
+  text-shadow: 0 0 16px rgba(255,215,0,.75);
+  animation:titleGlow 3.2s ease-in-out infinite;
 }
 
-/* PORTAL */
+/* ===== Contract line optional (kept simple) ===== */
+.contract{
+  margin-top:16px;
+  padding:12px;
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(255,215,0,.28);
+  border-radius:14px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  color:rgba(255,241,186,.95);
+  text-shadow:0 0 10px rgba(255,215,0,.22);
+}
+.contract .copybtn{
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,215,0,.55);
+  background:rgba(0,0,0,.55);
+  color:var(--neon);
+  cursor:pointer;
+  box-shadow:0 0 14px rgba(255,215,0,.35);
+}
+
+/* ===== Portal ===== */
 .portal{
   position:fixed;
   inset:0;
   display:none;
   justify-content:center;
   align-items:center;
-  background:rgba(0,0,0,.92);
+  background:rgba(0,0,0,.90);
   z-index:9999;
+  backdrop-filter: blur(2px);
 }
 .portalBox{
-  width:min(860px,92%);
-  background:rgba(0,0,0,.7);
-  border:1px solid var(--neon);
-  border-radius:24px;
-  padding:24px;
-  box-shadow:0 0 90px rgba(255,215,0,.55);
-  animation:portalIn .6s ease;
+  width:min(900px,92%);
+  background:var(--glass2);
+  border:1px solid rgba(255,215,0,.50);
+  border-radius:22px;
+  padding:22px;
+  box-shadow:0 0 95px rgba(255,215,0,.28);
+  animation:portalIn .62s cubic-bezier(.2,.9,.2,1) forwards;
+  position:relative;
+  overflow:hidden;
+}
+
+/* portal “energy sweep” */
+.portalBox::before{
+  content:"";
+  position:absolute;
+  inset:-60%;
+  background:radial-gradient(circle, rgba(255,215,0,.18), transparent 55%);
+  transform:rotate(18deg);
+  animation:sweep 2.6s linear infinite;
+  opacity:.75;
+}
+@keyframes sweep{
+  0%{transform:translateX(-12%) rotate(18deg)}
+  100%{transform:translateX(12%) rotate(18deg)}
 }
 @keyframes portalIn{
-  from{opacity:0;transform:scale(.85)}
-  to{opacity:1;transform:scale(1)}
+  from{opacity:0; transform:translateY(30px) scale(.90)}
+  to{opacity:1; transform:translateY(0) scale(1)}
 }
-.close{
-  margin-top:16px;
-  padding:6px 18px;
-  background:transparent;
-  color:var(--neon);
-  border:1px solid var(--neon);
+
+.portalHead{
+  position:relative;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+.portalTitle{
+  font-weight:900;
+  letter-spacing:1px;
+  text-shadow:0 0 14px rgba(255,215,0,.45);
+}
+.closeBtn{
+  padding:8px 14px;
   border-radius:999px;
+  border:1px solid rgba(255,215,0,.55);
+  background:rgba(0,0,0,.35);
+  color:var(--neon);
+  cursor:pointer;
+  box-shadow:0 0 14px rgba(255,215,0,.35);
+}
+
+.portalBody{
+  position:relative;
+  z-index:2;
+  color:rgba(255,241,186,.96);
+  line-height:1.75;
+  text-shadow:0 0 10px rgba(255,215,0,.14);
+  min-height:140px;
+  white-space:pre-wrap;
 }
 </style>
 </head>
@@ -178,84 +288,224 @@ h1{
     <h1>APE MOOD</h1>
 
     <div class="type">
-      <span id="typed"></span><span class="cursor"></span>
+      <span id="heroTyped"></span><span class="cursor"></span>
     </div>
 
     <div class="btns">
-      <a class="btn" href="#">Swap</a>
-      <a class="btn" href="assets/APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank">Whitepaper</a>
+      <a class="btn" href="#" id="swapBtn">Swap</a>
+      <!-- Whitepaper opens next page/new tab -->
+      <a class="btn" href="assets/APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank" rel="noopener">Whitepaper</a>
     </div>
 
     <div class="btns">
-      <button class="small" onclick="openPortal('intro')">Token Intro</button>
-      <button class="small" onclick="openPortal('road')">Road Map</button>
-      <button class="small" onclick="openPortal('supply')">Supply Details</button>
-      <button class="small" onclick="openPortal('expect')">Our Expectations</button>
+      <button class="small" id="roadBtn">Road Map</button>
+      <button class="small" id="supplyBtn">Supply Details</button>
+      <button class="small" id="expectBtn">Our Expectations</button>
     </div>
 
     <div class="buy">BUY AND HOLD</div>
+
+    <div class="contract">
+      <code id="ca">0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</code>
+      <button class="copybtn" id="copyBtn">Copy</button>
+      <span id="copyMsg"></span>
+    </div>
   </div>
 </div>
 
+<!-- Portal -->
 <div class="portal" id="portal">
   <div class="portalBox">
-    <div id="pText"></div>
-    <button class="close" onclick="closePortal()">Close</button>
+    <div class="portalHead">
+      <div class="portalTitle" id="portalTitle">INFO</div>
+      <button class="closeBtn" id="closePortal">Close</button>
+    </div>
+    <div class="portalBody" id="portalText"></div>
   </div>
 </div>
 
 <script>
-/* STABLE TYPING SOUND */
-let audioCtx=null;
-function playKey(){
-  if(!audioCtx){
-    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-  }
-  const osc=audioCtx.createOscillator();
-  const gain=audioCtx.createGain();
-  osc.type="square";
-  osc.frequency.value=850;
-  gain.gain.value=0.015;
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-  osc.start();
-  osc.stop(audioCtx.currentTime+0.015);
+/* =========================================================
+   1) Stable typing sound (synced, no glitch, no overrun)
+   - Unlock AudioContext on first user interaction
+   - Play a tiny "click" per character while typing only
+   ========================================================= */
+let audioCtx = null;
+let audioUnlocked = false;
+
+function unlockAudio(){
+  if(audioUnlocked) return;
+  try{
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // create a silent tick to fully unlock on iOS/Chrome
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    g.gain.value = 0.0001;
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(); o.stop(audioCtx.currentTime + 0.01);
+    audioUnlocked = true;
+  }catch(e){}
 }
 
-/* TYPING ENGINE */
-const typed=document.getElementById("typed");
-let tmr;
-function typeText(text){
-  clearTimeout(tmr);
-  typed.textContent="";
-  let i=0;
-  (function run(){
-    if(i<text.length){
-      typed.textContent+=text[i++];
-      playKey();
-      tmr=setTimeout(run,60);
+function typeClick(){
+  if(!audioUnlocked || !audioCtx) return;
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  // sci-fi keyboard-ish click (short + soft)
+  o.type = "square";
+  o.frequency.value = 820;
+  g.gain.value = 0.013;
+  o.connect(g);
+  g.connect(audioCtx.destination);
+  o.start();
+  o.stop(audioCtx.currentTime + 0.014);
+}
+
+/* =========================================================
+   2) Typing engine (balanced speed)
+   - Calls onDone after finishing
+   - Portal auto closes 5s after finished (as requested)
+   ========================================================= */
+function typeInto(el, text, speedMs, onDone){
+  el.textContent = "";
+  let i = 0;
+  let timer = null;
+
+  function run(){
+    if(i < text.length){
+      el.textContent += text[i++];
+      typeClick();
+      timer = setTimeout(run, speedMs);
+    }else{
+      if(typeof onDone === "function") onDone();
     }
-  })();
+  }
+  run();
+
+  // return cancel function
+  return () => { if(timer) clearTimeout(timer); };
 }
-typeText("Ape Mood (APEM) is a community-driven, long-term digital asset built on BNB Smart Chain.");
 
-/* PORTAL CONTENT */
-const DATA={
-intro:"Ape Mood is built for transparency, responsibility, and long-term ecosystem growth.",
-road:"Phase 1 focuses on token launch and community. Phase 2 expands into AI and digital platforms. Phase 3 connects real-world businesses with blockchain.",
-supply:"Total supply is fixed at 150 million tokens. No minting, no inflation, no hidden mechanics.",
-expect:"There are no guaranteed profits. Growth depends on development progress and community participation."
-};
+/* =========================================================
+   3) Hero intro typing text
+   ========================================================= */
+const heroTyped = document.getElementById("heroTyped");
+typeInto(
+  heroTyped,
+  "Ape Mood is a next-level community project built for long-term growth on BNB Smart Chain.",
+  55
+);
 
-const portal=document.getElementById("portal");
-const pText=document.getElementById("pText");
+/* =========================================================
+   4) Portal logic
+   - Opens on button click
+   - Typing inside portal
+   - Closes 5 seconds after typing ends
+   ========================================================= */
+const portal = document.getElementById("portal");
+const portalTitle = document.getElementById("portalTitle");
+const portalText = document.getElementById("portalText");
+const closePortalBtn = document.getElementById("closePortal");
 
-function openPortal(k){
-  portal.style.display="flex";
-  typeText(DATA[k]);
-  setTimeout(()=>portal.style.display="none",10000);
+let cancelTyping = null;
+let closeTimer = null;
+
+function openPortal(title, text){
+  portalTitle.textContent = title;
+  portalText.textContent = "";
+  portal.style.display = "flex";
+
+  // stop old timers
+  if(cancelTyping) cancelTyping();
+  if(closeTimer) clearTimeout(closeTimer);
+
+  // typing + close 5s after finish
+  cancelTyping = typeInto(portalText, text, 28, () => {
+    closeTimer = setTimeout(() => {
+      portal.style.display = "none";
+    }, 5000);
+  });
 }
-function closePortal(){portal.style.display="none"}
+
+closePortalBtn.addEventListener("click", () => {
+  portal.style.display = "none";
+});
+
+/* =========================================================
+   5) PDF-derived texts (from your uploaded whitepaper)
+   Roadmap + Token Details + Supply Strategy
+   ========================================================= */
+const PDF_ROADMAP =
+`Phase 1: Token launch, and community building.
+Phase 2: Digital platforms, AI exploration, and ecosystem planning.
+Phase 3: Connecting real-world businesses with blockchain and long-term expansion.`;
+
+const PDF_TOKEN_DETAILS =
+`Token Name: Ape Mood (APEM)
+Blockchain: BNB Smart Chain
+Total Supply: 150,000,000 APEM
+Decimals: 18`;
+
+const PDF_SUPPLY_STRATEGY =
+`A limited portion of the total supply will be available for trading at launch.
+The remaining supply will be released gradually to support healthy growth and stability.`;
+
+const EXPECTATIONS_TEXT =
+`We expect small and steady swaps in the beginning to avoid panic,
+so the token and the project can grow to a high level.`;
+
+/* =========================================================
+   6) Buttons behavior
+   - Whitepaper opens next page/new tab (already)
+   - Others open portal + typing
+   ========================================================= */
+const swapBtn = document.getElementById("swapBtn");
+const roadBtn = document.getElementById("roadBtn");
+const supplyBtn = document.getElementById("supplyBtn");
+const expectBtn = document.getElementById("expectBtn");
+
+swapBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  unlockAudio();
+  openPortal(
+    "Swap",
+    "Use a trusted DEX route and always verify the official contract address before swapping."
+  );
+});
+
+roadBtn.addEventListener("click", () => {
+  unlockAudio();
+  openPortal("Road Map", PDF_ROADMAP);
+});
+
+supplyBtn.addEventListener("click", () => {
+  unlockAudio();
+  openPortal("Supply Details", `${PDF_TOKEN_DETAILS}\n\n${PDF_SUPPLY_STRATEGY}`);
+});
+
+expectBtn.addEventListener("click", () => {
+  unlockAudio();
+  openPortal("Our Expectations", EXPECTATIONS_TEXT);
+});
+
+/* Unlock audio on any first interaction (mobile friendly) */
+window.addEventListener("pointerdown", unlockAudio, { once:true });
+
+/* =========================================================
+   7) Copy contract
+   ========================================================= */
+const copyBtn = document.getElementById("copyBtn");
+const copyMsg = document.getElementById("copyMsg");
+copyBtn.addEventListener("click", async () => {
+  try{
+    await navigator.clipboard.writeText(document.getElementById("ca").innerText);
+    copyMsg.textContent = "Copied";
+    setTimeout(()=>copyMsg.textContent="",1200);
+  }catch(e){
+    copyMsg.textContent = "Copy failed";
+    setTimeout(()=>copyMsg.textContent="",1200);
+  }
+});
 </script>
 
 </body>
