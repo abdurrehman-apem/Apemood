@@ -141,4 +141,116 @@ h1{
 }
 
 .phase h3{
-  color:#FFD700
+  color:#FFD700;
+  margin-bottom:6px;
+  letter-spacing:1px;
+}
+
+.connector{
+  width:2px;height:22px;
+  background:#FFD700;margin:0 auto;
+  animation:flow 1.5s infinite;
+}
+@keyframes flow{
+  50%{opacity:.3}
+}
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+  <div class="box">
+    <h1>APE MOOD</h1>
+
+    <div class="type">
+      <span id="typed"></span><span class="cursor"></span>
+    </div>
+
+    <div class="btns">
+      <a class="btn" href="#">Swap APEM</a>
+      <a class="btn" href="#">Whitepaper</a>
+    </div>
+
+    <div class="btns">
+      <button class="small" onclick="showIntro()">Token Intro</button>
+      <button class="small" onclick="showRoadmap()">Road Map</button>
+      <button class="small" onclick="showSupply()">Supply Details</button>
+      <button class="small" onclick="showExpect()">Our Expectations</button>
+    </div>
+
+    <div class="contract">
+      <code id="ca">0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</code>
+      <button onclick="copyCA()">Copy</button>
+      <span id="copyMsg"></span>
+    </div>
+  </div>
+</div>
+
+<!-- SCI-FI ROADMAP -->
+<div id="roadmap" class="roadmap">
+  <div class="roadmap-box">
+    <div class="phase">
+      <h3>PHASE 1</h3>
+      <p>Token launch and community building.</p>
+    </div>
+    <div class="connector"></div>
+    <div class="phase">
+      <h3>PHASE 2</h3>
+      <p>Digital platforms, AI exploration, and ecosystem planning.</p>
+    </div>
+    <div class="connector"></div>
+    <div class="phase">
+      <h3>PHASE 3</h3>
+      <p>Connecting real-world businesses with blockchain and long-term expansion.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const typed=document.getElementById("typed");
+let timer;
+
+function typeText(text){
+  clearTimeout(timer);
+  typed.textContent="";
+  let i=0;
+  function run(){
+    if(i<=text.length){
+      typed.textContent=text.slice(0,i++);
+      timer=setTimeout(run,55);
+    }
+  }
+  run();
+}
+
+typeText("Ape Mood (APEM) is a community-driven, next-generation digital asset built on BNB Smart Chain.");
+
+function showIntro(){
+  typeText("Ape Mood (APEM) is a community-driven digital asset focused on transparency and long-term growth.");
+}
+
+function showSupply(){
+  typeText("The total supply of Ape Mood is fixed at 150 million tokens. No additional tokens can ever be minted.");
+}
+
+function showExpect(){
+  typeText("We encourage responsible participation and a long-term holding mindset.");
+}
+
+function showRoadmap(){
+  const r=document.getElementById("roadmap");
+  r.style.display="flex";
+  setTimeout(()=>{r.style.display="none"},4500);
+}
+
+function copyCA(){
+  navigator.clipboard.writeText(document.getElementById("ca").innerText);
+  const m=document.getElementById("copyMsg");
+  m.innerText="Copied";
+  setTimeout(()=>m.innerText="",1200);
+}
+</script>
+
+</body>
+</html>
