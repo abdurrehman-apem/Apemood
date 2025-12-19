@@ -13,100 +13,18 @@ body{
   font-family:monospace;
   overflow-x:hidden;
 }
-
-/* MATRIX */
 canvas{position:fixed;inset:0;z-index:-2}
-
-/* HERO */
-.hero{
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:80px 20px;
-}
-
-/* BOX */
-.box{
-  width:min(900px,100%);
-  background:rgba(0,0,0,.65);
-  border:1px solid rgba(0,255,200,.35);
-  border-radius:22px;
-  padding:32px;
-  text-align:center;
-  box-shadow:0 0 70px rgba(0,255,200,.35);
-}
-
-/* TITLE */
-h1{
-  font-size:3.5rem;
-  letter-spacing:6px;
-  text-shadow:0 0 35px rgba(0,255,200,1);
-  animation:flicker 3s infinite;
-}
-@keyframes flicker{36%{opacity:.85}}
-
-/* TYPING */
+.hero{min-height:100vh;display:flex;justify-content:center;align-items:center;padding:80px 20px}
+.box{width:min(900px,100%);background:rgba(0,0,0,.65);border:1px solid rgba(0,255,200,.35);border-radius:22px;padding:32px;text-align:center;box-shadow:0 0 70px rgba(0,255,200,.35)}
+h1{font-size:3.5rem;letter-spacing:6px;text-shadow:0 0 35px rgba(0,255,200,1)}
 .type{margin:18px auto;min-height:3.6em;max-width:780px}
-.cursor{
-  display:inline-block;
-  width:8px;height:1.2em;
-  background:#00ffd0;
-  margin-left:4px;
-  animation:blink .8s infinite;
-}
+.cursor{display:inline-block;width:8px;height:1.2em;background:#00ffd0;margin-left:4px;animation:blink .8s infinite}
 @keyframes blink{50%{opacity:0}}
-
-/* BUTTONS */
 .btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:14px}
-.btn,.small{
-  padding:12px 26px;
-  border:1px solid #00ffd0;
-  background:rgba(0,0,0,.7);
-  color:#00ffd0;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-/* CONTRACT */
-.contract{
-  margin-top:18px;
-  padding:12px;
-  border:1px solid rgba(0,255,200,.4);
-  border-radius:10px;
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-/* PORTAL */
-.portal{
-  position:fixed;
-  inset:0;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  background:rgba(0,0,0,.95);
-  z-index:9999;
-}
-.portal-box{
-  width:min(760px,92%);
-  border:2px solid #00ffd0;
-  border-radius:18px;
-  padding:26px;
-  box-shadow:0 0 90px rgba(0,255,200,.8);
-}
+.btn,.small{padding:12px 26px;border:1px solid #00ffd0;background:rgba(0,0,0,.7);color:#00ffd0;border-radius:6px;cursor:pointer}
+.portal{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,.95);z-index:9999}
+.portal-box{width:min(760px,92%);border:2px solid #00ffd0;border-radius:18px;padding:26px}
 .portal-text{white-space:pre-line;margin-top:16px}
-
-/* DIAGRAMS */
-.diagram{display:flex;justify-content:center;gap:12px}
-.node{width:60px;height:60px;border:2px solid #00ffd0;border-radius:50%;animation:spin 4s linear infinite}
-.bar{width:26px;height:80px;border:2px solid #00ffd0;animation:grow 2s infinite alternate}
-.wave{width:100px;height:40px;border-bottom:2px solid #00ffd0;animation:wave 1.5s infinite alternate}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes grow{to{height:120px}}
-@keyframes wave{to{transform:translateY(10px)}}
 </style>
 </head>
 
@@ -123,42 +41,32 @@ h1{
     </div>
 
     <div class="btns">
-      <button class="btn" onclick="openPortal('swap')">Swap APEM</button>
-      <a class="btn" href="APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank">Whitepaper</a>
+      <button class="btn" onclick="userInteract('swap')">Swap APEM</button>
+      <a class="btn" href="APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank" onclick="unlockAudio()">Whitepaper</a>
     </div>
 
     <div class="btns">
-      <button class="small" onclick="openPortal('intro')">Token Intro</button>
-      <button class="small" onclick="openPortal('roadmap')">Road Map</button>
-      <button class="small" onclick="openPortal('supply')">Supply Details</button>
-      <button class="small" onclick="openPortal('expect')">Our Expectations</button>
-    </div>
-
-    <div class="contract">
-      <code id="ca">0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</code>
-      <button class="small" onclick="copyCA()">COPY</button>
-      <span id="copyMsg"></span>
+      <button class="small" onclick="userInteract('intro')">Token Intro</button>
+      <button class="small" onclick="userInteract('roadmap')">Road Map</button>
+      <button class="small" onclick="userInteract('supply')">Supply Details</button>
+      <button class="small" onclick="userInteract('expect')">Our Expectations</button>
     </div>
   </div>
 </div>
 
 <div id="portal" class="portal">
   <div class="portal-box">
-    <div id="diagram"></div>
     <div class="portal-text" id="portalText"></div>
   </div>
 </div>
 
 <script>
 /* MATRIX */
-const canvas=document.getElementById("matrix");
-const ctx=canvas.getContext("2d");
+const canvas=document.getElementById("matrix"),ctx=canvas.getContext("2d");
 function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
 resize();addEventListener("resize",resize);
-const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%";
-const size=14;
-let cols=Math.floor(canvas.width/size);
-let drops=Array(cols).fill(0);
+const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%",size=14;
+let drops=Array(Math.floor(canvas.width/size)).fill(0);
 (function draw(){
   ctx.fillStyle="rgba(0,0,0,.08)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -172,79 +80,71 @@ let drops=Array(cols).fill(0);
   requestAnimationFrame(draw);
 })();
 
-/* ====== TYPING SOUND (REAL, SYNCED) ====== */
-const TYPE_SPEED = 45; // ms (text + sound sync)
-const baseTypingAudio = new Audio("assets/typing.mp3");
-baseTypingAudio.volume = 0.35;
-baseTypingAudio.preload = "auto";
+/* ===== AUDIO UNLOCK SYSTEM ===== */
+let audioUnlocked=false;
+const TYPE_SPEED=45;
+const baseAudio=new Audio("assets/typing.mp3");
+baseAudio.volume=0.35;
+
+function unlockAudio(){
+  if(audioUnlocked) return;
+  baseAudio.play().then(()=>{
+    baseAudio.pause();
+    baseAudio.currentTime=0;
+    audioUnlocked=true;
+  }).catch(()=>{});
+}
 
 function playType(){
-  const a = baseTypingAudio.cloneNode();
-  a.currentTime = 0;
+  if(!audioUnlocked) return;
+  const a=baseAudio.cloneNode();
+  a.currentTime=0;
   a.play();
 }
 
 /* MAIN TYPING */
 const typed=document.getElementById("typed");
-function typeMain(text){
+function typeText(text){
   typed.textContent="";
   let i=0;
   (function run(){
     if(i<=text.length){
       typed.textContent=text.slice(0,i++);
       playType();
-      setTimeout(run, TYPE_SPEED);
+      setTimeout(run,TYPE_SPEED);
     }
   })();
 }
-typeMain(":: Initializing Ape Mood Protocol...");
 
 /* PORTAL */
 const portal=document.getElementById("portal");
 const portalText=document.getElementById("portalText");
-const diagram=document.getElementById("diagram");
-
 const content={
   intro:":: Ape Mood is a community-driven digital asset built for long-term evolution.",
-  roadmap:
-`PHASE 1 :: Token launch and community building
-PHASE 2 :: Digital platforms, AI exploration, ecosystem planning
-PHASE 3 :: Real-world blockchain integration and long-term expansion`,
-  supply:":: Total supply fixed at 150,000,000 APEM. No minting. No inflation.",
-  expect:":: Focused on responsible participation and sustainable ecosystem growth.",
+  roadmap:`PHASE 1 :: Token launch\nPHASE 2 :: AI & platforms\nPHASE 3 :: Real-world blockchain expansion`,
+  supply:":: Total supply fixed at 150,000,000 APEM. No minting.",
+  expect:":: Responsible participation & sustainable growth.",
   swap:":: Secure swap gateway initializing..."
 };
 
-function openPortal(key){
+function userInteract(key){
+  unlockAudio();
   portal.style.display="flex";
   portalText.textContent="";
-  diagram.innerHTML="";
-
-  if(key==="intro") diagram.innerHTML='<div class="diagram"><div class="node"></div><div class="node"></div><div class="node"></div></div>';
-  if(key==="roadmap") diagram.innerHTML='<div class="diagram"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>';
-  if(key==="supply") diagram.innerHTML='<div class="diagram"><div class="bar"></div><div class="bar"></div></div>';
-  if(key==="expect") diagram.innerHTML='<div class="diagram"><div class="wave"></div><div class="wave"></div></div>';
-  if(key==="swap") diagram.innerHTML='<div class="diagram"><div class="node"></div></div>';
-
   const txt=content[key];
   let i=0;
   (function run(){
     if(i<=txt.length){
       portalText.textContent=txt.slice(0,i++);
       playType();
-      setTimeout(run, TYPE_SPEED);
+      setTimeout(run,TYPE_SPEED);
     }
   })();
-
   setTimeout(()=>portal.style.display="none",8000);
 }
 
-/* COPY */
-function copyCA(){
-  navigator.clipboard.writeText(ca.innerText);
-  copyMsg.innerText="COPIED";
-  setTimeout(()=>copyMsg.innerText="",1200);
-}
+/* INITIAL TEXT (NO SOUND UNTIL CLICK) */
+typeText(":: Click any button to initialize sound system...");
 </script>
 
 </body>
