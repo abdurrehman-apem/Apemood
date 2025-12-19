@@ -15,11 +15,7 @@ body{
 }
 
 /* MATRIX */
-canvas{
-  position:fixed;
-  inset:0;
-  z-index:-2;
-}
+canvas{position:fixed;inset:0;z-index:-2}
 
 /* HERO */
 .hero{
@@ -30,7 +26,7 @@ canvas{
   padding:80px 20px;
 }
 
-/* MAIN BOX */
+/* BOX */
 .box{
   width:min(900px,100%);
   background:rgba(0,0,0,.65);
@@ -51,11 +47,7 @@ h1{
 @keyframes flicker{36%{opacity:.85}}
 
 /* TYPING */
-.type{
-  margin:18px auto;
-  min-height:3.6em;
-  max-width:780px;
-}
+.type{margin:18px auto;min-height:3.6em;max-width:780px}
 .cursor{
   display:inline-block;
   width:8px;height:1.2em;
@@ -66,13 +58,7 @@ h1{
 @keyframes blink{50%{opacity:0}}
 
 /* BUTTONS */
-.btns{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-top:14px;
-}
+.btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:14px}
 .btn,.small{
   padding:12px 26px;
   border:1px solid #00ffd0;
@@ -122,17 +108,10 @@ h1{
   padding:26px;
   box-shadow:0 0 90px rgba(0,255,200,.8);
 }
-.portal-text{
-  white-space:pre-line;
-  margin-top:16px;
-}
+.portal-text{white-space:pre-line;margin-top:16px}
 
 /* DIAGRAMS */
-.diagram{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-}
+.diagram{display:flex;justify-content:center;gap:12px}
 .node{
   width:60px;height:60px;
   border:2px solid #00ffd0;
@@ -187,7 +166,6 @@ h1{
   </div>
 </div>
 
-<!-- PORTAL -->
 <div id="portal" class="portal">
   <div class="portal-box">
     <div id="diagram"></div>
@@ -196,21 +174,15 @@ h1{
 </div>
 
 <script>
-/* MATRIX BACKGROUND */
+/* MATRIX */
 const canvas=document.getElementById("matrix");
 const ctx=canvas.getContext("2d");
-function resize(){
-  canvas.width=innerWidth;
-  canvas.height=innerHeight;
-}
-resize();
-addEventListener("resize",resize);
-
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
+resize();addEventListener("resize",resize);
 const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%";
 const size=14;
 let cols=Math.floor(canvas.width/size);
 let drops=Array(cols).fill(0);
-
 (function draw(){
   ctx.fillStyle="rgba(0,0,0,.08)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -224,38 +196,42 @@ let drops=Array(cols).fill(0);
   requestAnimationFrame(draw);
 })();
 
-/* AUDIO CONTEXT (SAFE INIT) */
+/* AUDIO CONTEXT */
 let audioCtx;
-function getAudio(){
-  if(!audioCtx){
-    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-  }
-  return audioCtx;
-}
+function audio(){if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();return audioCtx}
 
-/* REAL KEYBOARD TYPING SOUND */
+/* SCI-FI MOVIE KEYBOARD TYPING SOUND */
 function typeSound(){
-  const ctx=getAudio();
-  const bufferSize=ctx.sampleRate*0.02;
-  const buffer=ctx.createBuffer(1,bufferSize,ctx.sampleRate);
+  const a=audio();
+
+  /* key click */
+  const osc=a.createOscillator();
+  osc.type="triangle";
+  osc.frequency.value=1400;
+
+  const clickGain=a.createGain();
+  clickGain.gain.setValueAtTime(0.04,a.currentTime);
+  clickGain.gain.exponentialRampToValueAtTime(0.001,a.currentTime+0.03);
+
+  /* finger noise */
+  const buffer=a.createBuffer(1,a.sampleRate*0.015,a.sampleRate);
   const data=buffer.getChannelData(0);
-  for(let i=0;i<bufferSize;i++){
-    data[i]=(Math.random()*2-1)*0.25;
-  }
-  const src=ctx.createBufferSource();
-  src.buffer=buffer;
+  for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*0.15;
+  const noise=a.createBufferSource();
+  noise.buffer=buffer;
 
-  const filter=ctx.createBiquadFilter();
-  filter.type="highpass";
-  filter.frequency.value=1000;
+  const filter=a.createBiquadFilter();
+  filter.type="bandpass";
+  filter.frequency.value=1800;
 
-  const gain=ctx.createGain();
-  gain.gain.value=0.07;
+  osc.connect(clickGain);
+  noise.connect(filter);
+  filter.connect(clickGain);
+  clickGain.connect(a.destination);
 
-  src.connect(filter);
-  filter.connect(gain);
-  gain.connect(ctx.destination);
-  src.start();
+  osc.start();
+  noise.start();
+  osc.stop(a.currentTime+0.03);
 }
 
 /* MAIN TYPING */
@@ -267,13 +243,13 @@ function typeMain(text){
     if(i<=text.length){
       typed.textContent=text.slice(0,i++);
       typeSound();
-      setTimeout(run,40);
+      setTimeout(run,38);
     }
   })();
 }
 typeMain(":: Initializing Ape Mood Protocol...");
 
-/* PORTAL LOGIC */
+/* PORTAL */
 const portal=document.getElementById("portal");
 const portalText=document.getElementById("portalText");
 const diagram=document.getElementById("diagram");
@@ -306,7 +282,7 @@ function openPortal(key){
     if(i<=txt.length){
       portalText.textContent=txt.slice(0,i++);
       typeSound();
-      setTimeout(run,35);
+      setTimeout(run,32);
     }
   })();
 
