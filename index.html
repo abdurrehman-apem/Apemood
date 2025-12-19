@@ -24,6 +24,7 @@ body{background:#000;color:#fff;overflow-x:hidden}
   .hero{
     background-image:url("assets/APEM_Hero_Desktop_1920x1080_NO_CROP.jpg");
     background-position:center;
+    background-attachment:fixed;
   }
 }
 
@@ -80,6 +81,7 @@ h1{
   color:#000;
   background:linear-gradient(135deg,#FFD700,#FFB800);
   box-shadow:0 0 22px rgba(255,215,0,.7);
+  cursor:pointer;
 }
 .small{
   padding:8px 14px;
@@ -119,20 +121,6 @@ h1{
   font-weight:800;
   cursor:pointer;
 }
-
-/* INFO SECTION */
-section{
-  padding:80px 20px;
-  background:#050505;
-  text-align:center;
-}
-.info{
-  max-width:900px;
-  margin:auto;
-  opacity:.9;
-  line-height:1.8;
-}
-.info p{margin:6px 0}
 </style>
 </head>
 
@@ -146,11 +134,13 @@ section{
       <span id="typed"></span><span class="cursor"></span>
     </div>
 
+    <!-- MAIN BUTTONS -->
     <div class="btns">
       <a class="btn" href="#">Swap APEM</a>
       <a class="btn" href="APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank">Whitepaper</a>
     </div>
 
+    <!-- INFO BUTTONS (EXACT OLD SET) -->
     <div class="btns">
       <button class="small" onclick="showIntro()">Token Intro</button>
       <button class="small" onclick="showVision()">Projects</button>
@@ -168,33 +158,23 @@ section{
   </div>
 </div>
 
-<section>
-  <div class="info">
-    <p><b>Token:</b> Ape Mood (APEM)</p>
-    <p><b>Chain:</b> BNB Smart Chain (BEP-20)</p>
-    <p><b>Total Supply:</b> 150,000,000</p>
-    <p><b>Compatibility:</b> EVM / ERC-20</p>
-  </div>
-</section>
-
 <script>
-/* LIGHT TYPING SOUND (OPTIONAL) */
+/* VERY LIGHT TYPING CLICK (OPTIONAL) */
 let ctx;
-function typeClick(){
+function typeSound(){
   try{
-    if(!ctx) ctx = new (window.AudioContext||window.webkitAudioContext)();
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.frequency.value = 800;
-    g.gain.value = 0.03;
-    o.connect(g);
-    g.connect(ctx.destination);
+    if(!ctx) ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const o=ctx.createOscillator();
+    const g=ctx.createGain();
+    o.frequency.value=700;
+    g.gain.value=0.02;
+    o.connect(g); g.connect(ctx.destination);
     o.start();
-    o.stop(ctx.currentTime + 0.02);
+    o.stop(ctx.currentTime+0.02);
   }catch(e){}
 }
 
-/* typing system */
+/* TYPING SYSTEM */
 const typed=document.getElementById("typed");
 let timer;
 
@@ -205,43 +185,33 @@ function typeText(text){
   function run(){
     if(i<=text.length){
       typed.textContent=text.slice(0,i++);
-      typeClick(); // sound
-      timer=setTimeout(run, 65);
+      typeSound();
+      timer=setTimeout(run,60);
     }
   }
   run();
 }
 
-/* DEFAULT */
-typeText(
-  "Ape Mood (APEM) is a community-driven, next-generation digital asset built on BNB Smart Chain."
-);
+/* DEFAULT TEXT */
+typeText("Ape Mood (APEM) is a community-driven, next-generation digital asset built on BNB Smart Chain.");
 
 function showIntro(){
-  typeText(
-    "Ape Mood (APEM) is a community-driven, next-generation digital asset built on BNB Smart Chain."
-  );
+  typeText("Ape Mood (APEM) is a community-driven digital asset designed for transparency and long-term growth.");
 }
 function showVision(){
-  typeText(
-    "The Ape Mood vision focuses on responsible growth and community-led development."
-  );
+  typeText("Projects include blockchain development, AI exploration, and future digital platforms.");
 }
 function showSupply(){
-  typeText(
-    "The total supply of Ape Mood is fixed at 150 million tokens. No additional tokens can ever be minted."
-  );
+  typeText("The total supply of Ape Mood is fixed at 150 million tokens. No minting or inflation mechanisms exist.");
 }
 function showExpect(){
-  typeText(
-    "We encourage responsible participation and a long-term holding mindset."
-  );
+  typeText("We encourage responsible participation, patience, and a long-term mindset.");
 }
 
-/* copy */
+/* COPY */
 function copyCA(){
-  navigator.clipboard.writeText(document.getElementById("ca").innerText);
-  document.getElementById("copyMsg").innerText="Copied";
+  navigator.clipboard.writeText(ca.innerText);
+  copyMsg.innerText="Copied";
   setTimeout(()=>copyMsg.innerText="",1200);
 }
 </script>
