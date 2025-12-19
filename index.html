@@ -9,111 +9,167 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
 body{background:#000;color:#fff;overflow-x:hidden}
 
-/* MATRIX */
-#mx{position:fixed;inset:0;z-index:-2;background:#000}
-.vignette{
-  position:fixed;inset:0;z-index:-1;
-  background:radial-gradient(circle,transparent 40%,rgba(0,0,0,.85) 80%);
+/* ================= MATRIX BACKGROUND (OLD VERSION STYLE) ================= */
+#matrix{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  background:#000;
+}
+canvas{display:block}
+
+/* ================= HERO ================= */
+.hero{
+  min-height:100vh;
+  padding:90px 20px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
-/* HERO */
-.hero{min-height:100vh;padding:90px 20px;display:flex;justify-content:center;align-items:center}
+/* ================= MAIN BOX ================= */
 .box{
-  width:min(920px,100%);
-  background:rgba(0,0,0,.68);
-  border:1px solid rgba(255,255,255,.15);
+  width:min(900px,100%);
+  background:rgba(0,0,0,.65);
+  border:1px solid rgba(0,255,200,.25);
   border-radius:22px;
   padding:32px;
   text-align:center;
+  box-shadow:0 0 60px rgba(0,255,200,.15);
   backdrop-filter:blur(8px);
 }
 
-/* TITLE */
+/* ================= TITLE ================= */
 h1{
-  color:#FFD700;
+  color:#00ffd0;
   letter-spacing:6px;
   font-size:3rem;
-  text-shadow:0 0 45px rgba(255,215,0,.9);
-  animation:flicker 3.5s infinite;
+  font-family:monospace;
+  text-shadow:0 0 40px rgba(0,255,200,.9);
+  animation:glitch 3s infinite;
 }
-@keyframes flicker{
-  35%{transform:translateX(1px)}
-  36%{transform:translateX(-1px)}
-}
-@media(min-width:768px){h1{font-size:4rem}}
+@media(min-width:768px){h1{font-size:3.8rem}}
 
-/* TYPE */
-.type{margin:18px auto;max-width:780px;line-height:1.7;min-height:3.6em}
-.cursor{display:inline-block;width:8px;height:1.2em;background:#FFD700;margin-left:4px;animation:blink .8s infinite}
+@keyframes glitch{
+  36%{transform:translateX(1px)}
+  37%{transform:translateX(-1px)}
+  38%{transform:none}
+}
+
+/* ================= TYPING TEXT ================= */
+.type{
+  margin:18px auto;
+  max-width:780px;
+  min-height:3.6em;
+  font-family:monospace;
+  color:#bafff2;
+  line-height:1.7;
+}
+.cursor{
+  display:inline-block;
+  width:8px;height:1.2em;
+  background:#00ffd0;
+  margin-left:6px;
+  animation:blink .8s infinite;
+}
 @keyframes blink{50%{opacity:0}}
 
-/* BUTTONS */
-.btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:14px}
-.btn{
-  padding:14px 30px;border-radius:999px;font-weight:800;
-  color:#000;text-decoration:none;
-  background:linear-gradient(135deg,#FFD700,#FFB800);
+/* ================= BUTTONS (SCI-FI STYLE) ================= */
+.btns{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:14px;
 }
-.small{
-  padding:8px 16px;font-size:.85rem;
-  background:rgba(255,255,255,.12);
-  color:#fff;border:1px solid rgba(255,255,255,.25);
-  border-radius:999px;cursor:pointer;
+.btn,.small{
+  position:relative;
+  padding:12px 26px;
+  border-radius:6px;
+  font-family:monospace;
+  font-size:.85rem;
+  letter-spacing:1px;
+  color:#00ffd0;
+  background:rgba(0,0,0,.6);
+  border:1px solid #00ffd0;
+  cursor:pointer;
+  text-decoration:none;
+  overflow:hidden;
+}
+.btn::before,.small::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,transparent,rgba(0,255,200,.25),transparent);
+  transform:translateX(-100%);
+  animation:scanBtn 3s infinite;
+}
+@keyframes scanBtn{
+  to{transform:translateX(100%)}
 }
 
-/* CONTRACT */
+/* ================= CONTRACT ================= */
 .contract{
-  margin-top:18px;padding:12px;
-  background:rgba(0,0,0,.45);
-  border:1px solid rgba(255,255,255,.2);
-  border-radius:14px;
-  display:flex;justify-content:center;gap:10px;flex-wrap:wrap;
-}
-.contract button{
-  background:#FFD700;border:none;border-radius:999px;
-  padding:6px 14px;font-weight:700;cursor:pointer;
+  margin-top:18px;
+  padding:12px;
+  border:1px solid rgba(0,255,200,.35);
+  border-radius:10px;
+  font-family:monospace;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
-/* ROADMAP */
+/* ================= ROADMAP OVERLAY ================= */
 .roadmap{
-  position:fixed;inset:0;display:none;
-  justify-content:center;align-items:center;
-  background:rgba(0,0,0,.93);z-index:9999;
+  position:fixed;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,.95);
+  z-index:9999;
 }
 .roadmap-box{
-  width:min(820px,92%);
-  background:#020202;
+  width:min(780px,92%);
   border:2px solid #00ffd0;
-  border-radius:22px;
+  border-radius:20px;
   padding:30px;
-  box-shadow:0 0 90px rgba(0,255,200,.6);
+  background:rgba(0,0,0,.85);
+  box-shadow:0 0 90px rgba(0,255,200,.7);
+  font-family:monospace;
 }
-.corner{position:absolute;width:22px;height:22px;border:2px solid #00ffd0}
-.c1{top:10px;left:10px;border-right:none;border-bottom:none}
-.c2{top:10px;right:10px;border-left:none;border-bottom:none}
-.c3{bottom:10px;left:10px;border-right:none;border-top:none}
-.c4{bottom:10px;right:10px;border-left:none;border-top:none}
-
-.terminal{font-family:monospace;color:#00ffd0;white-space:pre-line;margin-bottom:14px}
 .phase{
-  display:none;margin:14px 0;padding:16px;
+  display:none;
+  margin:16px 0;
+  padding:14px;
   border:1px solid rgba(0,255,200,.6);
-  border-radius:16px;
-  animation:pulse 2.5s infinite;
+  border-radius:14px;
+  animation:pulse 2.4s infinite;
 }
-@keyframes pulse{50%{box-shadow:0 0 34px rgba(0,255,200,.9)}}
-.phase h3{color:#00ffd0;margin-bottom:6px}
-.connector{display:none;width:2px;height:18px;background:#00ffd0;margin:0 auto}
+@keyframes pulse{
+  50%{box-shadow:0 0 28px rgba(0,255,200,.9)}
+}
+.connector{
+  display:none;
+  width:2px;height:18px;
+  background:#00ffd0;
+  margin:0 auto;
+}
 
-/* FOOT NOTE */
-.note{margin-top:14px;font-size:.82rem;opacity:.75}
+/* ================= TERMINAL ================= */
+.terminal{
+  color:#00ffd0;
+  white-space:pre-line;
+  margin-bottom:14px;
+}
 </style>
 </head>
 
 <body>
 
-<canvas id="mx"></canvas>
-<div class="vignette"></div>
+<canvas id="matrix"></canvas>
 
 <div class="hero">
   <div class="box">
@@ -125,88 +181,124 @@ h1{
 
     <div class="btns">
       <a class="btn" href="#">Swap APEM</a>
-      <a class="btn" href="APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank" rel="noopener">Whitepaper</a>
+      <a class="btn" href="APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank">Whitepaper</a>
     </div>
 
     <div class="btns">
-      <button class="small" onclick="about()">About Ape Mood</button>
-      <button class="small" onclick="roadmap()">Ecosystem Roadmap</button>
-      <button class="small" onclick="tokenomics()">Tokenomics</button>
-      <button class="small" onclick="vision()">Community Vision</button>
+      <button class="small" onclick="showIntro()">Token Intro</button>
+      <button class="small" onclick="showRoadmap()">Road Map</button>
+      <button class="small" onclick="showSupply()">Supply Details</button>
+      <button class="small" onclick="showExpect()">Our Expectations</button>
     </div>
 
     <div class="contract">
       <code id="ca">0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</code>
-      <button onclick="copyCA()">Copy</button>
+      <button class="small" onclick="copyCA()">COPY</button>
       <span id="copyMsg"></span>
     </div>
-
-    <div class="note">Long-Term Vision · No inflation · Transparent design</div>
   </div>
 </div>
 
 <!-- ROADMAP -->
-<div id="rm" class="roadmap">
+<div id="roadmap" class="roadmap">
   <div class="roadmap-box">
-    <div class="corner c1"></div><div class="corner c2"></div>
-    <div class="corner c3"></div><div class="corner c4"></div>
+    <div class="terminal" id="terminal"></div>
 
-    <div class="terminal" id="term"></div>
-
-    <div class="phase" id="p1"><h3>PHASE 1</h3><p>Token launch and community building.</p></div>
+    <div class="phase" id="p1">PHASE 1 :: Token launch and community building</div>
     <div class="connector" id="c1"></div>
-    <div class="phase" id="p2"><h3>PHASE 2</h3><p>Digital platforms, AI exploration, and ecosystem planning.</p></div>
+    <div class="phase" id="p2">PHASE 2 :: Digital platforms, AI exploration, ecosystem planning</div>
     <div class="connector" id="c2"></div>
-    <div class="phase" id="p3"><h3>PHASE 3</h3><p>Connecting real-world businesses with blockchain and long-term expansion.</p></div>
+    <div class="phase" id="p3">PHASE 3 :: Real-world blockchain integration and long-term expansion</div>
   </div>
 </div>
 
 <script>
-/* MATRIX */
-const c=document.getElementById("mx"),x=c.getContext("2d");
-let w,h,cols,drops;
-function rs(){w=c.width=innerWidth;h=c.height=innerHeight;cols=w/16|0;drops=Array(cols).fill(0)}
-rs();addEventListener("resize",rs);
-const ch="01ABCDEFXYZ#$%";
-(function m(){
-  x.fillStyle="rgba(0,0,0,.1)";x.fillRect(0,0,w,h);
-  x.fillStyle="rgba(0,255,200,.6)";x.font="14px monospace";
-  drops.forEach((y,i)=>{
-    x.fillText(ch[Math.random()*ch.length|0],i*16,y);
-    drops[i]=y>h?0:y+16;
-  });requestAnimationFrame(m)
-})();
+/* MATRIX BACKGROUND (OLD STYLE) */
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+function resize(){
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+}
+resize();addEventListener("resize",resize);
 
-/* TEXT */
-const t=document.getElementById("typed");
-function type(txt){t.textContent="";let i=0;(function r(){if(i<=txt.length){t.textContent=txt.slice(0,i++);setTimeout(r,55)}})()}
-type("Ape Mood (APEM) is a community-driven digital asset built for long-term ecosystem development.");
+const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%";
+const fontSize=14;
+let cols=Math.floor(canvas.width/fontSize);
+let drops=Array(cols).fill(0);
 
-function about(){type("Ape Mood is designed with transparency, simplicity, and long-term vision at its core.")}
-function tokenomics(){type("Total supply is fixed at 150 million tokens. No minting. No inflation.")}
-function vision(){type("A community-first approach focused on sustainable and responsible growth.")}
+function draw(){
+  ctx.fillStyle="rgba(0,0,0,.08)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="#00ffd0";
+  ctx.font=fontSize+"px monospace";
+  for(let i=0;i<drops.length;i++){
+    const t=chars[Math.random()*chars.length|0];
+    ctx.fillText(t,i*fontSize,drops[i]*fontSize);
+    if(drops[i]*fontSize>canvas.height&&Math.random()>.975)drops[i]=0;
+    drops[i]++;
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+
+/* TYPING TEXT */
+const typed=document.getElementById("typed");
+function type(text){
+  typed.textContent="";
+  let i=0;
+  (function run(){
+    if(i<=text.length){
+      typed.textContent=text.slice(0,i++);
+      setTimeout(run,45);
+    }
+  })();
+}
+type(":: Initializing Ape Mood Protocol...");
+
+function showIntro(){
+  type(":: Ape Mood is a community-driven digital asset built for long-term evolution.");
+}
+function showSupply(){
+  type(":: Total supply fixed at 150,000,000 APEM. No minting. No inflation.");
+}
+function showExpect(){
+  type(":: Focused on responsible participation and sustainable ecosystem growth.");
+}
 
 /* ROADMAP */
-function roadmap(){
-  rm.style.display="flex";term.textContent="";
-  ["p1","p2","p3","c1","c2"].forEach(i=>document.getElementById(i).style.display="none");
-  const lines=["> booting ai.core","> loading roadmap"," > access granted"];
-  let i=0;(function r(){if(i<lines.length){term.textContent+=lines[i++]+"\n";setTimeout(r,500)}})();
-  setTimeout(()=>p1.style.display="block",1500);
-  setTimeout(()=>c1.style.display="block",2200);
-  setTimeout(()=>p2.style.display="block",2900);
-  setTimeout(()=>c2.style.display="block",3600);
-  setTimeout(()=>p3.style.display="block",4300);
-  setTimeout(()=>rm.style.display="none",8000);
+function showRoadmap(){
+  roadmap.style.display="flex";
+  terminal.textContent="";
+  ["p1","p2","p3","c1","c2"].forEach(id=>document.getElementById(id).style.display="none");
+  const lines=[
+    "> boot apem_ai.core",
+    "> decrypt roadmap",
+    "> access granted"
+  ];
+  let i=0;
+  (function boot(){
+    if(i<lines.length){
+      terminal.textContent+=lines[i++]+"\n";
+      setTimeout(boot,450);
+    }
+  })();
+
+  setTimeout(()=>p1.style.display="block",1400);
+  setTimeout(()=>c1.style.display="block",2100);
+  setTimeout(()=>p2.style.display="block",2800);
+  setTimeout(()=>c2.style.display="block",3500);
+  setTimeout(()=>p3.style.display="block",4200);
+  setTimeout(()=>roadmap.style.display="none",7500);
 }
 
 /* COPY */
 function copyCA(){
   navigator.clipboard.writeText(ca.innerText);
-  copyMsg.innerText="Copied";setTimeout(()=>copyMsg.innerText="",1200);
+  copyMsg.innerText="COPIED";
+  setTimeout(()=>copyMsg.innerText="",1200);
 }
 </script>
 
 </body>
 </html>
-
