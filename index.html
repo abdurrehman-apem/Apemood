@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Ape Mood (APEM)</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
 body{background:#000;color:#FFD700;overflow-x:hidden}
 
-/* HERO */
+/* HERO (UNCHANGED BACKGROUND) */
 .hero{
-  position:relative;
   min-height:100svh;
   padding:90px 20px 40px;
   background:#000 url("assets/APEM_Hero_Mobile_1080x1350.jpg") no-repeat;
@@ -20,6 +19,7 @@ body{background:#000;color:#FFD700;overflow-x:hidden}
   display:flex;
   justify-content:center;
   align-items:center;
+  position:relative;
 }
 @media(min-width:768px){
   .hero{
@@ -29,46 +29,47 @@ body{background:#000;color:#FFD700;overflow-x:hidden}
   }
 }
 
-/* NEON LINES OVERLAY */
+/* LIGHT NEON LINES (requested) */
 .hero::after{
   content:"";
-  position:absolute;
-  inset:0;
+  position:absolute; inset:0;
+  pointer-events:none;
   background:
     repeating-linear-gradient(
-      120deg,
-      rgba(255,215,0,.04),
-      rgba(255,215,0,.04) 1px,
+      110deg,
+      rgba(255,215,0,.05),
+      rgba(255,215,0,.05) 1px,
       transparent 1px,
-      transparent 60px
+      transparent 70px
     );
-  animation:scan 12s linear infinite;
-  pointer-events:none;
+  animation:scan 14s linear infinite;
+  mix-blend-mode:screen;
+  opacity:.55;
 }
 @keyframes scan{
   from{background-position:0 0}
-  to{background-position:800px 800px}
+  to{background-position:900px 900px}
 }
 
 /* CONTENT */
 .box{
-  position:relative;
   width:min(900px,100%);
   background:rgba(0,0,0,.35);
   border:1px solid rgba(255,215,0,.25);
   border-radius:20px;
   padding:28px;
   text-align:center;
-  box-shadow:0 0 40px rgba(255,215,0,.25);
+  box-shadow:0 0 40px rgba(255,215,0,.22);
+  position:relative;
+  z-index:1;
 }
 
 /* TITLE */
 h1{
+  color:#FFD700;
   letter-spacing:4px;
   font-size:2.3rem;
-  text-shadow:
-    0 0 10px rgba(255,215,0,.8),
-    0 0 25px rgba(255,215,0,.6);
+  text-shadow:0 0 14px rgba(255,215,0,.9), 0 0 30px rgba(255,215,0,.45);
 }
 @media(min-width:768px){h1{font-size:3.4rem}}
 
@@ -79,7 +80,7 @@ h1{
   font-size:1.05rem;
   line-height:1.7;
   min-height:3.8em;
-  text-shadow:0 0 12px rgba(255,215,0,.7);
+  text-shadow:0 0 12px rgba(255,215,0,.65);
 }
 .cursor{
   display:inline-block;
@@ -106,25 +107,24 @@ h1{
   text-decoration:none;
   color:#000;
   background:linear-gradient(135deg,#FFD700,#FFB800);
-  box-shadow:
-    0 0 18px rgba(255,215,0,.6),
-    inset 0 0 8px rgba(255,255,255,.4);
-  border:1px solid rgba(255,255,255,.35);
+  box-shadow:0 0 18px rgba(255,215,0,.6), inset 0 0 10px rgba(255,255,255,.28);
+  border:1px solid rgba(255,255,255,.25);
 }
 .small{
   padding:8px 14px;
   font-size:.85rem;
-  background:rgba(0,0,0,.4);
+  background:rgba(0,0,0,.45);
   color:#FFD700;
-  border:1px solid rgba(255,215,0,.5);
+  border:1px solid rgba(255,215,0,.55);
   border-radius:999px;
-  box-shadow:0 0 10px rgba(255,215,0,.4);
+  box-shadow:0 0 12px rgba(255,215,0,.35);
   cursor:pointer;
 }
 
 /* Buy text */
 .buy{
   margin-top:12px;
+  color:#FFD700;
   font-weight:800;
   letter-spacing:1px;
   text-shadow:0 0 14px rgba(255,215,0,.8);
@@ -151,22 +151,116 @@ h1{
   cursor:pointer;
 }
 
-/* NEON DIAGRAM */
-.diagram{
-  margin-top:14px;
+/* ===== WHITEPAPER HUD SECTION (scroll down) ===== */
+.whitepaper{
+  padding:70px 18px 90px;
+  background:#040404;
+  border-top:1px solid rgba(255,215,0,.18);
+}
+.wp-wrap{
+  width:min(1100px,100%);
+  margin:0 auto;
+}
+.wp-head{
   display:flex;
-  justify-content:center;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.wp-title{
+  font-size:1.8rem;
+  letter-spacing:2px;
+  text-shadow:0 0 16px rgba(255,215,0,.7);
+}
+.wp-sub{
+  opacity:.9;
+  font-size:.95rem;
+  text-shadow:0 0 10px rgba(255,215,0,.25);
+}
+.wp-grid{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
   gap:14px;
 }
-.node{
-  width:18px;height:18px;
-  border:2px solid #FFD700;
-  border-radius:50%;
-  box-shadow:0 0 12px #FFD700;
-  animation:pulse 1.8s infinite;
+.panel{
+  grid-column:span 12;
+  background:rgba(0,0,0,.45);
+  border:1px solid rgba(255,215,0,.26);
+  border-radius:18px;
+  padding:16px;
+  box-shadow:0 0 28px rgba(255,215,0,.12);
+  position:relative;
+  overflow:hidden;
 }
-@keyframes pulse{
-  50%{transform:scale(1.6);opacity:.4}
+@media(min-width:900px){
+  .panel.half{grid-column:span 6;}
+  .panel.third{grid-column:span 4;}
+}
+.panel::before{
+  content:"";
+  position:absolute; inset:-40% -40%;
+  background:radial-gradient(circle, rgba(255,215,0,.12), transparent 60%);
+  transform:rotate(18deg);
+  opacity:.75;
+}
+.panel > *{position:relative; z-index:1;}
+
+.panel-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.tag{
+  font-size:.75rem;
+  padding:6px 10px;
+  border:1px solid rgba(255,215,0,.35);
+  border-radius:999px;
+  background:rgba(255,215,0,.06);
+  box-shadow:0 0 10px rgba(255,215,0,.18);
+}
+.panel h3{
+  font-size:1.05rem;
+  letter-spacing:1px;
+  margin:8px 0 10px;
+  text-shadow:0 0 12px rgba(255,215,0,.45);
+}
+.panel p{
+  color:#ffeaa7;
+  opacity:.95;
+  line-height:1.75;
+  text-shadow:0 0 10px rgba(255,215,0,.14);
+}
+
+/* HUD diagram blocks */
+.hud{
+  margin-top:12px;
+  border:1px solid rgba(255,215,0,.2);
+  border-radius:14px;
+  padding:12px;
+  background:rgba(0,0,0,.35);
+}
+.hud svg{width:100%;height:120px;display:block}
+.line{
+  stroke:#FFD700;
+  stroke-width:2;
+  fill:none;
+  filter:drop-shadow(0 0 6px rgba(255,215,0,.55));
+}
+.gridline{stroke:rgba(255,215,0,.12);stroke-width:1}
+.dot{fill:#FFD700;filter:drop-shadow(0 0 6px rgba(255,215,0,.6));}
+
+/* loader */
+.wp-status{
+  margin-top:10px;
+  padding:10px 12px;
+  border:1px dashed rgba(255,215,0,.35);
+  border-radius:12px;
+  color:#ffeaa7;
+  opacity:.9;
 }
 </style>
 </head>
@@ -181,23 +275,19 @@ h1{
       <span id="typed"></span><span class="cursor"></span>
     </div>
 
-    <!-- MAIN BUTTONS -->
     <div class="btns">
       <a class="btn" href="#">Swap</a>
       <a class="btn" href="APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank">Whitepaper</a>
     </div>
 
-    <!-- INFO BUTTONS -->
     <div class="btns">
       <button class="small" onclick="showIntro()">Token Intro</button>
-      <button class="small" onclick="showRoad()">Road Map</button>
+      <button class="small" onclick="showRoadMap()">Road Map</button>
       <button class="small" onclick="showSupply()">Supply Details</button>
       <button class="small" onclick="showExpect()">Our Expectations</button>
     </div>
 
     <div class="buy">BUY AND HOLD</div>
-
-    <div class="diagram" id="diagram"></div>
 
     <div class="contract">
       <code id="ca">0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</code>
@@ -207,53 +297,174 @@ h1{
   </div>
 </div>
 
+<!-- WHITEPAPER SECTION (same page, scroll down) -->
+<section class="whitepaper" id="whitepaper">
+  <div class="wp-wrap">
+    <div class="wp-head">
+      <div>
+        <div class="wp-title">WHITEPAPER HUD</div>
+        <div class="wp-sub">Scroll panels • Neon diagrams • Auto generated from PDF text</div>
+      </div>
+      <div class="tag">SOURCE: APE_MOOD_APEM_Whitepaper_v4.pdf</div>
+    </div>
+
+    <div class="wp-status" id="wpStatus">
+      Loading PDF… If this stays stuck, PDF path is wrong or blocked by browser.
+    </div>
+
+    <div class="wp-grid" id="wpGrid"></div>
+  </div>
+</section>
+
+<!-- PDF.js (CDN) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
 <script>
-/* TYPING */
+/* ====== HERO typing (same behavior) ====== */
 const typed=document.getElementById("typed");
-const diagram=document.getElementById("diagram");
 let timer;
 
 function typeText(text){
   clearTimeout(timer);
-  diagram.innerHTML="";
   typed.textContent="";
   let i=0;
   function run(){
     if(i<=text.length){
       typed.textContent=text.slice(0,i++);
-      timer=setTimeout(run,55);
+      timer=setTimeout(run,60);
     }
   }
   run();
-
-  // neon diagram
-  for(let j=0;j<5;j++){
-    const n=document.createElement("div");
-    n.className="node";
-    diagram.appendChild(n);
-  }
 }
-
-typeText("Ape Mood (APEM) is a community-driven digital asset built on BNB Smart Chain.");
+typeText("Ape Mood (APEM) is a community-driven, next-generation digital asset built on BNB Smart Chain.");
 
 function showIntro(){
-  typeText("Ape Mood is designed for transparency, community strength, and long-term growth.");
+  typeText("Ape Mood (APEM) is a community-driven digital asset designed for transparency and long-term growth.");
 }
-function showRoad(){
-  typeText("Phase 1: Token launch and community building. Phase 2: Digital platforms and AI exploration. Phase 3: Real-world blockchain expansion.");
+function showRoadMap(){
+  typeText("Road Map: Phase 1 launch + community, Phase 2 AI/platforms, Phase 3 real-world blockchain expansion.");
 }
 function showSupply(){
-  typeText("Total supply is fixed at 150 million tokens. No minting, no inflation.");
+  typeText("The total supply of Ape Mood is fixed at 150 million tokens. No minting or inflation mechanisms exist.");
 }
 function showExpect(){
-  typeText("We encourage calm participation, patience, and a long-term mindset.");
+  typeText("We encourage responsible participation, patience, and a long-term mindset.");
 }
 
 function copyCA(){
-  navigator.clipboard.writeText(ca.innerText);
-  copyMsg.innerText="Copied";
-  setTimeout(()=>copyMsg.innerText="",1200);
+  navigator.clipboard.writeText(document.getElementById("ca").innerText);
+  document.getElementById("copyMsg").innerText="Copied";
+  setTimeout(()=>document.getElementById("copyMsg").innerText="",1200);
 }
+
+/* ====== WHITEPAPER: read PDF + make HUD panels ====== */
+const PDF_PATH = "APE_MOOD_APEM_Whitepaper_v4.pdf"; // change to "assets/..." if needed
+const wpStatus = document.getElementById("wpStatus");
+const wpGrid = document.getElementById("wpGrid");
+
+function hudChart(seed=1){
+  // deterministic-ish points
+  const pts = [];
+  let x=10, y=60;
+  for(let i=0;i<10;i++){
+    seed = (seed*9301+49297)%233280;
+    const r = seed/233280;
+    x += 9;
+    y = 30 + Math.round(r*70);
+    pts.push([x,y]);
+  }
+  const d = pts.map((p,i)=> (i===0?`M ${p[0]} ${p[1]}`:`L ${p[0]} ${p[1]}`)).join(" ");
+  return `
+  <div class="hud">
+    <svg viewBox="0 0 120 120" preserveAspectRatio="none" aria-hidden="true">
+      ${[...Array(6)].map((_,i)=>`<line class="gridline" x1="0" y1="${i*20}" x2="120" y2="${i*20}"></line>`).join("")}
+      ${[...Array(6)].map((_,i)=>`<line class="gridline" x1="${i*20}" y1="0" x2="${i*20}" y2="120"></line>`).join("")}
+      <path class="line" d="${d}"></path>
+      ${pts.slice(-2).map(p=>`<circle class="dot" cx="${p[0]}" cy="${p[1]}" r="2.6"></circle>`).join("")}
+    </svg>
+  </div>`;
+}
+
+function makePanel(title, tag, body, seed, sizeClass="half"){
+  const el = document.createElement("div");
+  el.className = `panel ${sizeClass}`;
+  el.innerHTML = `
+    <div class="panel-top">
+      <div class="tag">${tag}</div>
+      <div class="tag">HUD • LIVE</div>
+    </div>
+    <h3>${title}</h3>
+    <p>${body}</p>
+    ${hudChart(seed)}
+  `;
+  return el;
+}
+
+function chunkText(full){
+  // simple chunking: split by double newlines or long length
+  const raw = full
+    .replace(/\s+\n/g,"\n")
+    .replace(/\n{3,}/g,"\n\n")
+    .trim();
+
+  const parts = raw.split(/\n\n+/).filter(Boolean);
+  const chunks = [];
+
+  let buf = "";
+  for(const p of parts){
+    if((buf + "\n\n" + p).length > 700){
+      chunks.push(buf.trim());
+      buf = p;
+    } else {
+      buf += (buf? "\n\n":"") + p;
+    }
+  }
+  if(buf.trim()) chunks.push(buf.trim());
+  return chunks.slice(0, 14); // keep page clean
+}
+
+async function readPdfText(path){
+  // pdf.js config
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+  const loadingTask = pdfjsLib.getDocument(path);
+  const pdf = await loadingTask.promise;
+
+  let fullText = "";
+  for(let p=1; p<=pdf.numPages; p++){
+    const page = await pdf.getPage(p);
+    const content = await page.getTextContent();
+    const strings = content.items.map(it => it.str);
+    fullText += "\n\n" + strings.join(" ");
+  }
+  return fullText;
+}
+
+(async function initWhitepaper(){
+  try{
+    wpStatus.textContent = "Reading PDF… building HUD panels…";
+    const text = await readPdfText(PDF_PATH);
+
+    const chunks = chunkText(text);
+    wpGrid.innerHTML = "";
+
+    chunks.forEach((chunk, idx) => {
+      const title = `SECTION ${String(idx+1).padStart(2,"0")}`;
+      const tag = `PAGE DATA`;
+      const body = chunk.length > 520 ? chunk.slice(0,520) + "…" : chunk;
+
+      const sizeClass = (idx%3===0) ? "half" : (idx%5===0 ? "third" : "half");
+      wpGrid.appendChild(makePanel(title, tag, body, 100 + idx*77, sizeClass));
+    });
+
+    wpStatus.textContent = "Whitepaper loaded. Scroll to view all HUD panels.";
+  }catch(e){
+    wpStatus.textContent =
+      "ERROR loading PDF. Check file path and that the PDF is accessible on your site. (" +
+      (e && e.message ? e.message : "unknown") + ")";
+  }
+})();
 </script>
 
 </body>
