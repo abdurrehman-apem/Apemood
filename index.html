@@ -26,7 +26,7 @@ canvas{position:fixed;inset:0;z-index:-2}
   padding:80px 20px;
 }
 
-/* BOX */
+/* MAIN BOX */
 .box{
   width:min(900px,100%);
   background:rgba(0,0,0,.65);
@@ -47,7 +47,11 @@ h1{
 @keyframes flicker{36%{opacity:.85}}
 
 /* TYPING */
-.type{margin:18px auto;min-height:3.6em;max-width:780px}
+.type{
+  margin:18px auto;
+  min-height:3.6em;
+  max-width:780px;
+}
 .cursor{
   display:inline-block;
   width:8px;height:1.2em;
@@ -58,7 +62,13 @@ h1{
 @keyframes blink{50%{opacity:0}}
 
 /* BUTTONS */
-.btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:14px}
+.btns{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
 .btn,.small{
   padding:12px 26px;
   border:1px solid #00ffd0;
@@ -108,10 +118,17 @@ h1{
   padding:26px;
   box-shadow:0 0 90px rgba(0,255,200,.8);
 }
-.portal-text{white-space:pre-line;margin-top:16px}
+.portal-text{
+  white-space:pre-line;
+  margin-top:16px;
+}
 
 /* DIAGRAMS */
-.diagram{display:flex;justify-content:center;gap:12px}
+.diagram{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+}
 .node{
   width:60px;height:60px;
   border:2px solid #00ffd0;
@@ -166,6 +183,7 @@ h1{
   </div>
 </div>
 
+<!-- PORTAL -->
 <div id="portal" class="portal">
   <div class="portal-box">
     <div id="diagram"></div>
@@ -174,15 +192,21 @@ h1{
 </div>
 
 <script>
-/* MATRIX */
+/* MATRIX BACKGROUND */
 const canvas=document.getElementById("matrix");
 const ctx=canvas.getContext("2d");
-function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
-resize();addEventListener("resize",resize);
+function resize(){
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+}
+resize();
+addEventListener("resize",resize);
+
 const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%";
 const size=14;
 let cols=Math.floor(canvas.width/size);
 let drops=Array(cols).fill(0);
+
 (function draw(){
   ctx.fillStyle="rgba(0,0,0,.08)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -196,42 +220,16 @@ let drops=Array(cols).fill(0);
   requestAnimationFrame(draw);
 })();
 
-/* AUDIO CONTEXT */
-let audioCtx;
-function audio(){
-  if(!audioCtx){
-    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-  }
-  return audioCtx;
-}
+/* REAL KEYBOARD TYPING SOUND (MP3) */
+const typingAudio = new Audio("typing.mp3");
+typingAudio.volume = 0.35;
+typingAudio.preload = "auto";
 
-/* REAL KEYBOARD-LIKE TYPING SOUND (NO TONE) */
-function typeSound(){
-  const a=audio();
-
-  const length=a.sampleRate*0.018;
-  const buffer=a.createBuffer(1,length,a.sampleRate);
-  const data=buffer.getChannelData(0);
-
-  for(let i=0;i<length;i++){
-    data[i]=(Math.random()*2-1)*0.35;
-  }
-
-  const src=a.createBufferSource();
-  src.buffer=buffer;
-
-  const filter=a.createBiquadFilter();
-  filter.type="lowpass";
-  filter.frequency.value=2200;
-
-  const gain=a.createGain();
-  gain.gain.value=0.06;
-
-  src.connect(filter);
-  filter.connect(gain);
-  gain.connect(a.destination);
-
-  src.start();
+function playType(){
+  try{
+    typingAudio.currentTime = 0;
+    typingAudio.play();
+  }catch(e){}
 }
 
 /* MAIN TYPING */
@@ -242,14 +240,14 @@ function typeMain(text){
   (function run(){
     if(i<=text.length){
       typed.textContent=text.slice(0,i++);
-      typeSound();
-      setTimeout(run,40);
+      playType();
+      setTimeout(run,45);
     }
   })();
 }
 typeMain(":: Initializing Ape Mood Protocol...");
 
-/* PORTAL */
+/* PORTAL LOGIC */
 const portal=document.getElementById("portal");
 const portalText=document.getElementById("portalText");
 const diagram=document.getElementById("diagram");
@@ -281,8 +279,8 @@ function openPortal(key){
   (function run(){
     if(i<=txt.length){
       portalText.textContent=txt.slice(0,i++);
-      typeSound();
-      setTimeout(run,32);
+      playType();
+      setTimeout(run,35);
     }
   })();
 
