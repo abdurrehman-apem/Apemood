@@ -229,8 +229,15 @@ function playType(){
   try{
     typingAudio.currentTime = 0;
     typingAudio.play();
+
+    // force stop sound quickly (key press feel)
+    setTimeout(()=>{
+      typingAudio.pause();
+      typingAudio.currentTime = 0;
+    },45); // 35–55 ms is ideal
   }catch(e){}
 }
+
 
 /* MAIN TYPING */
 const typed=document.getElementById("typed");
