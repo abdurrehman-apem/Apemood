@@ -190,15 +190,34 @@ let drops=Array(cols).fill(0);
   requestAnimationFrame(draw);
 })();
 
-/* HACKER TYPING SOUND */
-const audio=new (window.AudioContext||window.webkitAudioContext)();
+// REAL KEYBOARD TYPING SOUND
 function hackType(){
-  const o=audio.createOscillator(),g=audio.createGain();
-  o.type="square";o.frequency.value=1200;
-  g.gain.value=0.015;
-  o.connect(g);g.connect(audio.destination);
-  o.start();o.stop(audio.currentTime+0.015);
+  const bufferSize = audio.sampleRate * 0.02;
+  const buffer = audio.createBuffer(1, bufferSize, audio.sampleRate);
+  const data = buffer.getChannelData(0);
+
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = (Math.random() * 2 - 1) * 0.3;
+  }
+
+  const noise = audio.createBufferSource();
+  noise.buffer = buffer;
+
+  const filter = audio.createBiquadFilter();
+  filter.type = "highpass";
+  filter.frequency.value = 1200;
+
+  const gain = audio.createGain();
+  gain.gain.setValueAtTime(0.08, audio.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + 0.025);
+
+  noise.connect(filter);
+  filter.connect(gain);
+  gain.connect(audio.destination);
+
+  noise.start();
 }
+
 
 /* MAIN TYPING */
 const typed=document.getElementById("typed");
