@@ -441,67 +441,7 @@
     .frontExtra h3{margin:0 0 8px; font-size:18px}
     .frontExtra p{margin:0; color:var(--muted); line-height:1.6}
 
-    /* =======================
-       INFO PORTAL (auto scroll + typing, then auto close)
-       ======================= */
-    .infoPortal{
-      width:min(980px, 96vw);
-      margin: 14px auto 0;
-      border-radius: 22px;
-      border:1px solid rgba(255,220,120,.18);
-      background: rgba(0,0,0,.42);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 0 70px rgba(0,0,0,.55);
-      overflow:hidden;
-      display:none;
-      position:relative;
-    }
-    .infoPortal.show{display:block}
-    .infoPortal::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(800px 300px at 20% 0%, rgba(255,204,77,.14), transparent 60%),
-        radial-gradient(800px 300px at 80% 0%, rgba(36,209,255,.10), transparent 60%),
-        radial-gradient(800px 300px at 60% 120%, rgba(255,138,42,.10), transparent 60%);
-      pointer-events:none;
-      opacity:.95;
-    }
-    .portalInner{
-      position:relative;
-      z-index:2;
-      padding:16px;
-    }
-    .portalTitle{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom: 10px;
-    }
-    .portalTitle h3{
-      margin:0;
-      font-size:18px;
-      letter-spacing:.2px;
-    }
-    .portalClose{
-      border:1px solid rgba(255,220,120,.22);
-      background: rgba(0,0,0,.35);
-      color:var(--txt);
-      border-radius: 14px;
-      padding:10px 12px;
-      font-weight:900;
-      cursor:pointer;
-    }
-    .portalText{
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 14px;
-      white-space: pre-wrap;
-      min-height: 88px;
-    }
-
+  
     /* =======================
        ROADMAP PORTAL (NO typing, scrollable)
        ======================= */
