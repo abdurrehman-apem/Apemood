@@ -944,7 +944,7 @@ All future features and business integrations depend on project success, market 
       el.textContent = "";
       let lastClickAt = 0;
       for(let i=0;i<text.length;i++){
-        if (typingCancelled) return;
+        if (typingCancelled) break;
         el.textContent += text[i];
         const now = performance.now();
         if(now - lastClickAt > (1000/maxClicksPerSec) && text[i] !== " "){
@@ -984,50 +984,100 @@ All future features and business integrations depend on project success, market 
       }
     });
 
-    /* =========================
-       Info Portal behavior
-       ========================= */
-    const infoPortal = document.getElementById('infoPortal');
-    const portalTitle = document.getElementById('portalTitle');
-    const portalText  = document.getElementById('portalText');
-    const portalClose = document.getElementById('portalClose');
+/* =========================
+   INFO PORTAL — FULL FIXED BLOCK
+   ========================= */
 
-    let portalRunning = false;
-    let portalAutoCloseTimer = null;
+const infoPortal  = document.getElementById('infoPortal');
+const portalTitle = document.getElementById('portalTitle');
+const portalText  = document.getElementById('portalText');
+const portalClose = document.getElementById('portalClose');
 
-    function closePortal({scrollBack=true} = {}){
-      typingCancelled = true;
-      if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
-      infoPortal.classList.remove('show');
-      portalRunning = false;
-      if(scrollBack){
-        document.getElementById('hero').scrollIntoView({behavior:"smooth", block:"start"});
-      }
+let portalRunning = false;
+let typingCancelled = false;
+let portalAutoCloseTimer = null;
+
+/* ---------- CLOSE PORTAL ---------- */
+function closePortal({scrollBack = true} = {}) {
+  // stop typing + sound instantly
+  typingCancelled = true;
+  portalRunning = false;
+
+  if (portalAutoCloseTimer) {
+    clearTimeout(portalAutoCloseTimer);
+    portalAutoCloseTimer = null;
+  }
+
+  infoPortal.classList.remove('show');
+
+  if (scrollBack) {
+    document
+      .getElementById('hero')
+      .scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+/* ---------- TYPING FUNCTION ---------- */
+async function typeInto(el, text, { speed = 14, maxClicksPerSec = 22 } = {}) {
+  el.textContent = "";
+  typingCancelled = false;
+
+  let lastClickAt = 0;
+
+  for (let i = 0; i < text.length; i++) {
+    if (typingCancelled) break;
+
+    el.textContent += text[i];
+
+    const now = performance.now();
+    if (
+      soundEnabled &&
+      text[i] !== " " &&
+      now - lastClickAt > 1000 / maxClicksPerSec
+    ) {
+      keyClick();
+      lastClickAt = now;
     }
 
-    portalClose.addEventListener('click', ()=>closePortal({scrollBack:true}));
+    await new Promise(r => setTimeout(r, speed));
+  }
+}
 
-    async function openPortal(title, content){
-      if(portalRunning) return;
-      portalRunning = true;
+/* ---------- OPEN PORTAL ---------- */
+async function openPortal(title, content) {
+  // reset everything
+  typingCancelled = false;
+  portalRunning = true;
 
-      portalTitle.textContent = title;
-      portalText.textContent = "";
-      infoPortal.classList.add('show');
+  if (portalAutoCloseTimer) {
+    clearTimeout(portalAutoCloseTimer);
+    portalAutoCloseTimer = null;
+  }
 
-      // auto scroll down to portal
-      setTimeout(()=>{
-        infoPortal.scrollIntoView({behavior:"smooth", block:"start"});
-      }, 60);
+  portalTitle.textContent = title;
+  portalText.textContent = "";
 
-      // type content
-      await typeInto(portalText, content, {speed:14, maxClicksPerSec:22});
+  infoPortal.classList.add('show');
 
-      // ✅ CHANGE 1: after typing ends -> auto close after 10 seconds (requested)
-      portalAutoCloseTimer = setTimeout(()=>{
-        closePortal({scrollBack:true});
-      }, 10000);
-    }
+  // scroll to portal
+  setTimeout(() => {
+    infoPortal.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 60);
+
+  // start typing
+  await typeInto(portalText, content);
+
+  // auto close after 10 seconds
+  portalAutoCloseTimer = setTimeout(() => {
+    closePortal({ scrollBack: true });
+  }, 10000);
+}
+
+/* ---------- CLOSE BUTTON ---------- */
+portalClose.addEventListener('click', () => {
+  closePortal({ scrollBack: true });
+});
+
 
     /* Buttons */
     document.getElementById('btnTokenomics').addEventListener('click', ()=>{
