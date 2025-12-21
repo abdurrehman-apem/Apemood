@@ -1478,6 +1478,15 @@ body:not(.road-open) .roadScan{
   100%{background-position:0% 50%}
 }
 
+
+/* === SCROLL CONTROL FIX === */
+.infoPortal{
+  overflow:hidden;
+}
+.roadOverlay{
+  overflow-y:auto;
+}
+
 </style>
 </head>
 
@@ -1613,7 +1622,7 @@ body:not(.road-open) .roadScan{
 
     <div class="roadWrap">
       <div class="topBar">
-        <button class="backBtn" id="btnBack">←</button>
+        <button class="backBtn" id="btnBack">✕</button>
         <div class="roadTitle">
           <span class="grad" style="font-size:20px">ROADMAP</span>
           <span class="small">High-class Sci-Fi Portal (scrollable)</span>
@@ -1882,7 +1891,7 @@ All future features and business integrations depend on project success, market 
        ========================= */
     const roadOverlay = document.getElementById('roadOverlay');
     const btnRoadmap  = document.getElementById('btnRoadmap');
-    const btnBack     = document.getElementById('btnBack');
+    const btnBack     = document.getElementById('btnBack'); // acts as CLOSE for roadmap
 
     btnRoadmap.addEventListener('click', ()=>{
       closePortal({scrollBack:false});
