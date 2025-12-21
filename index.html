@@ -811,6 +811,68 @@
   50%{filter: drop-shadow(0 0 38px rgba(124,77,255,.55))}
 }
 
+
+/* ===== PRIVATE JET MODE ===== */
+
+/* Starfield particles illusion */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.6), transparent),
+    radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,.5), transparent),
+    radial-gradient(1px 1px at 50% 80%, rgba(255,255,255,.4), transparent),
+    radial-gradient(1px 1px at 10% 70%, rgba(255,255,255,.35), transparent),
+    radial-gradient(1px 1px at 90% 20%, rgba(255,255,255,.45), transparent);
+  animation: starDrift 40s linear infinite;
+  pointer-events:none;
+  z-index:0;
+}
+@keyframes starDrift{
+  from{transform:translateY(0)}
+  to{transform:translateY(-200px)}
+}
+
+/* Swap button energy charge */
+#btnSwap{
+  animation: energyCharge 2.2s ease-in-out infinite;
+}
+@keyframes energyCharge{
+  0%{box-shadow:0 0 25px rgba(255,204,77,.35)}
+  50%{box-shadow:0 0 65px rgba(124,77,255,.75)}
+  100%{box-shadow:0 0 25px rgba(255,204,77,.35)}
+}
+
+/* Portal cinematic open */
+.infoPortal.show{
+  animation: portalOpen .6s ease-out;
+}
+@keyframes portalOpen{
+  from{transform:scale(.96); opacity:0}
+  to{transform:scale(1); opacity:1}
+}
+
+/* Roadmap hyper-glow */
+.roadOverlay{
+  backdrop-filter: blur(18px);
+}
+.roadCard{
+  box-shadow:
+    0 0 60px rgba(124,77,255,.45),
+    0 0 120px rgba(36,209,255,.25);
+}
+
+/* Button micro vibration */
+.btn:active{
+  animation: microShake .15s linear;
+}
+@keyframes microShake{
+  25%{transform:translateX(-1px)}
+  50%{transform:translateX(1px)}
+  75%{transform:translateX(-1px)}
+}
+
 </style>
 </head>
 
@@ -1220,4 +1282,3 @@ All future features and business integrations depend on project success, market 
   </script>
 </body>
 </html>
-
