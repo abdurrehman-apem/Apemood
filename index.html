@@ -90,6 +90,8 @@
        PAGE LAYERING
        ======================= */
     .wrap{
+  display:none; /* legacy wrap hidden */
+
       position:relative;
       z-index:2;
       max-width:980px;
@@ -1115,7 +1117,9 @@ header::after{
 
 /* lift main content above FX */
 .universe,.scan{ z-index:4 !important; }
-.wrap{ z-index:6 !important; }
+.wrap{
+  display:none; /* legacy wrap hidden */
+ z-index:6 !important; }
 
 /* ----- Premium typography polish (no text changes) ----- */
 .h1{
@@ -1434,17 +1438,137 @@ header::after{
 }
 
 
-/* ===== FINAL POLISH: PORTAL FOCUS MODE ===== */
-.wrap.portal-focus{
-  opacity:0;
+/* =========================
+   IMMERSIVE SCREEN BACKGROUND
+   ========================= */
+body{
+  margin:0;
+  background:#04050a;
+  overflow:hidden;
+}
+.bgField{
+  position:fixed;
+  inset:0;
+  z-index:0;
+}
+#bgStars,#bgFlow{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+.floatLayer{
+  position:fixed;
+  inset:0;
+  z-index:3;
+  display:grid;
+  place-items:center;
   pointer-events:none;
-  transform:scale(.98);
+}
+.floatInner{
+  max-width:900px;
+  text-align:center;
+  animation: floatSwim 12s ease-in-out infinite;
+}
+@keyframes floatSwim{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-24px)}
+}
+.floatTitle{
+  font-size:clamp(34px,5vw,56px);
+  margin:0;
+}
+.floatSub{
+  color:rgba(255,255,255,.75);
+  margin:14px auto 22px;
+  max-width:760px;
+  line-height:1.7;
+}
+
+/* buttons active */
+.btnRow{pointer-events:auto}
+
+/* =========================
+   NEON PORTAL
+   ========================= */
+.neonPortal{
+  position:fixed;
+  inset:0;
+  z-index:20;
+  display:none;
+  place-items:center;
+  background:radial-gradient(circle at 50% 40%, rgba(36,209,255,.12), rgba(0,0,0,.88));
+}
+.neonPortal.show{
+  display:grid;
+  animation: portalFade .4s ease;
+}
+@keyframes portalFade{
+  from{opacity:0;transform:scale(.95)}
+  to{opacity:1;transform:scale(1)}
+}
+.neonFrame{
+  width:min(900px,92vw);
+  max-height:82vh;
+  overflow:auto;
+  border-radius:26px;
+  padding:26px;
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(124,77,255,.6);
+  box-shadow:
+    0 0 80px rgba(124,77,255,.55),
+    0 0 140px rgba(36,209,255,.35);
+}
+.neonBack{
+  background:none;
+  border:none;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  margin-bottom:10px;
+}
+.neonTitle{
+  margin:6px 0 12px;
+}
+.neonText{
+  color:rgba(255,255,255,.78);
+  line-height:1.8;
+  white-space:pre-wrap;
 }
 
 </style>
 </head>
 
 <body>
+
+<!-- =========================
+     IMMERSIVE BACKGROUND FIELD
+     ========================= -->
+<div class="bgField" aria-hidden="true">
+  <canvas id="bgStars"></canvas>
+  <canvas id="bgFlow"></canvas>
+</div>
+
+<!-- =========================
+     FLOATING TEXT LAYER
+     ========================= -->
+<div class="floatLayer" id="floatLayer">
+  <div class="floatInner">
+    <h1 class="floatTitle"><span class="grad">APE MOOD</span> CONTROL FIELD</h1>
+    <p class="floatSub" id="heroTyping"></p>
+
+    <div class="btnRow">
+      <button class="btn primary" id="btnSwap">Swap</button>
+      <button class="btn" id="btnTokenomics">Tokenomics</button>
+      <button class="btn" id="btnEthics">Ethics</button>
+      <button class="btn" id="btnSecurity">Security</button>
+      <button class="btn" id="btnDisclaimer">Disclaimer</button>
+      <button class="btn" id="btnWhitepaper">Whitepaper</button>
+      <button class="btn primary" id="btnRoadmap">Roadmap</button>
+    </div>
+  </div>
+</div>
+
 
   <!-- =========================
        ULTRA VISUAL LAYERS (SPACE ART)
@@ -1777,17 +1901,6 @@ All future features and business integrations depend on project success, market 
     /* =========================
        Info Portal behavior
        ========================= */
-
-// ===== FINAL POLISH SAFE HOOKS =====
-function portalFocusOn(){
-  const w = document.querySelector('.wrap');
-  if(w) w.classList.add('portal-focus');
-}
-function portalFocusOff(){
-  const w = document.querySelector('.wrap');
-  if(w) w.classList.remove('portal-focus');
-}
-
     const infoPortal = document.getElementById('infoPortal');
     const portalTitle = document.getElementById('portalTitle');
     const portalText  = document.getElementById('portalText');
@@ -1797,8 +1910,6 @@ function portalFocusOff(){
     let portalAutoCloseTimer = null;
 
     function closePortal({scrollBack=true} = {}){
-  portalFocusOff();
-  hideWarp && hideWarp();
       // cancel any ongoing portal typing so sound/typing stops immediately
       portalCancel.id++;
       if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
@@ -1811,31 +1922,7 @@ function portalFocusOff(){
 
     portalClose.addEventListener('click', ()=>closePortal({scrollBack:true}));
 
-    
-  // Main page focus handling
-  function onPortalOpen(){
-    document.querySelector('.wrap')?.classList.add('portal-focus');
-  }
-  function onPortalClose(){
-    document.querySelector('.wrap')?.classList.remove('portal-focus');
-    hideWarp();
-  }
-
-  // Patch existing portal open/close
-  const _openPortal = openPortal;
-  openPortal = async function(title, content){
-    onPortalOpen();
-    return _openPortal(title, content);
-  };
-
-  const _closePortal = closePortal;
-  closePortal = function(opts){
-    onPortalClose();
-    return _closePortal(opts);
-  };
-
-async function openPortal(title, content){
-  portalFocusOn();
+    async function openPortal(title, content){
       if(portalRunning) return;
       portalRunning = true;
 
@@ -2091,15 +2178,6 @@ async function openPortal(title, content){
   const portalEl = document.getElementById('infoPortal');
   const portalCloseBtn = document.getElementById('portalClose');
   function hideWarp(){ warp.classList.remove('show'); }
-
-  // Ensure warp hides whenever portal auto-closes or is hidden
-  const portalObserver = new MutationObserver(()=>{
-    if(!portalEl.classList.contains('show')){
-      hideWarp();
-    }
-  });
-  portalObserver.observe(portalEl, {attributes:true, attributeFilter:['class']});
-
   if(portalCloseBtn){
     portalCloseBtn.addEventListener('click', hideWarp);
   }
@@ -2236,21 +2314,107 @@ async function openPortal(title, content){
   const portalEl = document.getElementById('infoPortal');
   const portalCloseBtn = document.getElementById('portalClose');
   function hideWarp(){ warp.classList.remove('show'); }
-
-  // Ensure warp hides whenever portal auto-closes or is hidden
-  const portalObserver = new MutationObserver(()=>{
-    if(!portalEl.classList.contains('show')){
-      hideWarp();
-    }
-  });
-  portalObserver.observe(portalEl, {attributes:true, attributeFilter:['class']});
-
   if(portalCloseBtn){
     portalCloseBtn.addEventListener('click', hideWarp);
   }
 
 })();
 
+
+/* =========================
+   BACKGROUND CANVAS EFFECTS
+   ========================= */
+(function(){
+  const c=document.getElementById('bgStars');
+  const ctx=c.getContext('2d');
+  function resize(){
+    c.width=innerWidth;
+    c.height=innerHeight;
+  }
+  resize(); addEventListener('resize',resize);
+  const stars=Array.from({length:160},()=>({
+    x:Math.random()*c.width,
+    y:Math.random()*c.height,
+    r:Math.random()*1.6+0.4,
+    s:Math.random()*0.4+0.1
+  }));
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    ctx.fillStyle='white';
+    stars.forEach(s=>{
+      ctx.globalAlpha=.6;
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fill();
+      s.y+=s.s;
+      if(s.y>c.height){s.y=0;s.x=Math.random()*c.width;}
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* =========================
+   NEON PORTAL LOGIC
+   ========================= */
+const neonPortal=document.getElementById('neonPortal');
+const neonTitle=document.getElementById('neonTitle');
+const neonText=document.getElementById('neonText');
+const neonBack=document.getElementById('neonBack');
+
+let autoTimer=null, typingToken=0;
+
+function closeNeon(){
+  typingToken++;
+  neonPortal.classList.remove('show');
+  clearTimeout(autoTimer);
+}
+
+neonBack.onclick=closeNeon;
+
+async function typeNeon(text){
+  typingToken++;
+  const t=typingToken;
+  neonText.textContent="";
+  for(const ch of text){
+    if(t!==typingToken) return;
+    neonText.textContent+=ch;
+    await new Promise(r=>setTimeout(r,14));
+  }
+}
+
+function openNeon(title,content){
+  closeNeon();
+  neonTitle.textContent=title;
+  neonPortal.classList.add('show');
+  typeNeon(content);
+  autoTimer=setTimeout(closeNeon,10000);
+}
+
+/* buttons */
+btnSwap.onclick=()=>openNeon("Swap",CONTENT.swap);
+btnTokenomics.onclick=()=>openNeon("Tokenomics",CONTENT.tokenomics);
+btnEthics.onclick=()=>openNeon("Ethics",CONTENT.ethics);
+btnSecurity.onclick=()=>openNeon("Security",CONTENT.security);
+btnDisclaimer.onclick=()=>openNeon("Disclaimer",CONTENT.disclaimer);
+btnRoadmap.onclick=()=>openNeon("Roadmap","See roadmap module.");
+btnWhitepaper.onclick=()=>window.open('whitepaper.pdf','_blank');
+
+/* hero typing */
+typeInto(document.getElementById('heroTyping'),CONTENT.heroIntro,{speed:18});
+
 </script>
+
+<!-- =========================
+     NEON PORTAL
+     ========================= -->
+<div class="neonPortal" id="neonPortal">
+  <div class="neonFrame">
+    <button class="neonBack" id="neonBack">← BACK</button>
+    <h2 class="neonTitle" id="neonTitle"></h2>
+    <div class="neonText" id="neonText"></div>
+  </div>
+</div>
+
 </body>
 </html>
