@@ -1433,6 +1433,14 @@ header::after{
   transition:all .4s ease;
 }
 
+
+/* ===== FINAL POLISH: PORTAL FOCUS MODE ===== */
+.wrap.portal-focus{
+  opacity:0;
+  pointer-events:none;
+  transform:scale(.98);
+}
+
 </style>
 </head>
 
@@ -1790,7 +1798,30 @@ All future features and business integrations depend on project success, market 
 
     portalClose.addEventListener('click', ()=>closePortal({scrollBack:true}));
 
-    async function openPortal(title, content){
+    
+  // Main page focus handling
+  function onPortalOpen(){
+    document.querySelector('.wrap')?.classList.add('portal-focus');
+  }
+  function onPortalClose(){
+    document.querySelector('.wrap')?.classList.remove('portal-focus');
+    hideWarp();
+  }
+
+  // Patch existing portal open/close
+  const _openPortal = openPortal;
+  openPortal = async function(title, content){
+    onPortalOpen();
+    return _openPortal(title, content);
+  };
+
+  const _closePortal = closePortal;
+  closePortal = function(opts){
+    onPortalClose();
+    return _closePortal(opts);
+  };
+
+async function openPortal(title, content){
       if(portalRunning) return;
       portalRunning = true;
 
@@ -2046,6 +2077,15 @@ All future features and business integrations depend on project success, market 
   const portalEl = document.getElementById('infoPortal');
   const portalCloseBtn = document.getElementById('portalClose');
   function hideWarp(){ warp.classList.remove('show'); }
+
+  // Ensure warp hides whenever portal auto-closes or is hidden
+  const portalObserver = new MutationObserver(()=>{
+    if(!portalEl.classList.contains('show')){
+      hideWarp();
+    }
+  });
+  portalObserver.observe(portalEl, {attributes:true, attributeFilter:['class']});
+
   if(portalCloseBtn){
     portalCloseBtn.addEventListener('click', hideWarp);
   }
@@ -2182,6 +2222,15 @@ All future features and business integrations depend on project success, market 
   const portalEl = document.getElementById('infoPortal');
   const portalCloseBtn = document.getElementById('portalClose');
   function hideWarp(){ warp.classList.remove('show'); }
+
+  // Ensure warp hides whenever portal auto-closes or is hidden
+  const portalObserver = new MutationObserver(()=>{
+    if(!portalEl.classList.contains('show')){
+      hideWarp();
+    }
+  });
+  portalObserver.observe(portalEl, {attributes:true, attributeFilter:['class']});
+
   if(portalCloseBtn){
     portalCloseBtn.addEventListener('click', hideWarp);
   }
