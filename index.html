@@ -1512,6 +1512,25 @@ body.whitepaper-open .scan{
   display:block;
 }
 
+
+/* === STATE VISIBILITY CONTROL (SAFE) === */
+body.portal-open header,
+body.portal-open .hero,
+body.portal-open .frontExtra{
+  opacity:0;
+  pointer-events:none;
+  transition: opacity .25s ease;
+}
+body.portal-open .infoPortal{
+  display:block;
+}
+body.roadmap-open header,
+body.roadmap-open .hero,
+body.roadmap-open .frontExtra{
+  opacity:0;
+  pointer-events:none;
+}
+
 </style>
 </head>
 
@@ -1706,10 +1725,13 @@ body.whitepaper-open .scan{
   </div>
 
   <script>
+
     /* =========================
        PDF CONTENT (from your whitepaper)
        ========================= */
-    const CONTENT = {
+    function resetAllStates(){ document.body.classList.remove('portal-open','roadmap-open'); }
+
+const CONTENT = {
       heroIntro:
         "Community-driven digital asset on BNB Smart Chain. Future direction: Blockchain, AI, digital platforms, and ethical real-world business initiatives.",
       swap:
@@ -1851,7 +1873,7 @@ All future features and business integrations depend on project success, market 
 
 // === BACKGROUND STATE LOGIC ===
 function clearStates(){
-  document.body.classList.remove('portal-open','roadmap-open','whitepaper-open','road-open');
+  document.body.classList.remove('portal-open','roadmap-open','whitepaper-open');
 }
 
     const infoPortal = document.getElementById('infoPortal');
@@ -1863,11 +1885,14 @@ function clearStates(){
     let portalAutoCloseTimer = null;
 
     function closePortal({scrollBack=true} = {}){
-  clearStates();
-  portalCancel.id++;
-  if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
-  infoPortal.classList.remove('show');
-  portalRunning = false;
+      document.body.classList.remove('portal-open');
+clearStates();
+      // cancel any ongoing portal typing so sound/typing stops immediately
+      portalCancel.id++;
+      if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
+      infoPortal.classList.remove('show');
+      
+      portalRunning = false;
       if(scrollBack){
         document.getElementById('hero').scrollIntoView({behavior:"smooth", block:"start"});
       }
@@ -1876,10 +1901,12 @@ function clearStates(){
     portalClose.addEventListener('click', ()=>closePortal({scrollBack:true}));
 
     async function openPortal(title, content){
-  clearStates();
+      document.body.classList.remove('roadmap-open');
+      document.body.classList.add('portal-open');
+clearStates();
   document.body.classList.add('portal-open');
-  if(portalRunning) return;
-  portalRunning = true;
+      if(portalRunning) return;
+      portalRunning = true;
 
       portalTitle.textContent = title;
       portalText.textContent = "";
@@ -1914,10 +1941,8 @@ function clearStates(){
     });
 
     /* ✅ CHANGE 2: Whitepaper button opens file */
-    document.getElementById('btnWhitepaper').addEventListener('click', ()=>{
-  window.open('whitepaper.pdf','_blank');
-});
-  document.body.classList.add('whitepaper-open');
+    document.getElementById('btnWhitepaper').addEventListener('click', ()=>{ window.open('whitepaper.pdf','_blank'); });
+document.body.classList.add('whitepaper-open');
       window.open('whitepaper.pdf', '_blank');
     });
 
@@ -1929,14 +1954,78 @@ function clearStates(){
     const btnBack     = document.getElementById('btnBack'); // acts as CLOSE for roadmap
 
     btnRoadmap.addEventListener('click', ()=>{
-  clearStates();
-  document.body.classList.add('roadmap-open','road-open');
-  closePortal({scrollBack:false});
-  roadOverlay.classList.add('show');
-  roadOverlay.setAttribute('aria-hidden','false');
-  document.body.style.overflow='hidden';
-  roadOverlay.scrollTop = 0;
-});
+      document.body.classList.remove('portal-open');
+      document.body.classList.add('roadmap-open');
+      // close info portal if it was open (without changing roadmap state)
+      infoPortal.classList.remove('show');
+      portalRunning = false;
+      if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
+
+      roadOverlay.classList.add('show');
+      roadOverlay.setAttribute('aria-hidden','false');
+      document.body.style.overflow="hidden";
+      roadOverlay.scrollTop = 0;
+    });
+roadOverlay.classList.add('show'); document.body.classList.add('road-open');
+  setTimeout(()=>warp.classList.remove('show'), 1800);
+      roadOverlay.setAttribute('aria-hidden','false');
+      document.body.style.overflow="hidden";
+      roadOverlay.scrollTop = 0;
+    });
+
+    btnBack.addEventListener('click', ()=>{
+      document.body.classList.remove('roadmap-open');
+      roadOverlay.classList.remove('show');
+      roadOverlay.setAttribute('aria-hidden','true');
+      document.body.style.overflow="";
+    });
+window.addEventListener('keydown',(e)=>{
+      if(e.key==="Escape" && roadOverlay.classList.contains('show')){
+        btnBack.click();
+      }
+    });
+
+    /* ✅ CHANGE 3: Golden flame on any touch/click */
+    function spawnFlame(x,y){
+      const f = document.createElement('div');
+      f.className = 'tapFlame';
+      f.style.left = x + 'px';
+      f.style.top  = y + 'px';
+      document.body.appendChild(f);
+      setTimeout(()=>f.remove(), 900);
+    }
+
+    document.addEventListener('pointerdown', (e)=>{
+      spawnFlame(e.clientX, e.clientY);
+    }, {passive:true});
+  
+/* =========================================================
+   ULTRA VISUAL ENGINE (SPACE STATION HUD)
+   - does not change any content or button functions
+   - adds canvas starfield + particles + magnetic button light
+   ========================================================= */
+
+(function(){
+  // Add magnetic overlay element inside each .btn without changing labels
+  const btns = document.querySelectorAll('.btn');
+  btns.forEach(b=>{
+    if(!b.querySelector('.uMag')){
+      const mag = document.createElement('span');
+      mag.className='uMag';
+      b.appendChild(mag);
+    }
+    b.addEventListener('pointermove',(e)=>{
+      const r = b.getBoundingClientRect();
+      const mx = ((e.clientX - r.left) / r.width) * 100;
+      const my = ((e.clientY - r.top) / r.height) * 100;
+      b.style.setProperty('--mx', mx.toFixed(2)+'%');
+      b.style.setProperty('--my', my.toFixed(2)+'%');
+    }, {passive:true});
+  });
+
+  // Canvas helpers
+  function fitCanvas(c){
+    const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
     const w = Math.floor(window.innerWidth * dpr);
     const h = Math.floor(window.innerHeight * dpr);
     if(c.width !== w || c.height !== h){
@@ -2220,6 +2309,7 @@ function clearStates(){
   }
 
 })();
+
 
 </script>
 </body>
