@@ -1521,6 +1521,14 @@ body.roadmap-open{
     #04050a;
 }
 
+
+@media (max-width:768px){
+  .infoPortal, .roadOverlay{
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
 </style>
 </head>
 
@@ -1923,7 +1931,7 @@ const infoPortal = document.getElementById('infoPortal');
 
       // auto scroll down to portal
       setTimeout(()=>{
-        infoPortal.scrollIntoView({behavior:"smooth", block:"start"});
+        // scroll suppressed to prevent mobile glitch
       }, 60);
 
       // type content
@@ -1963,25 +1971,30 @@ const infoPortal = document.getElementById('infoPortal');
     const btnBack     = document.getElementById('btnBack'); // acts as CLOSE for roadmap
 
     btnRoadmap.addEventListener('click', ()=>{
+  // hard-close portal to avoid glitch
+  portalCancel.id++;
+  const infoPortalEl = document.getElementById('infoPortal');
+  if(infoPortalEl){ infoPortalEl.classList.remove('show'); }
+
   clearStates();
   document.body.classList.add('roadmap-open');
       closePortal({scrollBack:false});
       roadOverlay.classList.add('show'); document.body.classList.add('road-open');
   setTimeout(()=>warp.classList.remove('show'), 1800);
       roadOverlay.setAttribute('aria-hidden','false');
-      document.body.style.overflow="hidden";
+      document.body.style.position='fixed'; document.body.style.width='100%';
       roadOverlay.scrollTop = 0;
     });
 
     btnBack.addEventListener('click', ()=>{
   clearStates();
   roadOverlay.classList.remove('show');
-  document.body.style.overflow="";
+  document.body.style.position=''; document.body.style.width='';
   document.body.classList.remove('road-open');
 
       roadOverlay.classList.remove('show');
       roadOverlay.setAttribute('aria-hidden','true');
-      document.body.style.overflow="";
+      document.body.style.position=''; document.body.style.width='';
     });
 
     window.addEventListener('keydown',(e)=>{
@@ -2320,4 +2333,3 @@ const infoPortal = document.getElementById('infoPortal');
 </script>
 </body>
 </html>
-
