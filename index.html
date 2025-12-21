@@ -349,7 +349,7 @@
       border-radius:999px;
       border:1px solid rgba(255,220,120,.22);
       background: rgba(0,0,0,.35);
-      color: var(--muted);
+      color: rgba(36,209,255,.95);
       font-size:12px;
       font-weight:900;
       margin-top: 6px;
@@ -495,7 +495,7 @@
       cursor:pointer;
     }
     .portalText{
-      color: rgba(36,209,255,.95);
+      color: var(--muted);
       line-height: 1.7;
       font-size: 14px;
       white-space: pre-wrap;
@@ -1434,14 +1434,20 @@ header::after{
 }
 
 
-/* === PORTAL FOCUS MODE === */
-body.portal-open .hero,
-body.portal-open header,
-body.portal-open .frontExtra,
-body.portal-open .btnRow,
-body.portal-open .metaRow{
-  visibility:hidden;
-}
+    /* === PORTAL FOCUS MODE (hide home while portal open) === */
+    body.portal-open header,
+    body.portal-open .hero .buyHold,
+    body.portal-open .hero .logoStage,
+    body.portal-open .hero .h1,
+    body.portal-open .hero .sub,
+    body.portal-open .hero .pill,
+    body.portal-open .hero .metaRow,
+    body.portal-open .hero .btnRow,
+    body.portal-open .frontExtra{
+      opacity:0 !important;
+      pointer-events:none !important;
+      visibility:hidden !important;
+    }
 
 </style>
 </head>
@@ -1791,7 +1797,8 @@ All future features and business integrations depend on project success, market 
       // cancel any ongoing portal typing so sound/typing stops immediately
       portalCancel.id++;
       if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
-      infoPortal.classList.remove('show'); document.body.classList.remove('portal-open');
+      infoPortal.classList.remove('show');
+      document.body.classList.remove('portal-open');
       portalRunning = false;
       if(scrollBack){
         document.getElementById('hero').scrollIntoView({behavior:"smooth", block:"start"});
@@ -1806,7 +1813,8 @@ All future features and business integrations depend on project success, market 
 
       portalTitle.textContent = title;
       portalText.textContent = "";
-      infoPortal.classList.add('show'); document.body.classList.add('portal-open');
+      infoPortal.classList.add('show');
+      document.body.classList.add('portal-open');
 
       // auto scroll down to portal
       setTimeout(()=>{
@@ -1815,10 +1823,6 @@ All future features and business integrations depend on project success, market 
 
       // type content
       await typeInto(portalText, content, {speed:14, maxClicksPerSec:22}, portalCancel);
-
-      // ✅ CHANGE 1: after typing ends -> auto close after 10 seconds (requested)
-      
-      }, 10000);
     }
 
     /* Buttons */
