@@ -1410,6 +1410,15 @@ header::after{
   mix-blend-mode: screen;
 }
 
+
+/* ===== PERFORMANCE FIX (MOBILE + LAPTOP) ===== */
+@media (max-width: 768px){
+  .fxNoise{opacity:.04}
+  .fxHUD{opacity:.18}
+  .fxStatus{transform:scale(.85)}
+  #fxParticles{display:none}
+}
+
 </style>
 </head>
 
@@ -1894,7 +1903,7 @@ All future features and business integrations depend on project success, market 
   let stars = [];
   function initStars(){
     const {w,h} = fitCanvas(cStars);
-    const count = Math.floor((w*h) / 75000);
+    const count = Math.floor((w*h) / 120000);
     stars = Array.from({length: Math.max(160, count)}, ()=>({
       x: Math.random()*w,
       y: Math.random()*h,
@@ -1911,7 +1920,7 @@ All future features and business integrations depend on project success, market 
   let pointer = {x:0,y:0,active:false};
   function initParts(){
     const {w,h} = fitCanvas(cP);
-    const count = Math.floor((w*h) / 90000);
+    const count = Math.floor((w*h) / 150000);
     parts = Array.from({length: Math.max(90, count)}, ()=>({
       x: Math.random()*w,
       y: Math.random()*h,
@@ -2047,12 +2056,14 @@ All future features and business integrations depend on project success, market 
 
   // Warp overlay effect on SWAP click (visual only)
   const warp = document.getElementById('fxWarp');
-  const btnSwap = document.getElementById('btnSwap');
-  if(btnSwap && warp){
-    btnSwap.addEventListener('click', ()=>{
-      warp.classList.add('show');
-      setTimeout(()=>warp.classList.remove('show'), 620);
-    }, {passive:true});
+  const allBtns = document.querySelectorAll('.btn');
+  if(warp && allBtns.length){
+    allBtns.forEach(b=>{
+      b.addEventListener('click', ()=>{
+        warp.classList.add('show');
+        setTimeout(()=>warp.classList.remove('show'), 520);
+      }, {passive:true});
+    });
   }
 
   // Roadmap Galaxy canvas (visual only, runs only when roadmap open)
