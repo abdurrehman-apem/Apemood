@@ -1487,6 +1487,31 @@ body:not(.road-open) .roadScan{
   overflow-y:auto;
 }
 
+
+/* === BACKGROUND STATE CONTROL === */
+body.portal-open .universe,
+body.portal-open .scan{
+  display:none;
+}
+
+/* Roadmap has its OWN background */
+body.roadmap-open .universe,
+body.roadmap-open .scan{
+  display:none !important;
+}
+body.roadmap-open{
+  background:
+    radial-gradient(circle at 50% 30%, rgba(124,77,255,.22), transparent 60%),
+    radial-gradient(circle at 70% 70%, rgba(36,209,255,.18), transparent 60%),
+    #04050a;
+}
+
+/* Whitepaper does not trigger portal background at all */
+body.whitepaper-open .universe,
+body.whitepaper-open .scan{
+  display:block;
+}
+
 </style>
 </head>
 
@@ -1823,6 +1848,12 @@ All future features and business integrations depend on project success, market 
     /* =========================
        Info Portal behavior
        ========================= */
+
+// === BACKGROUND STATE LOGIC ===
+function clearStates(){
+  document.body.classList.remove('portal-open','roadmap-open','whitepaper-open');
+}
+
     const infoPortal = document.getElementById('infoPortal');
     const portalTitle = document.getElementById('portalTitle');
     const portalText  = document.getElementById('portalText');
@@ -1832,11 +1863,12 @@ All future features and business integrations depend on project success, market 
     let portalAutoCloseTimer = null;
 
     function closePortal({scrollBack=true} = {}){
+  clearStates();
       // cancel any ongoing portal typing so sound/typing stops immediately
       portalCancel.id++;
       if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
       infoPortal.classList.remove('show');
-      document.body.classList.remove('portal-open');
+      
       portalRunning = false;
       if(scrollBack){
         document.getElementById('hero').scrollIntoView({behavior:"smooth", block:"start"});
@@ -1846,13 +1878,15 @@ All future features and business integrations depend on project success, market 
     portalClose.addEventListener('click', ()=>closePortal({scrollBack:true}));
 
     async function openPortal(title, content){
+  clearStates();
+  document.body.classList.add('portal-open');
       if(portalRunning) return;
       portalRunning = true;
 
       portalTitle.textContent = title;
       portalText.textContent = "";
       infoPortal.classList.add('show');
-      document.body.classList.add('portal-open');
+      
 
       // auto scroll down to portal
       setTimeout(()=>{
@@ -1883,6 +1917,8 @@ All future features and business integrations depend on project success, market 
 
     /* ✅ CHANGE 2: Whitepaper button opens file */
     document.getElementById('btnWhitepaper').addEventListener('click', ()=>{
+  clearStates();
+  document.body.classList.add('whitepaper-open');
       window.open('whitepaper.pdf', '_blank');
     });
 
@@ -1894,6 +1930,8 @@ All future features and business integrations depend on project success, market 
     const btnBack     = document.getElementById('btnBack'); // acts as CLOSE for roadmap
 
     btnRoadmap.addEventListener('click', ()=>{
+  clearStates();
+  document.body.classList.add('roadmap-open');
       closePortal({scrollBack:false});
       roadOverlay.classList.add('show'); document.body.classList.add('road-open');
   setTimeout(()=>warp.classList.remove('show'), 1800);
@@ -1903,6 +1941,7 @@ All future features and business integrations depend on project success, market 
     });
 
     btnBack.addEventListener('click', ()=>{
+  clearStates();
   roadOverlay.classList.remove('show');
   document.body.style.overflow="";
   document.body.classList.remove('road-open');
