@@ -720,11 +720,6 @@
         <span class="typeLine" id="heroTyping"></span><span class="caret">▍</span>
       </div>
 
-      <div class="pill soundToggle" id="soundToggle">
-        <span class="soundDot" id="soundDot"></span>
-        Typing Sound: <b id="soundState">OFF</b> (tap to enable)
-      </div>
-
       <div class="metaRow">
         <div class="cardMini">
           <div style="font-weight:1000">Contract</div>
@@ -882,9 +877,11 @@ All future features and business integrations depend on project success, market 
     let soundEnabled = false;
     let audioCtx = null;
 
-    const soundToggle = document.getElementById('soundToggle');
-    const soundDot = document.getElementById('soundDot');
-    const soundState = document.getElementById('soundState');
+    // Auto-enable typing sound on first user touch/click (as requested)
+    document.addEventListener('pointerdown', ()=>{
+      soundEnabled = true;
+      ensureAudio();
+    }, {once:true});
 
     function ensureAudio(){
       if(!audioCtx){
@@ -926,23 +923,18 @@ All future features and business integrations depend on project success, market 
       src.stop(ctx.currentTime + 0.02);
     }
 
-    soundToggle.addEventListener('click', ()=>{
-      soundEnabled = !soundEnabled;
-      if(soundEnabled){
-        ensureAudio();
-        soundDot.classList.add('on');
-        soundState.textContent = "ON";
-        keyClick();
-      } else {
-        soundDot.classList.remove('on');
-        soundState.textContent = "OFF";
-      }
-    });
+    const heroCancel = { id: 0 };
+    const portalCancel = { id: 0 };
 
-    async function typeInto(el, text, {speed=18, maxClicksPerSec=25} = {}){
+    async function typeInto(el, text, {speed=18, maxClicksPerSec=25} = {}, cancelRef = null){
       el.textContent = "";
       let lastClickAt = 0;
+
+      const ref = cancelRef || { id: 0 };
+      const myId = ++ref.id;
+
       for(let i=0;i<text.length;i++){
+        if(ref.id !== myId) return; // cancelled
         el.textContent += text[i];
         const now = performance.now();
         if(now - lastClickAt > (1000/maxClicksPerSec) && text[i] !== " "){
@@ -957,7 +949,7 @@ All future features and business integrations depend on project success, market 
        Hero typing
        ========================= */
     const heroTyping = document.getElementById('heroTyping');
-    typeInto(heroTyping, CONTENT.heroIntro, {speed:18});
+    typeInto(heroTyping, CONTENT.heroIntro, {speed:18}, heroCancel);
 
     /* =========================
        Contract copy
@@ -994,6 +986,8 @@ All future features and business integrations depend on project success, market 
     let portalAutoCloseTimer = null;
 
     function closePortal({scrollBack=true} = {}){
+      // cancel any ongoing portal typing so sound/typing stops immediately
+      portalCancel.id++;
       if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
       infoPortal.classList.remove('show');
       portalRunning = false;
@@ -1018,7 +1012,7 @@ All future features and business integrations depend on project success, market 
       }, 60);
 
       // type content
-      await typeInto(portalText, content, {speed:14, maxClicksPerSec:22});
+      await typeInto(portalText, content, {speed:14, maxClicksPerSec:22}, portalCancel);
 
       // ✅ CHANGE 1: after typing ends -> auto close after 10 seconds (requested)
       portalAutoCloseTimer = setTimeout(()=>{
