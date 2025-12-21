@@ -1455,13 +1455,6 @@ header::after{
     }
 
 
-/* === ROADMAP BACKGROUND ISOLATION FIX === */
-body:not(.roadmap-open) .roadBG,
-body:not(.roadmap-open) .roadScan{
-  display:none !important;
-}
-
-
 /* === GOLDEN PORTAL TEXT === */
 .portalText{
   background: linear-gradient(90deg, #ffcc4d, #ffd978, #ffb100, #ffcc4d);
@@ -1489,6 +1482,12 @@ body:not(.roadmap-open) .roadScan{
 
 
 /* === BACKGROUND STATE CONTROL === */
+
+/* === ROADMAP BG VISIBILITY (only when roadmap-open) === */
+.roadBG, .roadScan { display:none; }
+body.roadmap-open .roadBG,
+body.roadmap-open .roadScan{ display:block; }
+
 body.portal-open .universe,
 body.portal-open .scan{
   display:none;
@@ -1505,20 +1504,6 @@ body.roadmap-open{
     radial-gradient(circle at 70% 70%, rgba(36,209,255,.18), transparent 60%),
     #04050a;
 }
-
-/* Whitepaper does not trigger portal background at all */
-body.whitepaper-open .universe,
-body.whitepaper-open .scan{
-  display:block;
-}
-
-
-/* ===== CLEAN STATE VISIBILITY ===== */
-.universe,.scan{display:block;}
-body.portal-open .universe,
-body.portal-open .scan{display:none;}
-body.roadmap-open .universe,
-body.roadmap-open .scan{display:none;}
 
 </style>
 </head>
@@ -1858,11 +1843,35 @@ All future features and business integrations depend on project success, market 
        ========================= */
 
 // === BACKGROUND STATE LOGIC ===
-function clearStates(){
-  document.body.classList.remove('portal-open','roadmap-open','whitepaper-open');
+
+// === UI STATE RESET (prevents background/warp leaks) ===
+function resetUI(){
+  document.body.classList.remove('portal-open','roadmap-open','whitepaper-open','road-open');
+
+  // restore scroll
+  document.body.style.overflow = "";
+
+  // hide portal
+  const infoPortalEl = document.getElementById('infoPortal');
+  if(infoPortalEl) infoPortalEl.classList.remove('show');
+
+  // hide roadmap
+  const roadOverlayEl = document.getElementById('roadOverlay');
+  if(roadOverlayEl){
+    roadOverlayEl.classList.remove('show');
+    roadOverlayEl.setAttribute('aria-hidden','true');
+    roadOverlayEl.scrollTop = 0;
+  }
+
+  // hide warp overlay if present
+  const warpEl = document.getElementById('fxWarp');
+  if(warpEl) warpEl.classList.remove('show');
 }
 
-    const infoPortal = document.getElementById('infoPortal');
+// backwards compat
+function clearStates(){ resetUI(); }
+
+const infoPortal = document.getElementById('infoPortal');
     const portalTitle = document.getElementById('portalTitle');
     const portalText  = document.getElementById('portalText');
     const portalClose = document.getElementById('portalClose');
@@ -1871,14 +1880,10 @@ function clearStates(){
     let portalAutoCloseTimer = null;
 
     function closePortal({scrollBack=true} = {}){
-  clearStates();
-  clearStates();
       // cancel any ongoing portal typing so sound/typing stops immediately
       portalCancel.id++;
       if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
-      infoPortal.classList.remove('show');
-  document.body.classList.remove('portal-open');
-      
+      resetUI();
       portalRunning = false;
       if(scrollBack){
         document.getElementById('hero').scrollIntoView({behavior:"smooth", block:"start"});
@@ -1888,14 +1893,14 @@ function clearStates(){
     portalClose.addEventListener('click', ()=>closePortal({scrollBack:true}));
 
     async function openPortal(title, content){
-document.body.classList.add('portal-open');
       if(portalRunning) return;
+      resetUI();
+      document.body.classList.add('portal-open');
       portalRunning = true;
 
       portalTitle.textContent = title;
       portalText.textContent = "";
       infoPortal.classList.add('show');
-  document.body.classList.add('portal-open');
       
 
       // auto scroll down to portal
@@ -1942,10 +1947,8 @@ document.body.classList.add('portal-open');
     btnRoadmap.addEventListener('click', ()=>{
   clearStates();
   document.body.classList.add('roadmap-open');
-  clearStates();
-  document.body.classList.add('roadmap-open');
       closePortal({scrollBack:false});
-      roadOverlay.classList.add('show'); document.body.classList.add('roadmap-open');
+      roadOverlay.classList.add('show'); document.body.classList.add('road-open');
   setTimeout(()=>warp.classList.remove('show'), 1800);
       roadOverlay.setAttribute('aria-hidden','false');
       document.body.style.overflow="hidden";
@@ -1954,10 +1957,9 @@ document.body.classList.add('portal-open');
 
     btnBack.addEventListener('click', ()=>{
   clearStates();
-  clearStates();
   roadOverlay.classList.remove('show');
   document.body.style.overflow="";
-  document.body.classList.remove('roadmap-open');
+  document.body.classList.remove('road-open');
 
       roadOverlay.classList.remove('show');
       roadOverlay.setAttribute('aria-hidden','true');
@@ -2190,6 +2192,8 @@ document.body.classList.add('portal-open');
   const allBtns = document.querySelectorAll('.btn');
   if(warp && allBtns.length){
     allBtns.forEach(b=>{
+      const id = b.id || '';
+      if(id === 'btnWhitepaper' || id === 'btnRoadmap') return;
       b.addEventListener('click', ()=>{
         warp.classList.add('show');
       }, {passive:true});
