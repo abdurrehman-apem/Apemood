@@ -1512,6 +1512,21 @@ body.whitepaper-open .scan{
   display:block;
 }
 
+
+/* === HARD BACKGROUND RESET === */
+.universe, .scan { display:block; }
+
+body.portal-open .universe,
+body.portal-open .scan{
+  display:none !important;
+}
+
+/* Roadmap owns its background ONLY while open */
+body.roadmap-open .universe,
+body.roadmap-open .scan{
+  display:none !important;
+}
+
 </style>
 </head>
 
@@ -1850,6 +1865,12 @@ All future features and business integrations depend on project success, market 
        ========================= */
 
 // === BACKGROUND STATE LOGIC ===
+
+// === STRICT STATE RESET ===
+function resetBackgroundState(){
+  document.body.classList.remove('portal-open','roadmap-open','whitepaper-open');
+}
+
 function clearStates(){
   document.body.classList.remove('portal-open','roadmap-open','whitepaper-open');
 }
@@ -1863,7 +1884,7 @@ function clearStates(){
     let portalAutoCloseTimer = null;
 
     function closePortal({scrollBack=true} = {}){
-  clearStates();
+  resetBackgroundState();
       // cancel any ongoing portal typing so sound/typing stops immediately
       portalCancel.id++;
       if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
@@ -1878,7 +1899,7 @@ function clearStates(){
     portalClose.addEventListener('click', ()=>closePortal({scrollBack:true}));
 
     async function openPortal(title, content){
-  clearStates();
+  resetBackgroundState();
   document.body.classList.add('portal-open');
       if(portalRunning) return;
       portalRunning = true;
@@ -1916,8 +1937,7 @@ function clearStates(){
     });
 
     /* ✅ CHANGE 2: Whitepaper button opens file */
-    document.getElementById('btnWhitepaper').addEventListener('click', ()=>{
-  clearStates();
+    document.getElementById('btnWhitepaper').addEventListener('click', ()=>{ window.open('whitepaper.pdf','_blank'); });
   document.body.classList.add('whitepaper-open');
       window.open('whitepaper.pdf', '_blank');
     });
@@ -1930,7 +1950,7 @@ function clearStates(){
     const btnBack     = document.getElementById('btnBack'); // acts as CLOSE for roadmap
 
     btnRoadmap.addEventListener('click', ()=>{
-  clearStates();
+  resetBackgroundState();
   document.body.classList.add('roadmap-open');
       closePortal({scrollBack:false});
       roadOverlay.classList.add('show'); document.body.classList.add('road-open');
@@ -1941,7 +1961,8 @@ function clearStates(){
     });
 
     btnBack.addEventListener('click', ()=>{
-  clearStates();
+  resetBackgroundState();
+  resetBackgroundState();
   roadOverlay.classList.remove('show');
   document.body.style.overflow="";
   document.body.classList.remove('road-open');
