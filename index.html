@@ -1456,8 +1456,8 @@ header::after{
 
 
 /* === ROADMAP BACKGROUND ISOLATION FIX === */
-body:not(.road-open) .roadBG,
-body:not(.road-open) .roadScan{
+body:not(.roadmap-open) .roadBG,
+body:not(.roadmap-open) .roadScan{
   display:none !important;
 }
 
@@ -1513,23 +1513,12 @@ body.whitepaper-open .scan{
 }
 
 
-/* === STATE VISIBILITY CONTROL (SAFE) === */
-body.portal-open header,
-body.portal-open .hero,
-body.portal-open .frontExtra{
-  opacity:0;
-  pointer-events:none;
-  transition: opacity .25s ease;
-}
-body.portal-open .infoPortal{
-  display:block;
-}
-body.roadmap-open header,
-body.roadmap-open .hero,
-body.roadmap-open .frontExtra{
-  opacity:0;
-  pointer-events:none;
-}
+/* ===== CLEAN STATE VISIBILITY ===== */
+.universe,.scan{display:block;}
+body.portal-open .universe,
+body.portal-open .scan{display:none;}
+body.roadmap-open .universe,
+body.roadmap-open .scan{display:none;}
 
 </style>
 </head>
@@ -1725,13 +1714,10 @@ body.roadmap-open .frontExtra{
   </div>
 
   <script>
-
     /* =========================
        PDF CONTENT (from your whitepaper)
        ========================= */
-    function resetAllStates(){ document.body.classList.remove('portal-open','roadmap-open'); }
-
-const CONTENT = {
+    const CONTENT = {
       heroIntro:
         "Community-driven digital asset on BNB Smart Chain. Future direction: Blockchain, AI, digital platforms, and ethical real-world business initiatives.",
       swap:
@@ -1885,12 +1871,13 @@ function clearStates(){
     let portalAutoCloseTimer = null;
 
     function closePortal({scrollBack=true} = {}){
-      document.body.classList.remove('portal-open');
-clearStates();
+  clearStates();
+  clearStates();
       // cancel any ongoing portal typing so sound/typing stops immediately
       portalCancel.id++;
       if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
       infoPortal.classList.remove('show');
+  document.body.classList.remove('portal-open');
       
       portalRunning = false;
       if(scrollBack){
@@ -1901,16 +1888,14 @@ clearStates();
     portalClose.addEventListener('click', ()=>closePortal({scrollBack:true}));
 
     async function openPortal(title, content){
-      document.body.classList.remove('roadmap-open');
-      document.body.classList.add('portal-open');
-clearStates();
-  document.body.classList.add('portal-open');
+document.body.classList.add('portal-open');
       if(portalRunning) return;
       portalRunning = true;
 
       portalTitle.textContent = title;
       portalText.textContent = "";
       infoPortal.classList.add('show');
+  document.body.classList.add('portal-open');
       
 
       // auto scroll down to portal
@@ -1941,8 +1926,9 @@ clearStates();
     });
 
     /* ✅ CHANGE 2: Whitepaper button opens file */
-    document.getElementById('btnWhitepaper').addEventListener('click', ()=>{ window.open('whitepaper.pdf','_blank'); });
-document.body.classList.add('whitepaper-open');
+    document.getElementById('btnWhitepaper').addEventListener('click', ()=>{
+  clearStates();
+  document.body.classList.add('whitepaper-open');
       window.open('whitepaper.pdf', '_blank');
     });
 
@@ -1954,19 +1940,12 @@ document.body.classList.add('whitepaper-open');
     const btnBack     = document.getElementById('btnBack'); // acts as CLOSE for roadmap
 
     btnRoadmap.addEventListener('click', ()=>{
-      document.body.classList.remove('portal-open');
-      document.body.classList.add('roadmap-open');
-      // close info portal if it was open (without changing roadmap state)
-      infoPortal.classList.remove('show');
-      portalRunning = false;
-      if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
-
-      roadOverlay.classList.add('show');
-      roadOverlay.setAttribute('aria-hidden','false');
-      document.body.style.overflow="hidden";
-      roadOverlay.scrollTop = 0;
-    });
-roadOverlay.classList.add('show'); document.body.classList.add('road-open');
+  clearStates();
+  document.body.classList.add('roadmap-open');
+  clearStates();
+  document.body.classList.add('roadmap-open');
+      closePortal({scrollBack:false});
+      roadOverlay.classList.add('show'); document.body.classList.add('roadmap-open');
   setTimeout(()=>warp.classList.remove('show'), 1800);
       roadOverlay.setAttribute('aria-hidden','false');
       document.body.style.overflow="hidden";
@@ -1974,12 +1953,18 @@ roadOverlay.classList.add('show'); document.body.classList.add('road-open');
     });
 
     btnBack.addEventListener('click', ()=>{
-      document.body.classList.remove('roadmap-open');
+  clearStates();
+  clearStates();
+  roadOverlay.classList.remove('show');
+  document.body.style.overflow="";
+  document.body.classList.remove('roadmap-open');
+
       roadOverlay.classList.remove('show');
       roadOverlay.setAttribute('aria-hidden','true');
       document.body.style.overflow="";
     });
-window.addEventListener('keydown',(e)=>{
+
+    window.addEventListener('keydown',(e)=>{
       if(e.key==="Escape" && roadOverlay.classList.contains('show')){
         btnBack.click();
       }
@@ -2309,7 +2294,6 @@ window.addEventListener('keydown',(e)=>{
   }
 
 })();
-
 
 </script>
 </body>
