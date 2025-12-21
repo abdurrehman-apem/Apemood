@@ -92,10 +92,9 @@
     .wrap{
       position:relative;
       z-index:2;
-      width:100%;
-      max-width:none;
-      margin:0;
-      padding: 18px 24px 90px;
+      max-width:980px;
+      margin:0 auto;
+      padding: 18px 16px 90px;
     }
 
     header{
@@ -136,14 +135,14 @@
        HERO
        ======================= */
     .hero{
-      min-height: 100vh;
+      min-height: calc(100vh - 120px);
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:center;
       text-align:center;
-      gap:16px;
-      padding: 0;
+      gap:14px;
+      padding: 6px 0 14px;
     }
 
     .buyHold{
@@ -484,9 +483,7 @@
     .portalTitle h3{
       margin:0;
       font-size:18px;
-      letter-spacing:.4px;
-      color: rgba(255,204,77,.95);
-      text-shadow:0 0 18px rgba(255,204,77,.45);
+      letter-spacing:.2px;
     }
     .portalClose{
       border:1px solid rgba(255,220,120,.22);
@@ -1437,14 +1434,13 @@ header::after{
 }
 
 
-/* ===== PORTAL FOCUS MODE ===== */
-body.portal-open .universe,
-body.portal-open .scan,
-body.portal-open .roadOverlay{
-  display:none !important;
-}
-body.portal-open{
-  background:#05060a;
+/* === PORTAL FOCUS MODE === */
+body.portal-open .hero,
+body.portal-open header,
+body.portal-open .frontExtra,
+body.portal-open .btnRow,
+body.portal-open .metaRow{
+  visibility:hidden;
 }
 
 </style>
