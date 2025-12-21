@@ -873,6 +873,111 @@ body::after{
   75%{transform:translateX(-1px)}
 }
 
+
+/* ===== SPACE STATION MODE ===== */
+
+/* Deep space nebula layers */
+body::before{
+  content:"";
+  position:fixed;
+  inset:-10%;
+  background:
+    radial-gradient(40% 30% at 20% 30%, rgba(124,77,255,.25), transparent 60%),
+    radial-gradient(35% 25% at 80% 40%, rgba(36,209,255,.22), transparent 60%),
+    radial-gradient(45% 35% at 50% 75%, rgba(255,204,77,.18), transparent 65%);
+  filter: blur(60px);
+  animation: nebulaFlow 18s ease-in-out infinite;
+  z-index:-2;
+}
+@keyframes nebulaFlow{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-60px)}
+}
+
+/* Space station grid HUD */
+.wrap::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    linear-gradient(rgba(124,77,255,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124,77,255,.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events:none;
+  animation: gridDrift 30s linear infinite;
+  z-index:0;
+}
+@keyframes gridDrift{
+  from{transform:translateY(0)}
+  to{transform:translateY(-120px)}
+}
+
+/* Swap hyperdrive ignition */
+#btnSwap{
+  position:relative;
+}
+#btnSwap::after{
+  content:"";
+  position:absolute;
+  inset:-10px;
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(124,77,255,.6),
+      rgba(36,209,255,.4),
+      rgba(255,204,77,.3),
+      transparent 70%
+    );
+  opacity:.75;
+  filter: blur(25px);
+  animation: hyperPulse 1.8s ease-in-out infinite;
+  z-index:-1;
+}
+@keyframes hyperPulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.15)}
+}
+
+/* Portal hologram text shimmer */
+.portalText{
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,.85),
+    rgba(124,77,255,.95),
+    rgba(36,209,255,.95),
+    rgba(255,255,255,.85)
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  animation: textShimmer 4s linear infinite;
+}
+@keyframes textShimmer{
+  from{background-position:0%}
+  to{background-position:200%}
+}
+
+/* Roadmap phases energy nodes */
+.phase{
+  position:relative;
+}
+.phase::before{
+  content:"";
+  position:absolute;
+  left:-6px;
+  top:20px;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:rgba(124,77,255,1);
+  box-shadow:0 0 16px rgba(124,77,255,.9);
+  animation: nodePulse 2.2s ease-in-out infinite;
+}
+@keyframes nodePulse{
+  0%,100%{opacity:.6}
+  50%{opacity:1}
+}
+
 </style>
 </head>
 
