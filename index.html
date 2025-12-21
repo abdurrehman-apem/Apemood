@@ -1419,6 +1419,20 @@ header::after{
   #fxParticles{display:none}
 }
 
+
+/* ===== SMOOTHING PATCH ===== */
+*{
+  scroll-behavior:smooth;
+}
+.fxWarp{
+  transition:opacity .4s ease;
+}
+.infoPortal,
+.roadOverlay,
+.roadCard{
+  transition:all .4s ease;
+}
+
 </style>
 </head>
 
@@ -1831,6 +1845,7 @@ All future features and business integrations depend on project success, market 
     btnRoadmap.addEventListener('click', ()=>{
       closePortal({scrollBack:false});
       roadOverlay.classList.add('show');
+  setTimeout(()=>warp.classList.remove('show'), 1800);
       roadOverlay.setAttribute('aria-hidden','false');
       document.body.style.overflow="hidden";
       roadOverlay.scrollTop = 0;
@@ -2026,6 +2041,15 @@ All future features and business integrations depend on project success, market 
   }
   window.addEventListener('resize', ()=>{ initStars(); initParts(); }, {passive:true});
   boot();
+
+  // Hide warp when portal closes
+  const portalEl = document.getElementById('infoPortal');
+  const portalCloseBtn = document.getElementById('portalClose');
+  function hideWarp(){ warp.classList.remove('show'); }
+  if(portalCloseBtn){
+    portalCloseBtn.addEventListener('click', hideWarp);
+  }
+
 })();
 
 
@@ -2061,7 +2085,6 @@ All future features and business integrations depend on project success, market 
     allBtns.forEach(b=>{
       b.addEventListener('click', ()=>{
         warp.classList.add('show');
-        setTimeout(()=>warp.classList.remove('show'), 520);
       }, {passive:true});
     });
   }
@@ -2154,6 +2177,15 @@ All future features and business integrations depend on project success, market 
   obs.observe(overlay, {attributes:true, attributeFilter:['class']});
 
   window.addEventListener('resize', ()=>{ if(raf) resize(); }, {passive:true});
+
+  // Hide warp when portal closes
+  const portalEl = document.getElementById('infoPortal');
+  const portalCloseBtn = document.getElementById('portalClose');
+  function hideWarp(){ warp.classList.remove('show'); }
+  if(portalCloseBtn){
+    portalCloseBtn.addEventListener('click', hideWarp);
+  }
+
 })();
 
 </script>
