@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -1290,7 +1289,7 @@ header::after{
 
 
 /* =========================================================
-   NEXT LEVEL:  + HUD STATUS + PORTAL SCANNER
+   NEXT LEVEL: HYPER-JUMP + HUD STATUS + PORTAL SCANNER
    (visual only; IDs/text/functions unchanged)
    ========================================================= */
 
@@ -1531,60 +1530,28 @@ body.roadmap-open{
 }
 
 
-/* === FINAL: INFO PORTAL MODAL FIX (BASE SAFE) === */
+/* === TRUE OVERLAY INFO PORTAL (ARCHITECTURAL FIX) === */
 .infoPortal{
   position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
+  inset: 0 !important;
   margin: 0 !important;
-  z-index: 1000 !important;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999 !important;
 }
 
-/* Lock background ONLY for info portals */
+.infoPortal.show{
+  display: flex !important;
+}
+
+.portalInner{
+  max-width: min(980px, 96vw);
+}
+
+/* Lock background */
 body.portal-open{
   overflow: hidden !important;
-  height: 100vh !important;
-}
-
-
-/* === SMOOTH PORTAL OPEN (NO MOBILE GLITCH) === */
-.infoPortal{
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.98) !important;
-  transition: opacity .35s ease, transform .35s ease;
-  will-change: opacity, transform;
-}
-.infoPortal.show{
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1) !important;
-}
-
-
-/* === FINAL STABLE SMOOTH OPEN (TEXT SAFE) === */
-.infoPortal{
-  transform: translate(-50%, -50%) scale(0.98) !important;
-  opacity: 0;
-  transition: opacity .25s ease, transform .25s ease;
-}
-.infoPortal.show{
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1) !important;
-}
-
-
-/* === FINAL GLITCH-FREE PORTAL OPEN (MOBILE SAFE) === */
-.infoPortal{
-  position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important; /* ALWAYS centered */
-  opacity: 0;
-  transition: opacity .25s ease; /* NO transform animation */
-  will-change: opacity;
-}
-.infoPortal.show{
-  opacity: 1;
 }
 
 </style>
@@ -1622,7 +1589,7 @@ body.portal-open{
     <div class="fxWarpRing r2"></div>
     <div class="fxWarpRing r3"></div>
     <div class="fxWarpFlash"></div>
-    <div class="fxWarpText"></div>
+    <div class="fxWarpText">HYPER‑JUMP</div>
   </div>
 
 
@@ -1727,7 +1694,7 @@ body.portal-open{
         <button class="backBtn" id="btnBack">✕</button>
         <div class="roadTitle">
           <span class="grad" style="font-size:20px">ROADMAP</span>
-          <span class="small"></span>
+          <span class="small">High-class Sci-Fi Portal (scrollable)</span>
         </div>
       </div>
 
@@ -1922,23 +1889,7 @@ All future features and business integrations depend on project success, market 
       }
     });
 
-    
-// === FINAL SCROLL LOCK (INFO PORTAL ONLY) ===
-let __portalScrollY = 0;
-function lockPortalScreen(){
-  __portalScrollY = window.scrollY || window.pageYOffset;
-  document.body.style.position = 'fixed';
-  document.body.style.top = `-${__portalScrollY}px`;
-  document.body.style.width = '100%';
-}
-function unlockPortalScreen(){
-  document.body.style.position = '';
-  document.body.style.top = '';
-  document.body.style.width = '';
-  window.scrollTo(0, __portalScrollY);
-}
-
-/* =========================
+    /* =========================
        Info Portal behavior
        ========================= */
 
@@ -1983,11 +1934,10 @@ const infoPortal = document.getElementById('infoPortal');
       // cancel any ongoing portal typing so sound/typing stops immediately
       portalCancel.id++;
       if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
-      unlockPortalScreen();
       resetUI();
       portalRunning = false;
       if(scrollBack){
-        document.getElementById('btnSwap').scrollIntoView({behavior:"smooth", block:"center"});
+        document.getElementById('btnSwap').// scrollIntoView removed({behavior:"smooth", block:"center"});
       }
     }
 
@@ -1996,7 +1946,7 @@ const infoPortal = document.getElementById('infoPortal');
     async function openPortal(title, content){
       if(portalRunning) return;
       resetUI();
-      document.body.classList.add('portal-open'); lockPortalScreen();
+      document.body.classList.add('portal-open');
       portalRunning = true;
 
       portalTitle.textContent = title;
