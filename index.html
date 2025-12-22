@@ -1530,26 +1530,30 @@ body.roadmap-open{
 }
 
 
-/* === TRUE OVERLAY INFO PORTAL (ARCHITECTURAL FIX) === */
+/* === SAFE TRUE OVERLAY (RESTORE FRONT + PORTAL) === */
 .infoPortal{
   position: fixed !important;
   inset: 0 !important;
-  margin: 0 !important;
   display: none;
   align-items: center;
   justify-content: center;
   z-index: 9999 !important;
+  pointer-events: auto;
 }
-
 .infoPortal.show{
   display: flex !important;
 }
 
-.portalInner{
-  max-width: min(980px, 96vw);
+/* DO NOT HIDE FRONT CONTENT */
+body.portal-open header,
+body.portal-open .hero,
+body.portal-open .frontExtra{
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
 }
 
-/* Lock background */
+/* Lock scroll only */
 body.portal-open{
   overflow: hidden !important;
 }
@@ -1937,7 +1941,7 @@ const infoPortal = document.getElementById('infoPortal');
       resetUI();
       portalRunning = false;
       if(scrollBack){
-        document.getElementById('btnSwap').// scrollIntoView removed({behavior:"smooth", block:"center"});
+        document.getElementById('btnSwap').scrollIntoView({behavior:"smooth", block:"center"});
       }
     }
 
