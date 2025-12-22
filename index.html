@@ -1626,6 +1626,31 @@ footer.hidden {
   animation: none !important;
   transition: none !important;
 }
+
+/* === FORCE BOTTOM SOCIAL BAR ALWAYS VISIBLE === */
+.bottom-socials,
+.bottom-social,
+.social-float,
+.social-floating,
+.fixed-social,
+.mobile-social {
+  position: fixed !important;
+  bottom: 18px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  z-index: 9999 !important;
+}
+
+/* Disable any hide animation */
+.bottom-socials *,
+.social-float *,
+.mobile-social * {
+  opacity: 1 !important;
+  transform: none !important;
+}
 </style>
 </head>
 <body>
