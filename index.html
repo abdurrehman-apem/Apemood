@@ -1594,6 +1594,38 @@ body.portal-open .frontExtra{
   color: var(--gold);
   box-shadow: 0 0 22px rgba(255,204,77,.45);
 }
+
+/* === FIX: Prevent social buttons from auto-hide on scroll === */
+#xLink, #tgLink {
+  opacity: 1 !important;
+  transform: none !important;
+  pointer-events: auto !important;
+}
+
+.social, .footer-social {
+  visibility: visible !important;
+}
+
+/* === FIX: Footer social text appearing then disappearing on fast scroll === */
+footer {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}
+
+footer * {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Disable any scroll animation affecting footer */
+footer[data-animate],
+footer[data-scroll],
+footer.animate,
+footer.hidden {
+  animation: none !important;
+  transition: none !important;
+}
 </style>
 </head>
 <body>
