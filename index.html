@@ -1559,6 +1559,18 @@ body.portal-open{
   transform: translate(-50%, -50%) scale(1) !important;
 }
 
+
+/* === FINAL STABLE SMOOTH OPEN (TEXT SAFE) === */
+.infoPortal{
+  transform: translate(-50%, -50%) scale(0.98) !important;
+  opacity: 0;
+  transition: opacity .25s ease, transform .25s ease;
+}
+.infoPortal.show{
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1) !important;
+}
+
 </style>
 </head>
 
@@ -1973,7 +1985,7 @@ const infoPortal = document.getElementById('infoPortal');
 
       portalTitle.textContent = title;
       portalText.textContent = "";
-      showPortalSmooth();
+      infoPortal.classList.add('show');
       
 
       // auto scroll down to portal
