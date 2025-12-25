@@ -1,0 +1,16 @@
+{
+  "name": "APEM",
+  "short_name": "APEM",
+  "display": "standalone",
+  "start_url": ".",
+  "icons": [
+    {
+      "src": "assets/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "background_color": "#000000",
+  "theme_color": "#000000"
+}
