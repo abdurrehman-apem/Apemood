@@ -1661,6 +1661,48 @@ footer.hidden {
   transform:translateY(-2px) scale(1.08);
   color:var(--txt);
 }
+
+/* === PancakeSwap Swap Overlay (embedded in website) === */
+.swapPortal{
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,.78);
+  z-index: 99998;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+}
+.swapPortal.show{ display:flex; }
+.swapInner{
+  width:min(980px, 100%);
+  max-height:90vh;
+  border-radius:22px;
+  border:1px solid rgba(255,220,120,.18);
+  background: rgba(0,0,0,.92);
+  box-shadow:0 0 70px rgba(0,0,0,.75);
+  display:flex;
+  flex-direction:column;
+}
+.swapHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 12px;
+}
+.swapFrame{
+  border:0;
+  width:100%;
+  flex:1;
+  min-height:560px;
+  border-radius:0 0 22px 22px;
+}
+@media (max-width:768px){
+  .swapInner{ height:90vh; }
+  .swapFrame{ min-height:0; height:100%; }
+}
+
 </style>
 
   <!-- Favicon & App Icons -->
@@ -1783,6 +1825,22 @@ Telegram</a>
 </div>
 </div>
 <div style="height:22px"></div>
+
+<!-- Swap overlay (PancakeSwap inside website) -->
+<div class="swapPortal" id="swapPortal">
+  <div class="swapInner">
+    <div class="swapHeader">
+      <h3 class="grad" style="margin:0;font-size:18px;">Swap APEM on PancakeSwap</h3>
+      <button class="portalClose" id="swapClose">✕</button>
+    </div>
+    <iframe
+      class="swapFrame"
+      src="https://pancakeswap.finance/swap?outputCurrency=0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35&chainId=56"
+      allow="clipboard-read; clipboard-write; accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture">
+    </iframe>
+  </div>
+</div>
+
 </section>
 </div>
 <!-- ROADMAP PORTAL -->
@@ -2466,5 +2524,45 @@ const infoPortal = document.getElementById('infoPortal');
 <svg fill="currentColor" height="22" viewbox="0 0 24 24" width="22">
 <path d="M9.993 15.674L9.813 20.073C10.067 20.073 10.183 19.955 10.322 19.812L12.517 17.725L17.066 21.04C17.912 21.507 18.505 21.26 18.722 20.279L22.39 3.948C22.66 2.675 21.927 2.065 21.103 2.36L1.61 9.874C0.39 10.353 0.404 11.038 1.402 11.345L6.387 12.9L18.93 5.377C19.51 5.02 20.037 5.214 19.598 5.571L9.993 15.674Z"></path>
 </svg>
-</a></footer></body>
+</a></footer>
+<!-- === APEM Swap override (embedded PancakeSwap — no typing text) === -->
+<script>
+(function(){
+  const overlay = document.getElementById("swapPortal");
+  const closeBtn = document.getElementById("swapClose");
+
+  // remove any existing listeners by cloning button
+  const oldBtn = document.getElementById("btnSwap");
+  if(oldBtn){
+    const newBtn = oldBtn.cloneNode(true);
+    oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+    const btnSwap = newBtn;
+
+    function clearStates(){
+      document.body.classList.remove("portal-open","roadmap-open","whitepaper-open","road-open");
+      document.body.style.overflow = "";
+      const infoPortal = document.getElementById("infoPortal");
+      if(infoPortal) infoPortal.classList.remove("show");
+    }
+
+    btnSwap.addEventListener("click", function(e){
+      e.preventDefault();
+      clearStates();
+      document.body.classList.add("portal-open");
+      document.body.style.overflow = "hidden";
+      if(overlay){ overlay.classList.add("show"); }
+    });
+  }
+
+  if(closeBtn){
+    closeBtn.addEventListener("click", function(){
+      if(overlay) overlay.classList.remove("show");
+      document.body.classList.remove("portal-open");
+      document.body.style.overflow = "";
+    });
+  }
+})();
+</script>
+
+</body>
 </html>
