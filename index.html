@@ -1805,6 +1805,7 @@ Telegram</a>
 <button class="btn" id="btnDisclaimer">Disclaimer</button>
 <button class="btn" id="btnWhitepaper">Whitepaper</button>
 <button class="btn primary" id="btnRoadmap">Roadmap</button>
+<button class="btn" id="btnTeam">Team</button>
 </div>
 <div class="frontExtra">
 <h3 class="grad">Short Overview</h3>
@@ -1842,6 +1843,28 @@ Telegram</a>
 </div>
 
 </section>
+</div>
+
+<!-- TEAM PORTAL -->
+<div class="infoPortal" id="teamPortal">
+  <div class="portalInner">
+    <div class="portalTitle">
+      <h3 class="grad">Project Team</h3>
+      <button class="portalClose" id="teamClose">✕</button>
+    </div>
+    <div class="portalText" style="text-align:center;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+        <img id="founderPhoto" src="assets/founder.png" alt="Founder Photo"
+             style="width:120px;height:120px;border-radius:14px;border:1px solid rgba(255,220,120,.35);object-fit:cover;">
+        <div style="font-size:16px;font-weight:900;color:#fff;">Founder — Abdur Rehman</div>
+        <a href="https://www.linkedin.com/in/abdur-rehman-2459b83a1/" target="_blank" rel="noopener noreferrer"
+           style="display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,220,120,.25);padding:8px 12px;border-radius:12px;text-decoration:none;color:#fff;font-weight:900;background:rgba(0,0,0,.35);">
+           LinkedIn Profile
+        </a>
+      </div>
+      \n(Upload your photo at: assets/founder.png)
+    </div>
+  </div>
 </div>
 <!-- ROADMAP PORTAL -->
 <div aria-hidden="true" class="roadOverlay" id="roadOverlay">
@@ -2507,6 +2530,14 @@ const infoPortal = document.getElementById('infoPortal');
 
 })();
 
+
+// === TEAM PORTAL CONTROL ===
+const btnTeam=document.getElementById("btnTeam");
+const teamPortal=document.getElementById("teamPortal");
+const teamClose=document.getElementById("teamClose");
+if(btnTeam&&teamPortal){btnTeam.addEventListener("click",()=>{document.body.classList.add("portal-open");teamPortal.classList.add("show");});}
+if(teamClose){teamClose.addEventListener("click",()=>{teamPortal.classList.remove("show");document.body.classList.remove("portal-open");});}
+
 </script>
 <footer style="margin-top:60px;text-align:center;"><div class="footer-social" style="display:flex;justify-content:center;gap:18px;margin-top:18px;"><a href="https://x.com/apemood" rel="noopener noreferrer" target="_blank">
 <svg fill="currentColor" height="22" viewbox="0 0 24 24" width="22">
@@ -2562,6 +2593,14 @@ const infoPortal = document.getElementById('infoPortal');
     });
   }
 })();
+
+// === TEAM PORTAL CONTROL ===
+const btnTeam=document.getElementById("btnTeam");
+const teamPortal=document.getElementById("teamPortal");
+const teamClose=document.getElementById("teamClose");
+if(btnTeam&&teamPortal){btnTeam.addEventListener("click",()=>{document.body.classList.add("portal-open");teamPortal.classList.add("show");});}
+if(teamClose){teamClose.addEventListener("click",()=>{teamPortal.classList.remove("show");document.body.classList.remove("portal-open");});}
+
 </script>
 
 </body>
