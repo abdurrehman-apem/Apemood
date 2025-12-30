@@ -1812,8 +1812,7 @@ Telegram</a>
 <p>
           Ape Mood (APEM) is a community-driven, next-generation digital asset on <b>BNB Smart Chain</b>.
           It is designed as the foundation of a future ecosystem spanning <b>blockchain technology</b>,
-          <b>artificial intelligence</b>, digital platforms, and ethical real-world business initiatives.
-        </p>
+          <b>artificial intelligence</b>, digital platforms, and ethical real-world business initiatives.</p>
 </div>
 <!-- Info portal (auto open/close) -->
 <div class="infoPortal" id="infoPortal">
@@ -1843,6 +1842,10 @@ Telegram</a>
 </div>
 
 </section>
+<div class="homepage-inline-disclaimer" style="margin-top:18px;text-align:center;font-size:11px;opacity:.8;line-height:1.55;">
+  Disclaimer:<br><br>Ape Mood (APEM) does not offer guaranteed profits, fixed returns, or financial advice.<br>All future features and business integrations depend on project success, market conditions, and development progress.
+</div>
+
 </div>
 
 <!-- TEAM PORTAL -->
@@ -1964,7 +1967,7 @@ The APEM token is deployed on the BNB Smart Chain as a standard BEP-20 smart con
 All transactions are recorded transparently on the blockchain and publicly verifiable.`,
       disclaimer:
 `Disclaimer:
-This document is for informational purposes only.
+
 Ape Mood (APEM) does not offer guaranteed profits, fixed returns, or financial advice.
 All future features and business integrations depend on project success, market conditions, and development progress.`
     };
@@ -2158,10 +2161,6 @@ const infoPortal = document.getElementById('infoPortal');
     });
     document.getElementById('btnDisclaimer').addEventListener('click', ()=>{
       openPortal("Disclaimer", CONTENT.disclaimer);
-    });
-
-    document.getElementById('btnSwap').addEventListener('click', ()=>{
-      openPortal("Swap", CONTENT.swap);
     });
 
     /* ✅ CHANGE 2: Whitepaper button opens file */
@@ -2555,7 +2554,17 @@ if(teamClose){teamClose.addEventListener("click",()=>{teamPortal.classList.remov
 <svg fill="currentColor" height="22" viewbox="0 0 24 24" width="22">
 <path d="M9.993 15.674L9.813 20.073C10.067 20.073 10.183 19.955 10.322 19.812L12.517 17.725L17.066 21.04C17.912 21.507 18.505 21.26 18.722 20.279L22.39 3.948C22.66 2.675 21.927 2.065 21.103 2.36L1.61 9.874C0.39 10.353 0.404 11.038 1.402 11.345L6.387 12.9L18.93 5.377C19.51 5.02 20.037 5.214 19.598 5.571L9.993 15.674Z"></path>
 </svg>
-</a></div></footer><footer class="bottom-socials" style="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:18px;align-items:center;justify-content:center;padding:10px 14px;border-radius:16px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);box-shadow:0 0 18px rgba(255,204,77,.25);z-index:99999;"><a aria-label="X Social" href="https://x.com/apemood" rel="noopener noreferrer" style="color:var(--gold);display:flex;align-items:center;" target="_blank">
+</a></div>
+
+<div class="site-disclaimer" style="margin-top:40px;text-align:center;opacity:.75;font-size:12px;line-height:1.5;">
+  <p>
+    Disclaimer: This project is a community‑driven initiative created for fun and educational purposes.
+    The information shared on this website is general and should not be taken as financial advice.
+    Please explore responsibly and do your own research.</p>
+</div>
+
+
+</footer><footer class="bottom-socials" style="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:18px;align-items:center;justify-content:center;padding:10px 14px;border-radius:16px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);box-shadow:0 0 18px rgba(255,204,77,.25);z-index:99999;"><a aria-label="X Social" href="https://x.com/apemood" rel="noopener noreferrer" style="color:var(--gold);display:flex;align-items:center;" target="_blank">
 <svg fill="currentColor" height="22" viewbox="0 0 24 24" width="22">
 <path d="M18.244 2H21.552L14.34 10.26L22.848 22H16.172L10.956 14.72L4.656 22H1.344L9.072 13.14L0.848 2H7.688L12.428 8.56L18.244 2Z"></path>
 </svg>
@@ -2636,5 +2645,32 @@ if(teamClose){teamClose.addEventListener("click",()=>{teamPortal.classList.remov
   }
 })();
 </script>
+
+<script>
+(function() {
+  const swapBtn = document.getElementById("btnSwap");
+  const PCS_URL = "https://pancakeswap.finance/swap?outputCurrency=0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35&chain=bsc";
+  if (swapBtn) {
+    swapBtn.addEventListener("click", function(e){
+      e.preventDefault();
+      // ensure UI state stays normal
+      document.body.classList.remove('portal-open');
+      window.open(PCS_URL, "_blank");
+    });
+  }
+})();
+</script>
+
+
+<div class="footer-mini-disclaimer" style="margin:24px 0 10px 0;text-align:center;font-size:11px;opacity:.7;line-height:1.4;">
+  <span>Disclaimer: Community‑driven project — please do your own research.</span>
+</div>
+
+
+
+
+
+
+
 </body>
 </html>
