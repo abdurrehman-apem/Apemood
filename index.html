@@ -2431,7 +2431,7 @@ const infoPortal = document.getElementById('infoPortal');
   if(warp && allBtns.length){
     allBtns.forEach(b=>{
       const id = b.id || '';
-      if(id === 'btnWhitepaper' || id === 'btnRoadmap') return;
+      if(id === 'btnWhitepaper' || id === 'btnRoadmap' || id === 'btnSwap') return;
       b.addEventListener('click', ()=>{
         warp.classList.add('show');
       }, {passive:true});
@@ -2674,4 +2674,3 @@ if(teamClose){teamClose.addEventListener("click",()=>{teamPortal.classList.remov
 
 </body>
 </html>
-
