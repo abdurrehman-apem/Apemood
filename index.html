@@ -1952,8 +1952,8 @@ Total Supply: 150,000,000 APEM
 Decimals: 18
 
 Supply Strategy:
-A limited portion of the total supply will be available for trading at launch.
-The remaining supply will be released gradually to support healthy growth and stability.`,
+1% or even less of the total supply will be available for trading at launch.
+for Detailed tokenomics/Unlock Schedule Please Read WhitePaper(you can find at Homepage) 
       ethics:
 `Ethical & Islamic Principles:
 APE MOOD is committed to ethical conduct and adherence to Islamic principles.
@@ -2075,13 +2075,7 @@ All future features and business integrations depend on project success, market 
       }
     });
 
-    /* =========================
-       Info Portal behavior
-       ========================= */
-
-// === BACKGROUND STATE LOGIC ===
-
-// === UI STATE RESET (prevents background/warp leaks) ===
+  
 function resetUI(){
   document.body.classList.remove('portal-open','roadmap-open','whitepaper-open','road-open');
 
@@ -2150,108 +2144,8 @@ const infoPortal = document.getElementById('infoPortal');
     }
 
     /* Buttons */
-        document.getElementById('btnTokenomics').addEventListener('click', (e)=>{
-      e.preventDefault();
-      portalCancel.id++;
-      if (typeof clearStates === 'function') clearStates();
-
-      if(infoPortal) infoPortal.classList.add('show');
-      document.body.classList.add('portal-open');
-
-      if(portalTitle) portalTitle.textContent = "Tokenomics / Unlock Schedule";
-
-      if(portalText){
-        portalText.style.whiteSpace = "normal";
-
-        portalText.innerHTML = `
-<div style="position:relative;">
-  <button id="closeTokenomicsX"
-    style="position:absolute;top:6px;right:8px;background:rgba(0,0,0,.35);
-    border:1px solid rgba(255,255,255,.35);border-radius:8px;color:#fff;
-    font-size:14px;line-height:14px;padding:4px 8px;cursor:pointer;">✕</button>
-
-  <div style="max-height:420px;overflow-y:auto;padding-right:6px;
-      font-size:14px;line-height:1.6;">
-
-    <p><b>APE MOOD — Tokenomics / Unlock Schedule</b></p>
-
-    <p><b>Market-Cap Based Unlock Model (up to €100 Millions)</b></p>
-    <p>
-      At every <b>€1,000,000</b> Market Cap milestone, <b>10,000</b> tokens are added
-      to circulating trading supply (through controlled token sales), and allocated as follows:
-    </p>
-    <ul style="margin:0 0 10px 18px;padding:0;">
-      <li>50% — Buyback &amp; LP Support</li>
-      <li>30% — Project Expense &amp; Operations</li>
-      <li>20% — Founder / Dev Reserve</li>
-    </ul>
-
-    <p style="margin-top:12px;"><b>Funds From 10,000 Tokens (Distribution)</b></p>
-    <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px;">
-      <thead>
-        <tr>
-          <th style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;text-align:left;">Allocation</th>
-          <th style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;text-align:left;">Percentage</th>
-          <th style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;text-align:left;">Purpose</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">Buyback &amp; LP Support</td>
-          <td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">50%</td>
-          <td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">Reinforces price floor &amp; liquidity depth through buyback + LP strengthening.</td>
-        </tr>
-        <tr>
-          <td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">Project Expense &amp; Operations</td>
-          <td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">30%</td>
-          <td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">Utilities, tools, infrastructure, development and ecosystem operations.</td>
-        </tr>
-        <tr>
-          <td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">Founder / Dev Reserve</td>
-          <td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">20%</td>
-          <td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">Strategic expansion &amp; long-term sustainability-driven planning.</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <p style="margin-top:10px;"><b>Supply Add Timeline (Key Milestones)</b></p>
-    <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:10px;">
-      <thead>
-        <tr>
-          <th style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;text-align:left;">Market Cap</th>
-          <th style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;text-align:left;">Tokens Added To Supply</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">€1 Million</td><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">10,000</td></tr>
-        <tr><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">€2 Million</td><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">10,000</td></tr>
-        <tr><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">€3 Million</td><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">10,000</td></tr>
-        <tr><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">€5 Million</td><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">10,000</td></tr>
-        <tr><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">€10 Million</td><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">10,000</td></tr>
-        <tr><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">€20 Million</td><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">10,000</td></tr>
-        <tr><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">€50 Million</td><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">10,000</td></tr>
-        <tr><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">€75 Million</td><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">10,000</td></tr>
-        <tr><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">€100 Million</td><td style="border:1px solid rgba(255,255,255,.25);padding:6px 8px;">10,000 ➜ Next roadmap review</td></tr>
-      </tbody>
-    </table>
-
-    <p style="margin-top:8px;">
-      This model makes it <b>100% clear</b> that tokens are added to supply <b>only when market cap grows</b>.
-      When marketcap reaches <b>€100 Million</b>, Dev / Team will schedule the next safe unlock / supply-add
-      roadmap based on liquidity strength and ecosystem growth.
-    </p>
-
-  </div>
-</div>`;
-
-        const closeBtn = document.getElementById('closeTokenomicsX');
-        if(closeBtn){
-          closeBtn.onclick = ()=>{
-            infoPortal?.classList.remove('show');
-            document.body.classList.remove('portal-open');
-          };
-        }
-      }
+    document.getElementById('btnTokenomics').addEventListener('click', ()=>{
+      openPortal("Tokenomics", CONTENT.tokenomics);
     });
     document.getElementById('btnEthics').addEventListener('click', ()=>{
       openPortal("Ethical & Islamic Principles", CONTENT.ethics);
@@ -2263,7 +2157,7 @@ const infoPortal = document.getElementById('infoPortal');
       openPortal("Disclaimer", CONTENT.disclaimer);
     });
 
-    /* ✅ CHANGE 2: Whitepaper button opens file */
+    
     document.getElementById('btnWhitepaper').addEventListener('click', ()=>{
   clearStates();
   document.body.classList.add('whitepaper-open');
@@ -2310,7 +2204,7 @@ const infoPortal = document.getElementById('infoPortal');
       }
     });
 
-    /* ✅ CHANGE 3: Golden flame on any touch/click */
+    
     function spawnFlame(x,y){
       const f = document.createElement('div');
       f.className = 'tapFlame';
@@ -2324,11 +2218,7 @@ const infoPortal = document.getElementById('infoPortal');
       spawnFlame(e.clientX, e.clientY);
     }, {passive:true});
   
-/* =========================================================
-   ULTRA VISUAL ENGINE (SPACE STATION HUD)
-   - does not change any content or button functions
-   - adds canvas starfield + particles + magnetic button light
-   ========================================================= */
+
 
 (function(){
   // Add magnetic overlay element inside each .btn without changing labels
@@ -2500,10 +2390,6 @@ const infoPortal = document.getElementById('infoPortal');
 })();
 
 
-/* =========================================================
-   NEXT LEVEL JS: HUD STATUS + SWAP WARP + ROADMAP GALAXY
-   (visual only; does not change existing logic)
-   ========================================================= */
 (function(){
   // HUD status subtle live readout
   const elSys = document.getElementById('fxSys');
