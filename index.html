@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>APE MOOD (APEM) — Buy &amp; Hold</title>
 <style>
     :root{
@@ -1704,7 +1704,131 @@ footer.hidden {
 }
 
 
-#tokenomicsBox { font-size: 13px; line-height: 1.55; }
+/* =============================================
+   MOBILE PINCH-ZOOM STABILITY (SAFE VERSION)
+   - Keeps all buttons & text visible
+   - Only affects decorative FX layers
+   - Laptop / Desktop remain unchanged
+   ============================================= */
+@media (max-width: 768px){
+
+  /* Let the page grow naturally on zoom */
+  html, body{
+    height:auto;
+    min-height:100%;
+    overflow-x:hidden;
+  }
+
+  /* Turn off heavy visual FX on small screens
+     so zoom never hides main content */
+  #fxStars,
+  #fxParticles,
+  .fxVignette,
+  .fxNoise,
+  .fxHUD,
+  .universe,
+  .scan,
+  body::before,
+  body::after,
+  .wrap::before,
+  .wrap::after{
+    display:none !important;
+  }
+
+  /* Keep main content & portals fully visible */
+  .wrap,
+  header,
+  .hero,
+  .frontExtra,
+  .infoPortal,
+  #teamPortal,
+  .roadOverlay,
+  .swapPortal{
+    position:relative;
+    z-index:5;
+  }
+}
+
+/* Smooth scrolling & safe overscroll */
+body{
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+
+
+/* =============================================
+   GLOBAL PERFORMANCE & STABILITY CLEANUP
+   - Remove heavy FX that can cause stutter / lag
+   - Keep core layout, logo, buttons, text
+   ============================================= */
+
+/* Turn off expensive full-screen FX layers */
+.fxVignette,
+.fxNoise,
+.fxHUD,
+.fxStatus,
+#fxStars,
+#fxParticles,
+.fxWarp,
+.universe,
+.scan{
+  display:none !important;
+}
+
+/* Disable deep nebula / galaxy overlays */
+body::before,
+body::after,
+.wrap::before,
+.wrap::after{
+  display:none !important;
+}
+
+/* Swap overlay inside site disabled (use PancakeSwap new tab only) */
+.swapPortal{
+  display:none !important;
+}
+
+/* Info portal: full-screen & scrollable on all devices */
+.infoPortal{
+  position:fixed !important;
+  inset:0 !important;
+  display:none;
+  align-items:flex-start !important;
+  justify-content:center !important;
+  padding:16px 10px !important;
+  background:rgba(0,0,0,.94) !important;
+  z-index:9999 !important;
+}
+.infoPortal.show{
+  display:flex !important;
+}
+.infoPortal .portalInner{
+  max-height:100vh;
+  overflow-y:auto;
+}
+
+/* Ensure roadmap overlay remains full-screen & scrollable */
+.roadOverlay{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:9998 !important;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* Small improvement for mobile layout */
+@media (max-width: 768px){
+  html, body{
+    min-height:100%;
+    height:auto;
+    overflow-x:hidden;
+  }
+}
+
+/* Smooth scroll behavior without affecting layout stability */
+html{
+  scroll-behavior:smooth;
+}
 
 </style>
 
@@ -1716,48 +1840,8 @@ footer.hidden {
   <link rel="apple-touch-icon" sizes="180x180" href="favicon-512.png">
   <link rel="manifest" href="manifest.webmanifest">
 
-
-<style>
-.mcScrollBox::-webkit-scrollbar{width:8px;}
-.mcScrollBox::-webkit-scrollbar-thumb{background:rgba(255,220,120,.4);border-radius:6px;}
-.mcScrollBox{scrollbar-width:thin;scrollbar-color:rgba(255,220,120,.4) transparent;}
-@media(max-width:768px){
- .mcScrollBox{max-height:65vh;}
-}
-</style>
-
 </head>
 <body>
-
-<div id="tokenomicsModal" style="
- position:fixed;top:0;left:0;width:100%;height:100%;
- background:rgba(0,0,0,.75);backdrop-filter:blur(6px);
- z-index:9998;display:none;justify-content:center;align-items:center;">
- <div id="tokenomicsBox" style="
-  width:92%;max-width:1080px;max-height:88vh;
-  overflow-y:auto;overflow-x:hidden;
-  padding:18px 22px;border-radius:18px;
-  background:rgba(10,10,18,.9);
-  border:1px solid rgba(255,230,150,.4);">
-<div style="display:flex;justify-content:flex-end;">
-  <button id="tokenomicsCloseBtn"
-          style="background:rgba(0,0,0,.45);border:1px solid rgba(255,220,120,.45);
-                 color:#fff;font-weight:900;border-radius:10px;
-                 padding:6px 10px;cursor:pointer;">
-    ✕
-  </button>
-</div>
-
- </div>
-</div>
-
-<style>
-#tokenomicsBox::-webkit-scrollbar{width:10px;}
-#tokenomicsBox::-webkit-scrollbar-thumb{background:rgba(255,220,120,.45);border-radius:8px;}
-#tokenomicsBox{scrollbar-width:thin;scrollbar-color:rgba(255,220,120,.45) transparent;}
-@media(max-width:768px){#tokenomicsBox{max-height:82vh;}}
-</style>
-
 <!-- =========================
        ULTRA VISUAL LAYERS (SPACE ART)
        - pure visual only
@@ -1995,8 +2079,8 @@ Total Supply: 150,000,000 APEM
 Decimals: 18
 
 Supply Strategy:
-A limited portion of the total supply will be available for trading at launch.
-The remaining supply will be released gradually to support healthy growth and stability.`,
+Only 1 or less than 1% of the total supply will be available for trading at launch.
+For Detailed Tokenomics/Unlock Schedule Please Read Whitepaper.`,
       ethics:
 `Ethical & Islamic Principles:
 APE MOOD is committed to ethical conduct and adherence to Islamic principles.
@@ -2172,105 +2256,7 @@ const infoPortal = document.getElementById('infoPortal');
 
     portalClose.addEventListener('click', ()=>closePortal({scrollBack:true}));
 
-    
-    const TOKENOMICS_HTML = `
-<div style="font-size:14px;line-height:1.6;">
-  <p><b>APE MOOD — Token Allocation Overview</b></p>
-  <p>Total Supply: <b>150,000,000 APEM</b><br>
-     Network: <b>BNB Smart Chain (BEP-20)</b><br>
-     Decimals: <b>18</b></p>
-
-  <table style="width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;">
-    <thead>
-      <tr>
-        <th style="border:1px solid rgba(255,220,120,.35);padding:6px;text-align:left;">Allocation</th>
-        <th style="border:1px solid rgba(255,220,120,.35);padding:6px;text-align:left;">Share</th>
-        <th style="border:1px solid rgba(255,220,120,.35);padding:6px;text-align:left;">Notes</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">Permanent Liquidity Reserve (non-tradable)</td>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">50%</td>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">Locked and reserved only for liquidity support; never opened for public trading.</td>
-      </tr>
-      <tr>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">Project Development &amp; Operations</td>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">10%</td>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">Locked until August 2026, then gradually released (1% of this allocation every 2 months) for project expenses.</td>
-      </tr>
-      <tr>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">Partnerships &amp; Strategic Collaborations</td>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">10%</td>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">Used for verified ecosystem partnerships and integrations only.</td>
-      </tr>
-      <tr>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">Community Rewards &amp; Ecosystem Support</td>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">10%</td>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">Controlled, milestone-based rewards; no random airdrops that damage market stability.</td>
-      </tr>
-      <tr>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">Market-Cap Based Trading Reserve</td>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">10%</td>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">Can be sold gradually based on market-cap growth to support liquidity and ecosystem sustainability.</td>
-      </tr>
-      <tr>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">Founder / Dev Reserve</td>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">10%</td>
-        <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">Long-term vested allocation, released gradually based on performance and project continuity.</td>
-      </tr>
-    </tbody>
-  </table>
-<hr>
-
-<h4>Market‑Cap Based Trading Supply — Sell‑Release Policy</h4>
-
-<p>
-Tokens are <b>not pre‑circulated</b> and are <b>not gradually unlocked</b>.<br>
-Trading supply is added to the market <b>only when a market‑cap milestone is reached</b><br>
-and it is added <b>through controlled selling of tokens</b> to expand circulating supply responsibly.
-</p>
-
-<p>At each approved milestone, <b>10,000 tokens</b> are released through selling.
-Revenue generated from each release is divided according to the following policy:</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:13px;">
-<tr>
-  <th style="border:1px solid rgba(255,220,120,.35);padding:6px;">Release Allocation</th>
-  <th style="border:1px solid rgba(255,220,120,.35);padding:6px;">Share</th>
-  <th style="border:1px solid rgba(255,220,120,.35);padding:6px;">Purpose</th>
-</tr>
-
-<tr>
-  <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">50% — Buyback & Liquidity Lock</td>
-  <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">50%</td>
-  <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">Supports liquidity depth and strengthens price floor stability</td>
-</tr>
-
-<tr>
-  <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">30% — Project Expense & Operations</td>
-  <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">30%</td>
-  <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">Used for ecosystem utilities, tools, infrastructure and development</td>
-</tr>
-
-<tr>
-  <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">20% — Founder / Dev Reserve</td>
-  <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">20%</td>
-  <td style="border:1px solid rgba(255,220,120,.25);padding:6px;">Gradual, accountable and performance‑based allocation</td>
-</tr>
-</table>
-
-<p><i>
-No fixed or guaranteed profit is promised. Market‑cap based releases are
-ethical, transparent and fully dependent on project strength and market conditions.
-</i></p></div>
-
-
-  <p style="margin-top:10px;">
-    Token usage does not include guaranteed or fixed returns. All future integrations and utilities remain subject to market conditions, development progress and ethical review.
-  </p>
-</div>`;
-async function openPortal(title, content){
+    async function openPortal(title, content){
       if(portalRunning) return;
       resetUI();
       document.body.classList.add('portal-open');
@@ -2290,30 +2276,9 @@ async function openPortal(title, content){
       await typeInto(portalText, content, {speed:14, maxClicksPerSec:22}, portalCancel);
     }
 
-
-    function openTokenomicsStatic(){
-      if(portalRunning) return;
-      resetUI();
-      document.body.classList.add('portal-open');
-      portalRunning = true;
-
-      portalTitle.textContent = "Tokenomics / Unlock Schedule";
-      portalText.style.whiteSpace = "normal";
-      portalText.innerHTML = TOKENOMICS_HTML;
-      infoPortal.classList.add('show');
-
-      // auto scroll down to portal
-      setTimeout(()=>{
-        // scroll suppressed to prevent mobile glitch
-      }, 60);
-
-      portalRunning = false;
-    }
-
     /* Buttons */
-    document.getElementById('btnTokenomics').addEventListener('click', (e)=>{
-      e.preventDefault();
-      openTokenomicsStatic();
+    document.getElementById('btnTokenomics').addEventListener('click', ()=>{
+      openPortal("Tokenomics", CONTENT.tokenomics);
     });
     document.getElementById('btnEthics').addEventListener('click', ()=>{
       openPortal("Ethical & Islamic Principles", CONTENT.ethics);
@@ -2593,7 +2558,7 @@ async function openPortal(title, content){
   if(warp && allBtns.length){
     allBtns.forEach(b=>{
       const id = b.id || '';
-      if(id === 'btnWhitepaper' || id === 'btnRoadmap') return;
+      if(id === 'btnWhitepaper' || id === 'btnRoadmap' || id === 'btnSwap') return;
       b.addEventListener('click', ()=>{
         warp.classList.add('show');
       }, {passive:true});
@@ -2708,25 +2673,7 @@ if(btnTeam&&teamPortal){btnTeam.addEventListener("click",()=>{document.body.clas
 if(teamClose){teamClose.addEventListener("click",()=>{teamPortal.classList.remove("show");document.body.classList.remove("portal-open");});}
 
 </script>
-<footer style="margin-top:60px;text-align:center;"><div class="footer-social" style="display:flex;justify-content:center;gap:18px;margin-top:18px;"><a href="https://x.com/apemood" rel="noopener noreferrer" target="_blank">
-<svg fill="currentColor" height="22" viewbox="0 0 24 24" width="22">
-<path d="M18.244 2H21.552L14.34 10.26L22.848 22H16.172L10.956 14.72L4.656 22H1.344L9.072 13.14L0.848 2H7.688L12.428 8.56L18.244 2Z"></path>
-</svg>
-</a><a href="https://t.me/apemoodofficial" rel="noopener noreferrer" target="_blank">
-<svg fill="currentColor" height="22" viewbox="0 0 24 24" width="22">
-<path d="M9.993 15.674L9.813 20.073C10.067 20.073 10.183 19.955 10.322 19.812L12.517 17.725L17.066 21.04C17.912 21.507 18.505 21.26 18.722 20.279L22.39 3.948C22.66 2.675 21.927 2.065 21.103 2.36L1.61 9.874C0.39 10.353 0.404 11.038 1.402 11.345L6.387 12.9L18.93 5.377C19.51 5.02 20.037 5.214 19.598 5.571L9.993 15.674Z"></path>
-</svg>
-</a></div>
-
-<div class="site-disclaimer" style="margin-top:40px;text-align:center;opacity:.75;font-size:12px;line-height:1.5;">
-  <p>
-    Disclaimer: This project is a community‑driven initiative created for fun and educational purposes.
-    The information shared on this website is general and should not be taken as financial advice.
-    Please explore responsibly and do your own research.</p>
-</div>
-
-
-</footer><footer class="bottom-socials" style="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:18px;align-items:center;justify-content:center;padding:10px 14px;border-radius:16px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);box-shadow:0 0 18px rgba(255,204,77,.25);z-index:99999;"><a aria-label="X Social" href="https://x.com/apemood" rel="noopener noreferrer" style="color:var(--gold);display:flex;align-items:center;" target="_blank">
+<footer class="bottom-socials" style="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:18px;align-items:center;justify-content:center;padding:10px 14px;border-radius:16px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);box-shadow:0 0 18px rgba(255,204,77,.25);z-index:99999;"><a aria-label="X Social" href="https://x.com/apemood" rel="noopener noreferrer" style="color:var(--gold);display:flex;align-items:center;" target="_blank">
 <svg fill="currentColor" height="22" viewbox="0 0 24 24" width="22">
 <path d="M18.244 2H21.552L14.34 10.26L22.848 22H16.172L10.956 14.72L4.656 22H1.344L9.072 13.14L0.848 2H7.688L12.428 8.56L18.244 2Z"></path>
 </svg>
@@ -2836,13 +2783,22 @@ if(teamClose){teamClose.addEventListener("click",()=>{teamPortal.classList.remov
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function(){
-  var btn = document.getElementById("tokenomicsCloseBtn");
-  var modal = document.getElementById("tokenomicsModal");
-  if(btn && modal){
-    btn.addEventListener("click", function(){
-      modal.style.display = "none";
-      document.body.classList.remove("portal-open");
+// === Roadmap Open/Close Safety Bind ===
+document.addEventListener('DOMContentLoaded', function(){
+  const btnRoadmap = document.getElementById('btnRoadmap');
+  const roadOverlay = document.getElementById('roadOverlay');
+  const btnBack = document.getElementById('btnBack');
+  if(btnRoadmap && roadOverlay){
+    btnRoadmap.addEventListener('click', function(){
+      roadOverlay.classList.add('show');
+      document.body.classList.add('roadmap-open');
+      window.scrollTo(0,0);
+    });
+  }
+  if(btnBack && roadOverlay){
+    btnBack.addEventListener('click', function(){
+      roadOverlay.classList.remove('show');
+      document.body.classList.remove('roadmap-open');
     });
   }
 });
@@ -2850,55 +2806,68 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function(){
-  const x = document.getElementById("tokenomicsX");
-  const portal = document.getElementById("infoPortal") || document.querySelector(".info-portal");
-  if(x){
-    x.addEventListener("click", ()=>{
-      if(portal){ portal.style.display = "none"; }
-      document.body.style.overflow = "";
-      window.scrollTo({top:0,behavior:"smooth"});
+// =============================================
+// FINAL INTERACTION FIXES (STABLE ON ALL DEVICES)
+// - Swap: only open PancakeSwap in new tab
+// - Roadmap: clean open/close control
+// - Info portal: ensure scrollable
+// =============================================
+document.addEventListener('DOMContentLoaded', function(){
+
+  // --- Swap button: open PancakeSwap in new tab ONLY ---
+  (function(){
+    const btnSwap = document.getElementById('btnSwap');
+    if(!btnSwap) return;
+    const clone = btnSwap.cloneNode(true);  // remove old listeners
+    btnSwap.parentNode.replaceChild(clone, btnSwap);
+    clone.addEventListener('click', function(e){
+      e.preventDefault();
+      const url = "https://pancakeswap.finance/swap?outputCurrency=0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35&chainId=56";
+      window.open(url, "_blank", "noopener");
     });
-  }
+  })();
+
+
+  // --- Roadmap button: open / close overlay safely ---
+  (function(){
+    const roadBtn = document.getElementById('btnRoadmap');
+    const roadOverlay = document.getElementById('roadOverlay');
+    const backBtn = document.getElementById('btnBack');
+    if(roadBtn && roadOverlay){
+      const rClone = roadBtn.cloneNode(true);
+      roadBtn.parentNode.replaceChild(rClone, roadBtn);
+      rClone.addEventListener('click', function(e){
+        e.preventDefault();
+        roadOverlay.classList.add('show');
+        document.body.classList.add('roadmap-open');
+        window.scrollTo(0, 0);
+      });
+    }
+    if(backBtn && roadOverlay){
+      const bClone = backBtn.cloneNode(true);
+      backBtn.parentNode.replaceChild(bClone, backBtn);
+      bClone.addEventListener('click', function(e){
+        e.preventDefault();
+        roadOverlay.classList.remove('show');
+        document.body.classList.remove('roadmap-open');
+      });
+    }
+  })();
+
+
+  // --- Ensure info portal inner content is scrollable ---
+  (function(){
+    const portal = document.getElementById('infoPortal');
+    if(!portal) return;
+    const inner = portal.querySelector('.portalInner');
+    if(inner){
+      inner.style.maxHeight = '100vh';
+      inner.style.overflowY = 'auto';
+    }
+  })();
+
 });
 </script>
 
 </body>
 </html>
-
-<script>
-(function(){
- const btn = document.querySelector('[data-section="tokenomics"]') || document.querySelector('#tokenomicsBtn');
- const modal = document.getElementById('tokenomicsModal');
- const box = document.getElementById('tokenomicsBox');
- const x = document.getElementById('tokXclose');
- const panel = document.querySelector('.portalText');
-
- if(btn && modal && box && panel){
-   btn.addEventListener('click', e=>{
-     e.preventDefault();
-     box.innerHTML = panel.innerHTML;
-     modal.style.display='flex';
-     document.body.style.overflow='hidden';
-     box.scrollTop=0;
-   });
- }
-
- if(x && modal){
-   x.addEventListener('click', ()=>{
-     modal.style.display='none';
-     document.body.style.overflow='auto';
-     window.scrollTo({top:0,behavior:'smooth'});
-   });
- }
-
- // ensure ESC closes
- document.addEventListener('keydown', e=>{
-   if(e.key==='Escape' && modal.style.display==='flex'){
-     modal.style.display='none';
-     document.body.style.overflow='auto';
-   }
- });
-
-})();
-</script>
