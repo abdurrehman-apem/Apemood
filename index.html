@@ -1952,8 +1952,8 @@ Total Supply: 150,000,000 APEM
 Decimals: 18
 
 Supply Strategy:
-1% or even less of the total supply will be available for trading at launch.
-for Detailed tokenomics/Unlock Schedule Please Read WhitePaper(you can find at Homepage) 
+Only 1 or less than 1% of the total supply will be available for trading at launch.
+The remaining supply will be released gradually to support healthy growth and stability.`,
       ethics:
 `Ethical & Islamic Principles:
 APE MOOD is committed to ethical conduct and adherence to Islamic principles.
@@ -2075,7 +2075,13 @@ All future features and business integrations depend on project success, market 
       }
     });
 
-  
+    /* =========================
+       Info Portal behavior
+       ========================= */
+
+// === BACKGROUND STATE LOGIC ===
+
+// === UI STATE RESET (prevents background/warp leaks) ===
 function resetUI(){
   document.body.classList.remove('portal-open','roadmap-open','whitepaper-open','road-open');
 
@@ -2157,7 +2163,7 @@ const infoPortal = document.getElementById('infoPortal');
       openPortal("Disclaimer", CONTENT.disclaimer);
     });
 
-    
+    /* ✅ CHANGE 2: Whitepaper button opens file */
     document.getElementById('btnWhitepaper').addEventListener('click', ()=>{
   clearStates();
   document.body.classList.add('whitepaper-open');
@@ -2204,7 +2210,7 @@ const infoPortal = document.getElementById('infoPortal');
       }
     });
 
-    
+    /* ✅ CHANGE 3: Golden flame on any touch/click */
     function spawnFlame(x,y){
       const f = document.createElement('div');
       f.className = 'tapFlame';
@@ -2218,7 +2224,11 @@ const infoPortal = document.getElementById('infoPortal');
       spawnFlame(e.clientX, e.clientY);
     }, {passive:true});
   
-
+/* =========================================================
+   ULTRA VISUAL ENGINE (SPACE STATION HUD)
+   - does not change any content or button functions
+   - adds canvas starfield + particles + magnetic button light
+   ========================================================= */
 
 (function(){
   // Add magnetic overlay element inside each .btn without changing labels
@@ -2390,6 +2400,10 @@ const infoPortal = document.getElementById('infoPortal');
 })();
 
 
+/* =========================================================
+   NEXT LEVEL JS: HUD STATUS + SWAP WARP + ROADMAP GALAXY
+   (visual only; does not change existing logic)
+   ========================================================= */
 (function(){
   // HUD status subtle live readout
   const elSys = document.getElementById('fxSys');
@@ -2660,3 +2674,4 @@ if(teamClose){teamClose.addEventListener("click",()=>{teamPortal.classList.remov
 
 </body>
 </html>
+
