@@ -310,6 +310,10 @@
     /* Buttons */
     .btnRow{
       display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
     .btnPrimaryRow{
       justify-content:center;
       margin-top:10px;
@@ -326,11 +330,6 @@
       }
     }
 
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:center;
-      margin-top: 6px;
-    }
     .btn{
       border:1px solid rgba(255,220,120,.26);
       background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
@@ -1833,12 +1832,11 @@ html{
 </style>
 
   <!-- Favicon & App Icons -->
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-64.png">
-  <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
-  <link rel="icon" type="image/png" sizes="128x128" href="favicon-128.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="favicon-512.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="favicon-512.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-512.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon-512.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-512.png">
   <link rel="manifest" href="manifest.webmanifest">
 
 </head>
@@ -1894,7 +1892,7 @@ html{
 <div class="orbitB"></div>
 <div class="orbitC"></div>
 <div class="logoCore">
-<img alt="APEM Logo" src="apem-logo.png"/>
+<img alt="APEM Logo" src="assets/apem-logo.png"/>
 </div>
 </div>
 <div class="h1">
@@ -2063,617 +2061,7 @@ Telegram</a>
 <div style="height:26px"></div>
 </div>
 </div>
-<script>
-    /* =========================
-       PDF CONTENT (from your whitepaper)
-       ========================= */
-    const CONTENT = {
-      heroIntro:
-        "Community-driven digital asset on BNB Smart Chain. Future direction: Blockchain, AI, digital platforms, and ethical real-world business initiatives,connecting them with blockchain to show real progress and for rewards...",
-      swap:
-        "Swap integration: (developer can connect PancakeSwap / router later). This button is ready for linking to your swap page or DEX.",
-      tokenomics:
-`Token Name: Ape Mood (APEM)
-Blockchain: BNB Smart Chain
-Standard: BEP-20 (EVM compatible)
-Total Supply: 150,000,000 APEM
-Decimals: 18
 
-Supply Strategy:
-1 Million tokens are released for Trade,Remaing Supply is secure in team/dev wallets and ll be added gradually under strict rules(described in whitepaper)
-For Detailed Tokenomics/Unlock Schedule Please Read Whitepaper.`,
-      ethics:
-`Ethical & Islamic Principles:
-APE MOOD is committed to ethical conduct and adherence to Islamic principles.
-The project avoids interest-based mechanisms (riba), guaranteed returns, and exploitative practices.
-
-If the project succeeds, the goal is to benefit people through halal, transparent, and real economic activities aligned with community growth.
-Any future initiatives are intended to be halal, value-based, rooted in transparency, real economic activity, and shared responsibility.`,
-      security:
-`Security & Transparency:
-The APEM token is deployed on the BNB Smart Chain as a standard BEP-20 smart contract.
-All transactions are recorded transparently on the blockchain and publicly verifiable.`,
-      disclaimer:
-`Disclaimer:
-
-Ape Mood (APEM) does not offer guaranteed profits, fixed returns, or financial advice.
-All future features and business integrations depend on project success, market conditions, and development progress.`
-    };
-
-    /* =========================
-       Typing + Soft Key Sound (no beep)
-       ========================= */
-    let soundEnabled = false;
-    let audioCtx = null;
-
-    // Auto-enable typing sound on first user touch/click (as requested)
-    document.addEventListener('pointerdown', ()=>{
-      soundEnabled = true;
-      ensureAudio();
-    }, {once:true});
-
-    function ensureAudio(){
-      if(!audioCtx){
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if(audioCtx.state === 'suspended'){
-        audioCtx.resume();
-      }
-    }
-
-    // soft "key click" using filtered noise burst (not a beep)
-    function keyClick(){
-      if(!soundEnabled) return;
-      ensureAudio();
-      const ctx = audioCtx;
-
-      const bufferSize = 256;
-      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for(let i=0;i<bufferSize;i++){
-        data[i] = (Math.random()*2 - 1) * 0.18;
-      }
-
-      const src = ctx.createBufferSource();
-      src.buffer = buffer;
-
-      const filter = ctx.createBiquadFilter();
-      filter.type = "highpass";
-      filter.frequency.value = 1200;
-
-      const gain = ctx.createGain();
-      gain.gain.value = 0.08; // subtle
-
-      src.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
-
-      src.start();
-      src.stop(ctx.currentTime + 0.02);
-    }
-
-    const heroCancel = { id: 0 };
-    const portalCancel = { id: 0 };
-
-    async function typeInto(el, text, {speed=18, maxClicksPerSec=25} = {}, cancelRef = null){
-      el.textContent = "";
-      let lastClickAt = 0;
-
-      const ref = cancelRef || { id: 0 };
-      const myId = ++ref.id;
-
-      for(let i=0;i<text.length;i++){
-        if(ref.id !== myId) return; // cancelled
-        el.textContent += text[i];
-        const now = performance.now();
-        if(now - lastClickAt > (1000/maxClicksPerSec) && text[i] !== " "){
-          keyClick();
-          lastClickAt = now;
-        }
-        await new Promise(r=>setTimeout(r, speed));
-      }
-    }
-
-    /* =========================
-       Hero typing
-       ========================= */
-    const heroTyping = document.getElementById('heroTyping');
-    typeInto(heroTyping, CONTENT.heroIntro, {speed:18}, heroCancel);
-
-    /* =========================
-       Contract copy
-       ========================= */
-    const copyBtn = document.getElementById('copyBtn');
-    const contractText = document.getElementById('contractText').textContent.trim();
-
-    copyBtn.addEventListener('click', async ()=>{
-      try{
-        await navigator.clipboard.writeText(contractText);
-        copyBtn.textContent = "Copied";
-        setTimeout(()=>copyBtn.textContent="Copy", 1200);
-      }catch(e){
-        const ta = document.createElement("textarea");
-        ta.value = contractText;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        ta.remove();
-        copyBtn.textContent = "Copied";
-        setTimeout(()=>copyBtn.textContent="Copy", 1200);
-      }
-    });
-
-    /* =========================
-       Info Portal behavior
-       ========================= */
-
-// === BACKGROUND STATE LOGIC ===
-
-// === UI STATE RESET (prevents background/warp leaks) ===
-function resetUI(){
-  document.body.classList.remove('portal-open','roadmap-open','whitepaper-open','road-open');
-
-  // restore scroll
-  document.body.style.overflow = "";
-
-  // hide portal
-  const infoPortalEl = document.getElementById('infoPortal');
-  if(infoPortalEl) infoPortalEl.classList.remove('show');
-
-  // hide roadmap
-  const roadOverlayEl = document.getElementById('roadOverlay');
-  if(roadOverlayEl){
-    roadOverlayEl.classList.remove('show');
-    roadOverlayEl.setAttribute('aria-hidden','true');
-    roadOverlayEl.scrollTop = 0;
-  }
-
-  // hide warp overlay if present
-  const warpEl = document.getElementById('fxWarp');
-  if(warpEl) warpEl.classList.remove('show');
-}
-
-// backwards compat
-function clearStates(){ resetUI(); }
-
-const infoPortal = document.getElementById('infoPortal');
-    const portalTitle = document.getElementById('portalTitle');
-    const portalText  = document.getElementById('portalText');
-    const portalClose = document.getElementById('portalClose');
-
-    let portalRunning = false;
-    let portalAutoCloseTimer = null;
-
-    function closePortal({scrollBack=true} = {}){
-      // cancel any ongoing portal typing so sound/typing stops immediately
-      portalCancel.id++;
-      if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
-      resetUI();
-      portalRunning = false;
-      if(scrollBack){
-        document.getElementById('btnSwap').scrollIntoView({behavior:"smooth", block:"center"});
-      }
-    }
-
-    portalClose.addEventListener('click', ()=>closePortal({scrollBack:true}));
-
-    async function openPortal(title, content){
-      if(portalRunning) return;
-      resetUI();
-      document.body.classList.add('portal-open');
-      portalRunning = true;
-
-      portalTitle.textContent = title;
-      portalText.textContent = "";
-      infoPortal.classList.add('show');
-      
-
-      // auto scroll down to portal
-      setTimeout(()=>{
-        // scroll suppressed to prevent mobile glitch
-      }, 60);
-
-      // type content
-      await typeInto(portalText, content, {speed:14, maxClicksPerSec:22}, portalCancel);
-    }
-
-    /* Buttons */
-    document.getElementById('btnTokenomics').addEventListener('click', ()=>{
-      openPortal("Tokenomics", CONTENT.tokenomics);
-    });
-    document.getElementById('btnEthics').addEventListener('click', ()=>{
-      openPortal("Ethical & Islamic Principles", CONTENT.ethics);
-    });
-    document.getElementById('btnSecurity').addEventListener('click', ()=>{
-      openPortal("Security & Transparency", CONTENT.security);
-    });
-    document.getElementById('btnDisclaimer').addEventListener('click', ()=>{
-      openPortal("Disclaimer", CONTENT.disclaimer);
-    });
-
-    /* ✅ CHANGE 2: Whitepaper button opens file */
-    document.getElementById('btnWhitepaper').addEventListener('click', ()=>{
-  clearStates();
-  document.body.classList.add('whitepaper-open');
-      window.open('whitepaper.pdf', '_blank');
-    });
-
-    /* =========================
-       Roadmap portal
-       ========================= */
-    const roadOverlay = document.getElementById('roadOverlay');
-    const btnRoadmap  = document.getElementById('btnRoadmap');
-    const btnBack     = document.getElementById('btnBack'); // acts as CLOSE for roadmap
-
-    btnRoadmap.addEventListener('click', ()=>{
-  // hard-close portal to avoid glitch
-  portalCancel.id++;
-  const infoPortalEl = document.getElementById('infoPortal');
-  if(infoPortalEl){ infoPortalEl.classList.remove('show'); }
-
-  clearStates();
-  document.body.classList.add('roadmap-open');
-      closePortal({scrollBack:false});
-      roadOverlay.classList.add('show'); document.body.classList.add('road-open');
-  setTimeout(()=>warp.classList.remove('show'), 1800);
-      roadOverlay.setAttribute('aria-hidden','false');
-      document.body.style.position='fixed'; document.body.style.width='100%';
-      roadOverlay.scrollTop = 0;
-    });
-
-    btnBack.addEventListener('click', ()=>{
-  clearStates();
-  roadOverlay.classList.remove('show');
-  document.body.style.position=''; document.body.style.width='';
-  document.body.classList.remove('road-open');
-
-      roadOverlay.classList.remove('show');
-      roadOverlay.setAttribute('aria-hidden','true');
-      document.body.style.position=''; document.body.style.width='';
-    });
-
-    window.addEventListener('keydown',(e)=>{
-      if(e.key==="Escape" && roadOverlay.classList.contains('show')){
-        btnBack.click();
-      }
-    });
-
-    /* ✅ CHANGE 3: Golden flame on any touch/click */
-    function spawnFlame(x,y){
-      const f = document.createElement('div');
-      f.className = 'tapFlame';
-      f.style.left = x + 'px';
-      f.style.top  = y + 'px';
-      document.body.appendChild(f);
-      setTimeout(()=>f.remove(), 900);
-    }
-
-    document.addEventListener('pointerdown', (e)=>{
-      spawnFlame(e.clientX, e.clientY);
-    }, {passive:true});
-  
-/* =========================================================
-   ULTRA VISUAL ENGINE (SPACE STATION HUD)
-   - does not change any content or button functions
-   - adds canvas starfield + particles + magnetic button light
-   ========================================================= */
-
-(function(){
-  // Add magnetic overlay element inside each .btn without changing labels
-  const btns = document.querySelectorAll('.btn');
-  btns.forEach(b=>{
-    if(!b.querySelector('.uMag')){
-      const mag = document.createElement('span');
-      mag.className='uMag';
-      b.appendChild(mag);
-    }
-    b.addEventListener('pointermove',(e)=>{
-      const r = b.getBoundingClientRect();
-      const mx = ((e.clientX - r.left) / r.width) * 100;
-      const my = ((e.clientY - r.top) / r.height) * 100;
-      b.style.setProperty('--mx', mx.toFixed(2)+'%');
-      b.style.setProperty('--my', my.toFixed(2)+'%');
-    }, {passive:true});
-  });
-
-  // Canvas helpers
-  function fitCanvas(c){
-    const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-    const w = Math.floor(window.innerWidth * dpr);
-    const h = Math.floor(window.innerHeight * dpr);
-    if(c.width !== w || c.height !== h){
-      c.width = w; c.height = h;
-    }
-    return {w,h,dpr};
-  }
-
-  // STARFIELD
-  const cStars = document.getElementById('fxStars');
-  const xStars = cStars.getContext('2d', {alpha:true});
-  let stars = [];
-  function initStars(){
-    const {w,h} = fitCanvas(cStars);
-    const count = Math.floor((w*h) / 120000);
-    stars = Array.from({length: Math.max(160, count)}, ()=>({
-      x: Math.random()*w,
-      y: Math.random()*h,
-      z: 0.35 + Math.random()*0.65,
-      r: 0.6 + Math.random()*1.6,
-      tw: Math.random()*Math.PI*2
-    }));
-  }
-
-  // PARTICLES (interactive drift + subtle orbit)
-  const cP = document.getElementById('fxParticles');
-  const xP = cP.getContext('2d', {alpha:true});
-  let parts = [];
-  let pointer = {x:0,y:0,active:false};
-  function initParts(){
-    const {w,h} = fitCanvas(cP);
-    const count = Math.floor((w*h) / 150000);
-    parts = Array.from({length: Math.max(90, count)}, ()=>({
-      x: Math.random()*w,
-      y: Math.random()*h,
-      vx: (-0.25 + Math.random()*0.5),
-      vy: (-0.25 + Math.random()*0.5),
-      r: 0.8 + Math.random()*2.0,
-      a: 0.10 + Math.random()*0.20,
-      hue: Math.random()<0.5 ? 'gold' : (Math.random()<0.5 ? 'cyan' : 'violet')
-    }));
-  }
-
-  function col(hue, a){
-    if(hue==='gold') return `rgba(255,204,77,${a})`;
-    if(hue==='cyan') return `rgba(36,209,255,${a})`;
-    return `rgba(124,77,255,${a})`;
-  }
-
-  window.addEventListener('pointermove',(e)=>{
-    pointer.x = e.clientX * (window.devicePixelRatio||1);
-    pointer.y = e.clientY * (window.devicePixelRatio||1);
-    pointer.active = true;
-  }, {passive:true});
-  window.addEventListener('pointerleave',()=>{pointer.active=false;}, {passive:true});
-
-  function step(){
-    const {w,h} = fitCanvas(cStars);
-    fitCanvas(cP);
-
-    // stars
-    xStars.clearRect(0,0,w,h);
-    for(const s of stars){
-      s.tw += 0.02 * s.z;
-      const tw = (Math.sin(s.tw)+1)/2;
-      xStars.globalAlpha = 0.25 + tw*0.55;
-      xStars.fillStyle = 'white';
-      xStars.beginPath();
-      xStars.arc(s.x, s.y, s.r*s.z, 0, Math.PI*2);
-      xStars.fill();
-
-      // drift
-      s.y += 0.12 + 0.35*s.z;
-      if(s.y > h+10){ s.y = -10; s.x = Math.random()*w; }
-    }
-
-    // particles
-    const {w:wp,h:hp} = {w:cP.width, h:cP.height};
-    xP.clearRect(0,0,wp,hp);
-
-    // links
-    for(let i=0;i<parts.length;i++){
-      const p = parts[i];
-      // gentle drift
-      p.x += p.vx;
-      p.y += p.vy;
-
-      // wrap
-      if(p.x<-40) p.x=wp+40;
-      if(p.x>wp+40) p.x=-40;
-      if(p.y<-40) p.y=hp+40;
-      if(p.y>hp+40) p.y=-40;
-
-      // pointer attraction (soft)
-      if(pointer.active){
-        const dx = pointer.x - p.x;
-        const dy = pointer.y - p.y;
-        const dist = Math.hypot(dx,dy);
-        if(dist < 220){
-          p.x += dx * 0.0009;
-          p.y += dy * 0.0009;
-        }
-      }
-
-      // draw node
-      xP.fillStyle = col(p.hue, p.a);
-      xP.beginPath();
-      xP.arc(p.x, p.y, p.r, 0, Math.PI*2);
-      xP.fill();
-
-      // connect nearby
-      for(let j=i+1;j<parts.length;j++){
-        const q = parts[j];
-        const dx = p.x - q.x;
-        const dy = p.y - q.y;
-        const d = Math.hypot(dx,dy);
-        if(d < 140){
-          xP.strokeStyle = col('cyan', 0.06 + (1 - d/140)*0.12);
-          xP.lineWidth = 1;
-          xP.beginPath();
-          xP.moveTo(p.x,p.y);
-          xP.lineTo(q.x,q.y);
-          xP.stroke();
-        }
-      }
-    }
-
-    requestAnimationFrame(step);
-  }
-
-  function boot(){
-    initStars();
-    initParts();
-    step();
-  }
-  window.addEventListener('resize', ()=>{ initStars(); initParts(); }, {passive:true});
-  boot();
-
-  // Hide warp when portal closes
-  const portalEl = document.getElementById('infoPortal');
-  const portalCloseBtn = document.getElementById('portalClose');
-  function hideWarp(){ warp.classList.remove('show'); }
-  if(portalCloseBtn){
-    portalCloseBtn.addEventListener('click', hideWarp);
-  }
-
-})();
-
-
-/* =========================================================
-   NEXT LEVEL JS: HUD STATUS + SWAP WARP + ROADMAP GALAXY
-   (visual only; does not change existing logic)
-   ========================================================= */
-(function(){
-  // HUD status subtle live readout
-  const elSys = document.getElementById('fxSys');
-  const elLink = document.getElementById('fxLink');
-  const elSync = document.getElementById('fxSync');
-
-  function jitterSync(){
-    if(elSync){
-      const base = 99.90;
-      const v = base + Math.random()*0.09;
-      elSync.textContent = v.toFixed(2) + '%';
-    }
-    if(elLink){
-      elLink.textContent = (Math.random() < 0.97) ? 'STABLE' : 'CALIBRATING';
-    }
-    if(elSys){
-      elSys.textContent = 'ONLINE';
-    }
-  }
-  setInterval(jitterSync, 900);
-
-  // Warp overlay effect on SWAP click (visual only)
-  const warp = document.getElementById('fxWarp');
-  const allBtns = document.querySelectorAll('.btn');
-  if(warp && allBtns.length){
-    allBtns.forEach(b=>{
-      const id = b.id || '';
-      if(id === 'btnWhitepaper' || id === 'btnRoadmap' || id === 'btnSwap') return;
-      b.addEventListener('click', ()=>{
-        warp.classList.add('show');
-      }, {passive:true});
-    });
-  }
-
-  // Roadmap Galaxy canvas (visual only, runs only when roadmap open)
-  const c = document.getElementById('roadGalaxy');
-  const overlay = document.getElementById('roadOverlay');
-  if(!c || !overlay) return;
-
-  const ctx = c.getContext('2d', {alpha:true});
-  let stars = [];
-  let raf = 0;
-
-  function resize(){
-    const dpr = Math.max(1, Math.min(2, window.devicePixelRatio||1));
-    const r = c.getBoundingClientRect();
-    c.width = Math.floor(r.width * dpr);
-    c.height = Math.floor(r.height * dpr);
-
-    const n = Math.max(140, Math.floor((c.width*c.height)/90000));
-    stars = Array.from({length:n}, ()=>({
-      x:Math.random()*c.width,
-      y:Math.random()*c.height,
-      r:(0.7+Math.random()*1.8),
-      a:(0.10+Math.random()*0.35),
-      s:(0.15+Math.random()*0.55),
-      k:Math.random()*Math.PI*2
-    }));
-  }
-
-  function draw(){
-    ctx.clearRect(0,0,c.width,c.height);
-
-    const g = ctx.createRadialGradient(c.width*0.5, c.height*0.2, 0, c.width*0.5, c.height*0.2, c.width*0.9);
-    g.addColorStop(0, 'rgba(36,209,255,0.10)');
-    g.addColorStop(0.55, 'rgba(124,77,255,0.06)');
-    g.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = g;
-    ctx.fillRect(0,0,c.width,c.height);
-
-    for(const s of stars){
-      s.k += 0.02*s.s;
-      s.y += s.s;
-      s.x += Math.sin(s.k)*0.08;
-      if(s.y > c.height+10){ s.y = -10; s.x = Math.random()*c.width; }
-      ctx.fillStyle = `rgba(255,255,255,${s.a})`;
-      ctx.beginPath();
-      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      ctx.fill();
-    }
-
-    for(let i=0;i<stars.length;i++){
-      const a = stars[i];
-      for(let j=i+1;j<stars.length;j++){
-        const b = stars[j];
-        const dx=a.x-b.x, dy=a.y-b.y;
-        const d=Math.hypot(dx,dy);
-        if(d<160){
-          ctx.strokeStyle = `rgba(36,209,255,${0.02 + (1-d/160)*0.08})`;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(a.x,a.y);
-          ctx.lineTo(b.x,b.y);
-          ctx.stroke();
-        }
-      }
-    }
-
-    raf = requestAnimationFrame(draw);
-  }
-
-  function start(){
-    if(raf) return;
-    resize();
-    draw();
-  }
-  function stop(){
-    if(!raf) return;
-    cancelAnimationFrame(raf);
-    raf = 0;
-    ctx.clearRect(0,0,c.width,c.height);
-  }
-
-  // Observe overlay show/hide
-  const obs = new MutationObserver(()=>{
-    const open = overlay.classList.contains('show');
-    if(open) start();
-    else stop();
-  });
-  obs.observe(overlay, {attributes:true, attributeFilter:['class']});
-
-  window.addEventListener('resize', ()=>{ if(raf) resize(); }, {passive:true});
-
-  // Hide warp when portal closes
-  const portalEl = document.getElementById('infoPortal');
-  const portalCloseBtn = document.getElementById('portalClose');
-  function hideWarp(){ warp.classList.remove('show'); }
-  if(portalCloseBtn){
-    portalCloseBtn.addEventListener('click', hideWarp);
-  }
-
-})();
-
-
-// === TEAM PORTAL CONTROL ===
-const btnTeam=document.getElementById("btnTeam");
-const teamPortal=document.getElementById("teamPortal");
-const teamClose=document.getElementById("teamClose");
-if(btnTeam&&teamPortal){btnTeam.addEventListener("click",()=>{document.body.classList.add("portal-open");teamPortal.classList.add("show");});}
-if(teamClose){teamClose.addEventListener("click",()=>{teamPortal.classList.remove("show");document.body.classList.remove("portal-open");});}
-
-</script>
 <footer class="bottom-socials" style="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:18px;align-items:center;justify-content:center;padding:10px 14px;border-radius:16px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);box-shadow:0 0 18px rgba(255,204,77,.25);z-index:99999;"><a aria-label="X Social" href="https://x.com/apemood" rel="noopener noreferrer" style="color:var(--gold);display:flex;align-items:center;" target="_blank">
 <svg fill="currentColor" height="22" viewbox="0 0 24 24" width="22">
 <path d="M18.244 2H21.552L14.34 10.26L22.848 22H16.172L10.956 14.72L4.656 22H1.344L9.072 13.14L0.848 2H7.688L12.428 8.56L18.244 2Z"></path>
@@ -2684,92 +2072,12 @@ if(teamClose){teamClose.addEventListener("click",()=>{teamPortal.classList.remov
 </svg>
 </a></footer>
 <!-- === APEM Swap override (embedded PancakeSwap — no typing text) === -->
-<script>
-(function(){
-  const overlay = document.getElementById("swapPortal");
-  const closeBtn = document.getElementById("swapClose");
-
-  // remove any existing listeners by cloning button
-  const oldBtn = document.getElementById("btnSwap");
-  if(oldBtn){
-    const newBtn = oldBtn.cloneNode(true);
-    oldBtn.parentNode.replaceChild(newBtn, oldBtn);
-    const btnSwap = newBtn;
-
-    function clearStates(){
-      document.body.classList.remove("portal-open","roadmap-open","whitepaper-open","road-open");
-      document.body.style.overflow = "";
-      const infoPortal = document.getElementById("infoPortal");
-      if(infoPortal) infoPortal.classList.remove("show");
-    }
-
-    btnSwap.addEventListener("click", function(e){
-      e.preventDefault();
-      clearStates();
-      document.body.classList.add("portal-open");
-      document.body.style.overflow = "hidden";
-      if(overlay){ overlay.classList.add("show"); }
-    });
-  }
-
-  if(closeBtn){
-    closeBtn.addEventListener("click", function(){
-      if(overlay) overlay.classList.remove("show");
-      document.body.classList.remove("portal-open");
-      document.body.style.overflow = "";
-    });
-  }
-})();
-
-// === TEAM PORTAL CONTROL ===
-const btnTeam=document.getElementById("btnTeam");
-const teamPortal=document.getElementById("teamPortal");
-const teamClose=document.getElementById("teamClose");
-if(btnTeam&&teamPortal){btnTeam.addEventListener("click",()=>{document.body.classList.add("portal-open");teamPortal.classList.add("show");});}
-if(teamClose){teamClose.addEventListener("click",()=>{teamPortal.classList.remove("show");document.body.classList.remove("portal-open");});}
-
-</script>
 
 
-<script>
-// TEAM PORTAL RE-BIND (safe, no background bug)
-(function(){
-  const oldBtn = document.getElementById("btnTeam");
-  const teamPortal = document.getElementById("teamPortal");
-  const closeBtn = document.getElementById("teamClose");
-  if(!oldBtn || !teamPortal) return;
 
-  // remove old listeners
-  const btnTeam = oldBtn.cloneNode(true);
-  oldBtn.parentNode.replaceChild(btnTeam, oldBtn);
 
-  btnTeam.addEventListener("click", function(e){
-    e.preventDefault();
-    teamPortal.classList.add("show");
-  });
 
-  if(closeBtn){
-    closeBtn.addEventListener("click", function(){
-      teamPortal.classList.remove("show");
-    });
-  }
-})();
-</script>
 
-<script>
-(function() {
-  const swapBtn = document.getElementById("btnSwap");
-  const PCS_URL = "https://pancakeswap.finance/swap?outputCurrency=0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35&chain=bsc";
-  if (swapBtn) {
-    swapBtn.addEventListener("click", function(e){
-      e.preventDefault();
-      // ensure UI state stays normal
-      document.body.classList.remove('portal-open');
-      window.open(PCS_URL, "_blank");
-    });
-  }
-})();
-</script>
 
 
 <div class="footer-mini-disclaimer" style="margin:24px 0 10px 0;text-align:center;font-size:11px;opacity:.7;line-height:1.4;">
@@ -2782,27 +2090,7 @@ if(teamClose){teamClose.addEventListener("click",()=>{teamPortal.classList.remov
 
 
 
-<script>
-// === Roadmap Open/Close Safety Bind ===
-document.addEventListener('DOMContentLoaded', function(){
-  const btnRoadmap = document.getElementById('btnRoadmap');
-  const roadOverlay = document.getElementById('roadOverlay');
-  const btnBack = document.getElementById('btnBack');
-  if(btnRoadmap && roadOverlay){
-    btnRoadmap.addEventListener('click', function(){
-      roadOverlay.classList.add('show');
-      document.body.classList.add('roadmap-open');
-      window.scrollTo(0,0);
-    });
-  }
-  if(btnBack && roadOverlay){
-    btnBack.addEventListener('click', function(){
-      roadOverlay.classList.remove('show');
-      document.body.classList.remove('roadmap-open');
-    });
-  }
-});
-</script>
+
 
 
 <script>
@@ -2865,6 +2153,85 @@ document.addEventListener('DOMContentLoaded', function(){
       inner.style.overflowY = 'auto';
     }
   })();
+
+});
+</script>
+
+
+<script>
+/* === Consolidated UI bindings (clean, single source of truth) === */
+document.addEventListener('DOMContentLoaded', function(){
+
+  /* Swap: always open PancakeSwap in a new tab (no embedded widget) */
+  const swapBtn = document.getElementById('btnSwap');
+  const PCS_URL = 'https://pancakeswap.finance/swap?outputCurrency=0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35&chain=bsc';
+  if (swapBtn) {
+    swapBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      window.open(PCS_URL, '_blank', 'noopener,noreferrer');
+    });
+  }
+
+  /* Whitepaper: ensure the PDF exists at /whitepaper.pdf */
+  const wpBtn = document.getElementById('btnWhitepaper');
+  if (wpBtn) {
+    wpBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      window.open('whitepaper.pdf', '_blank', 'noopener,noreferrer');
+    });
+  }
+
+  /* Team portal */
+  const btnTeam = document.getElementById('btnTeam');
+  const teamPortal = document.getElementById('teamPortal');
+  const teamClose = document.getElementById('teamClose');
+  if (btnTeam && teamPortal) {
+    btnTeam.addEventListener('click', function(e){
+      e.preventDefault();
+      document.body.classList.add('portal-open');
+      document.body.style.overflow = 'hidden';
+      teamPortal.classList.add('show');
+    });
+  }
+  if (teamClose && teamPortal) {
+    teamClose.addEventListener('click', function(e){
+      e.preventDefault();
+      teamPortal.classList.remove('show');
+      document.body.classList.remove('portal-open');
+      document.body.style.overflow = '';
+    });
+  }
+
+  /* Roadmap overlay (if present) */
+  const btnRoadmap = document.getElementById('btnRoadmap');
+  const roadOverlay = document.getElementById('roadOverlay');
+  const btnBack = document.getElementById('btnBack');
+  if (btnRoadmap && roadOverlay) {
+    btnRoadmap.addEventListener('click', function(e){
+      e.preventDefault();
+      roadOverlay.classList.add('show');
+      document.body.classList.add('portal-open');
+      document.body.style.overflow = 'hidden';
+    });
+  }
+  function closeRoadmap(){
+    if(!roadOverlay) return;
+    roadOverlay.classList.remove('show');
+    document.body.classList.remove('portal-open');
+    document.body.style.overflow = '';
+  }
+  if (btnBack) btnBack.addEventListener('click', function(e){ e.preventDefault(); closeRoadmap(); });
+
+  /* Escape key closes overlays */
+  document.addEventListener('keydown', function(e){
+    if(e.key !== 'Escape') return;
+    if(teamPortal && teamPortal.classList.contains('show')) {
+      teamPortal.classList.remove('show');
+      document.body.classList.remove('portal-open');
+      document.body.style.overflow = '';
+    }
+    if(roadOverlay && roadOverlay.classList.contains('show')) closeRoadmap();
+  });
 
 });
 </script>
