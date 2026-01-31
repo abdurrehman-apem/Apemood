@@ -72,6 +72,33 @@ ul{margin-left:20px;}
   color:#ffcc4d;
   text-decoration:none;
 }
+
+.copy-btn, .copyBox button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  nav a, nav button {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -334,4 +361,3 @@ function openWhitepaper(){
 
 </body>
 </html>
-
