@@ -99,6 +99,207 @@ ul{margin-left:20px;}
   }
 }
 
+
+/* --- Tech Sci‑Fi Theme (visual only; no text/function changes) --- */
+:root{
+  --bg0:#050712;
+  --bg1:#070b18;
+  --card:rgba(17,24,39,.72);
+  --stroke:rgba(255,204,77,.22);
+  --gold:#ffcc4d;
+  --gold2:#ffd36a;
+  --text:#eaeaea;
+}
+html,body{
+  background:
+    radial-gradient(900px 520px at 20% 10%, rgba(255,204,77,.10), transparent 55%),
+    radial-gradient(900px 520px at 80% 0%, rgba(99,102,241,.10), transparent 55%),
+    radial-gradient(1200px 800px at 50% 120%, rgba(16,185,129,.08), transparent 55%),
+    linear-gradient(180deg, var(--bg1), var(--bg0));
+  color:var(--text);
+}
+/* crisp modern font look without external fonts */
+body{
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  letter-spacing:.15px;
+}
+/* Header / nav feel */
+header{
+  background: rgba(2,6,23,.86) !important;
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid rgba(255,204,77,.14);
+}
+header img{
+  filter: drop-shadow(0 0 10px rgba(255,204,77,.18));
+}
+
+/* Container card vibe */
+.container{
+  position:relative;
+}
+.container::before{
+  content:"";
+  position:absolute;
+  inset:-8px;
+  border-radius:16px;
+  border:1px solid rgba(255,204,77,.10);
+  pointer-events:none;
+  opacity:.55;
+}
+/* Headings glow */
+h1,h2,h3{
+  text-shadow: 0 0 16px rgba(255,204,77,.18);
+}
+h1{
+  letter-spacing:.6px;
+}
+/* Paragraph readability */
+p,li{
+  color: rgba(234,234,234,.92);
+}
+
+/* Buttons: modern tech gradient + hover */
+nav a, nav button,
+.socials a,
+.copyBox button{
+  border:1px solid rgba(255,204,77,.16);
+  background: linear-gradient(135deg, rgba(31,41,55,.92), rgba(2,6,23,.92)) !important;
+  color: var(--gold) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+nav a:hover, nav button:hover,
+.socials a:hover,
+.copyBox button:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(0,0,0,.42), 0 0 18px rgba(255,204,77,.16);
+  border-color: rgba(255,204,77,.32);
+}
+nav a:active, nav button:active,
+.socials a:active,
+.copyBox button:active{
+  transform: translateY(0);
+}
+
+/* Keep the Swap button prominent (if inline style exists, this only enhances glow) */
+nav a[style*="background:#ffcc4d"]{
+  background: linear-gradient(135deg, rgba(255,204,77,1), rgba(255,159,28,1)) !important;
+  color:#000 !important;
+  border-color: rgba(255,204,77,.55);
+  box-shadow: 0 14px 44px rgba(255,204,77,.12), 0 10px 28px rgba(0,0,0,.35);
+}
+
+/* Copy feedback styling (no animation change beyond subtle glow) */
+.copyBox button.copied{
+  box-shadow: 0 0 18px rgba(255,204,77,.22), 0 14px 36px rgba(0,0,0,.42) !important;
+  border-color: rgba(255,204,77,.40) !important;
+}
+
+/* Cards */
+.copyBox{
+  background: rgba(2,6,23,.78) !important;
+  border: 1px solid rgba(255,204,77,.10);
+  box-shadow: 0 16px 44px rgba(0,0,0,.45);
+}
+
+/* Founder image polish (no size changes) */
+img[alt="Founder Photo"], .founder-img{
+  box-shadow: 0 18px 48px rgba(0,0,0,.55), 0 0 24px rgba(255,204,77,.10);
+  border: 1px solid rgba(255,204,77,.14);
+}
+
+
+/* --- Performance-optimized Sci-Fi Theme (visual only) --- */
+:root{
+  --bg0:#050712;
+  --bg1:#070b18;
+  --gold:#ffcc4d;
+  --text:#eaeaea;
+}
+html,body{
+  background:
+    radial-gradient(900px 520px at 20% 10%, rgba(255,204,77,.08), transparent 60%),
+    radial-gradient(900px 520px at 80% 0%, rgba(99,102,241,.07), transparent 60%),
+    linear-gradient(180deg, var(--bg1), var(--bg0));
+  color:var(--text);
+}
+body{
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  letter-spacing:.1px;
+}
+
+/* Header: avoid expensive blur on low-end devices */
+header{
+  background: rgba(2,6,23,.92) !important;
+  border-bottom:1px solid rgba(255,204,77,.14);
+}
+header img{
+  filter: drop-shadow(0 0 6px rgba(255,204,77,.14));
+}
+
+/* Headings: subtle glow */
+h1,h2,h3{
+  text-shadow: 0 0 10px rgba(255,204,77,.12);
+}
+
+p,li{
+  color: rgba(234,234,234,.92);
+}
+
+/* Buttons: lighter shadows */
+nav a, nav button,
+.socials a,
+.copyBox button{
+  border:1px solid rgba(255,204,77,.14);
+  background: linear-gradient(135deg, rgba(31,41,55,.92), rgba(2,6,23,.92)) !important;
+  color: var(--gold) !important;
+  box-shadow: 0 6px 16px rgba(0,0,0,.28);
+  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+  will-change: transform;
+}
+nav a:hover, nav button:hover,
+.socials a:hover,
+.copyBox button:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0,0,0,.32);
+  border-color: rgba(255,204,77,.22);
+}
+nav a:active, nav button:active,
+.socials a:active,
+.copyBox button:active{
+  transform: translateY(0);
+}
+
+/* Keep swap prominent */
+nav a[style*="background:#ffcc4d"]{
+  background: linear-gradient(135deg, rgba(255,204,77,1), rgba(255,159,28,1)) !important;
+  color:#000 !important;
+  border-color: rgba(255,204,77,.45);
+  box-shadow: 0 8px 18px rgba(0,0,0,.28);
+}
+
+/* Copy feedback: no extra animation */
+.copyBox button.copied{
+  border-color: rgba(255,204,77,.30) !important;
+}
+
+.copyBox{
+  background: rgba(2,6,23,.82) !important;
+  border: 1px solid rgba(255,204,77,.10);
+  box-shadow: 0 8px 18px rgba(0,0,0,.30);
+}
+
+img[alt="Founder Photo"], .founder-img{
+  box-shadow: 0 10px 22px rgba(0,0,0,.35);
+  border: 1px solid rgba(255,204,77,.12);
+}
+
+@media (prefers-reduced-motion: reduce){
+  nav a, nav button, .socials a, .copyBox button{transition:none !important;}
+}
+/* --- End theme --- */
+
+
 </style>
 </head>
 <body>
