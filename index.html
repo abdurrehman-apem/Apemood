@@ -99,6 +99,15 @@ ul{margin-left:20px;}
   }
 }
 
+
+.copyBox button{
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.copyBox button.copied{
+  transform: scale(1.08);
+  box-shadow: 0 0 10px rgba(255,204,77,.6);
+}
+
 </style>
 </head>
 <body>
@@ -118,7 +127,7 @@ ul{margin-left:20px;}
 <h2>Contract Address</h2>
 <div class="copyBox">
 <span id="contract">0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</span>
-<button onclick="copyText('contract')">Copy</button>
+<button onclick="copyText('contract', this)">Copy</button>
 </div>
 
 <div class="socials">
@@ -149,7 +158,7 @@ Blockchain: BNB Smart Chain (BEP-20)</p>
 <h3>Contract Address</h3>
 <div class="copyBox">
 <span id="contract2">0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</span>
-<button onclick="copyText('contract2')">Copy</button>
+<button onclick="copyText('contract2', this)">Copy</button>
 </div>
 
 <p>Total Supply: 150,000,000 APEM</p>
@@ -179,13 +188,13 @@ Locked Supply: 148,000,000 APEM</p>
 <h3>PinkLock Record ID</h3>
 <div class="copyBox">
 <span id="pinklock">1443116</span>
-<button onclick="copyText('pinklock')">Copy</button>
+<button onclick="copyText('pinklock', this)">Copy</button>
 </div>
 
 <p>Public Vesting Proof Link:</p>
 <div class="copyBox">
 <span id="pinklink">https://www.pinksale.finance/pinklock/bsc/record/1443116</span>
-<button onclick="copyText('pinklink')">Copy</button>
+<button onclick="copyText('pinklink', this)">Copy</button>
 </div>
 
 <p>Lock Title: Ape Mood Locker<br>
@@ -318,13 +327,13 @@ No locked tokens enter circulation before January 2027.</p>
 <p>Token Contract (BscScan):</p>
 <div class="copyBox">
 <span id="bsc">https://bscscan.com/token/0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</span>
-<button onclick="copyText('bsc')">Copy</button>
+<button onclick="copyText('bsc', this)">Copy</button>
 </div>
 
 <p>PinkLock Vesting Proof:</p>
 <div class="copyBox">
 <span id="pinkproof">https://www.pinksale.finance/pinklock/bsc/record/1443116</span>
-<button onclick="copyText('pinkproof')">Copy</button>
+<button onclick="copyText('pinkproof', this)">Copy</button>
 </div>
 
 <h3>14. Closing Statement</h3>
@@ -350,9 +359,19 @@ linkedin.com/in/abdur-rehman-2459b83a1
 </div>
 
 <script>
-function copyText(id){
-  navigator.clipboard.writeText(document.getElementById(id).innerText);
-  alert("Copied");
+function copyText(id, btn){
+  const text = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    if(btn){
+      const original = btn.innerText;
+      btn.innerText = "Copied";
+      btn.classList.add("copied");
+      setTimeout(() => {
+        btn.innerText = original;
+        btn.classList.remove("copied");
+      }, 1200);
+    }
+  });
 }
 function openWhitepaper(){
   window.open("whitepaper.pdf","_blank");
