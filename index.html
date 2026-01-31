@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ape Mood (APEM)</title>
+<link rel="icon" href="assets/favicon-32.png">
+
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
-<link rel="icon" type="image/png" sizes="256x256" href="assets/favicon-256.png">
 <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon-512.png">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-256.png">
 
 <style>
 body{
@@ -72,33 +72,6 @@ ul{margin-left:20px;}
   color:#ffcc4d;
   text-decoration:none;
 }
-
-.copy-btn, .copyBox button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-  line-height: 1;
-}
-
-@media (max-width: 768px) {
-  header {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  nav {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    justify-content: space-between;
-    gap: 10px;
-  }
-  nav a, nav button {
-    flex: 1 1 auto;
-    text-align: center;
-  }
-}
-
 </style>
 </head>
 <body>
@@ -358,6 +331,69 @@ function openWhitepaper(){
   window.open("whitepaper.pdf","_blank");
 }
 </script>
+
+
+<!-- SAFE UI FIXES: mobile layout + copy button (no content changes) -->
+<style>
+/* Ensure page scrolls and content is visible */
+html, body {
+  height: auto !important;
+  overflow-y: auto !important;
+}
+
+/* Mobile header button order & spacing */
+@media (max-width: 768px) {
+  .header-buttons, .top-actions, .nav-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+  }
+  .header-buttons a, .header-buttons button,
+  .top-actions a, .top-actions button,
+  .nav-actions a, .nav-actions button {
+    width: 100% !important;
+    text-align: center !important;
+  }
+}
+
+/* Copy button text alignment */
+.copy-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+</style>
+
+<script>
+// SAFE copy handler: no alerts, no popups, no eval
+(function(){
+  function handleCopy(btn){
+    var target = btn.getAttribute('data-copy-target');
+    if(!target) return;
+    var el = document.querySelector(target);
+    if(!el) return;
+    var text = el.innerText || el.value || '';
+    if(!navigator.clipboard) return;
+    navigator.clipboard.writeText(text).then(function(){
+      var prev = btn.innerText;
+      btn.innerText = 'Copied';
+      btn.classList.add('copied');
+      setTimeout(function(){
+        btn.innerText = prev || 'Copy';
+        btn.classList.remove('copied');
+      }, 1200);
+    });
+  }
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.copy-btn');
+    if(btn){ handleCopy(btn); }
+  });
+})();
+</script>
+<!-- END SAFE UI FIXES -->
 
 </body>
 </html>
