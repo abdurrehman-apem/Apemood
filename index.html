@@ -335,11 +335,55 @@ html, body {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden !important;
-  overscroll-behavior-x: none;
-  touch-action: pan-y;
 }
 * {
   box-sizing: border-box;
+}
+body {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+</style>
+
+
+<style>
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+body {
+  position: relative;
+}
+</style>
+
+
+<style>
+/* === TRUE NATIVE SCROLL FIX === */
+html, body {
+  height: auto !important;
+  min-height: 100% !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure no invisible layer captures first touch */
+.overlay, .overlay-bg, .fullscreen, .screen, .hero::before, .hero::after {
+  pointer-events: none !important;
+}
+
+/* Make sure main content is the scroll container */
+main, .main, .content, .container {
+  position: relative;
+  overflow: visible !important;
+}
+
+/* Header must not block scroll gestures */
+header {
+  pointer-events: auto;
 }
 </style>
 
@@ -592,36 +636,7 @@ linkedin.com/in/abdur-rehman-2459b83a1
 
 </div>
 
-<script>
-function copyText(id, btn){
-  const el = document.getElementById(id);
-  if(!el) return;
-  const text = el.innerText || el.value || "";
-  const done = () => {
-    if(btn){
-      const old = btn.innerText;
-      btn.innerText = "Copied";
-      setTimeout(()=>{ btn.innerText = old; },1500);
-    }
-  };
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(done);
-  } else {
-    const t = document.createElement("textarea");
-    t.value = text;
-    t.style.position="fixed";
-    t.style.opacity="0";
-    document.body.appendChild(t);
-    t.select();
-    try{document.execCommand("copy");}catch(e){}
-    document.body.removeChild(t);
-    done();
-  }
-}
-function openWhitepaper(){
-  window.open("whitepaper.pdf","_blank");
-}
-</script>
+
 
 </body>
 </html>
