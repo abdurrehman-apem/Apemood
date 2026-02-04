@@ -1,130 +1,105 @@
-# Ape mood (APEM)
-A future-focused digital asset built on BNB Smart Chain (BEP-20) — developed with an ethical, sustainable, and long-term community-driven approach.
+Ape Mood (APEM)
 
- Contract Details
- 
-Field	Value
-Network	BNB Smart Chain
-Standard	BEP-20
-Contract Address	0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35
+Ape Mood (APEM) is a community-driven utility token built on the BNB Smart Chain (BEP-20).
+The project focuses on long-term ecosystem development through transparent on-chain mechanisms and controlled supply release.
 
-Always verify contract address before trading.
+---
 
- Vision & Philosophy
+## Token Overview
 
-APE MOOD (APEM) is not a hype or pump-based token.
+- **Token Name:** Ape Mood  
+- **Symbol:** APEM  
+- **Blockchain:** BNB Smart Chain (BEP-20)  
+- **Total Supply:** 150,000,000 APEM  
 
-The project is built on:
-
-✔ Ethical development values
-✔ Transparency-first culture
-✔ Sustainable long-term direction
-✔ Responsible community growth
-
-Our focus is to gradually build a foundation for:
-
-Digital ecosystem initiatives
-
-AI-aligned integrations
-
-Platform-driven expansion
-
-Realistic & practical development goals
-
-No unrealistic promises.
-No shortcut growth model.
-
-🧩 Core Focus Areas
-
-Blockchain-based digital infrastructure
-
-Early-stage AI ecosystem exploration
-
-Community-centric decision approach
-
-Utility-driven roadmap evolution
-
-Future steps depend on:
-
-Market & technology landscape
-
-Community engagement
-
-Development progress
-
-Platform stability
-
-🗺 Roadmap (Foundation Level)
-Phase 1 — Launch & Community Base
-
-Token deployment on BNB Smart Chain
-
-Buy & Hold value model introduction
-
-Awareness & organic growth
-
-Phase 2 — Research & Ecosystem Exploration
-
-Digital platform direction planning
-
-AI-assisted capability study
-
-Feasibility & sustainability evaluation
-
-Phase 3 — Gradual Expansion (Conditional)
-
-Ecosystem planning & refinement
-
-Responsible & structured rollout
-
-Community transparency reports
-
-Additional roadmap stages will be announced progressively.
-
-👤 Project Founder
-
-Abdur Rehman
-Founder — APE MOOD (APEM)
-
-📩 Email: Contact@apemood.com
-
-🔗 LinkedIn (shared inside team portal on website)
+**Contract Address:**
+0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35
 
 
-🌐 Website https://apemood.com
 
-🐦 X https://x.com/apemood
+## Project Vision
 
-💬 Telegram https://t.me/apemoodofficial
+Ape Mood is designed as a  community-driven utility token to establish long-term sustainable digital ecosystem.
+The project emphasizes transparency, predictable token emissions, and community-driven growth.
 
-🟡 PancakeSwap Trading Link https://pancakeswap.finance/swap?outputCurrency=0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35&chain=bsc
+Planned ecosystem focus areas include:
+- Blockchain-based digital services
+- AI-integrated decentralized applications
+- Decentralized digital platforms
+- Future real-world asset (RWA) integration
 
-⚠️ Disclaimer
+Expansion is driven strictly by ecosystem growth and on-chain governance.
 
-APE MOOD does not provide:
 
-❌ Investment guarantees
-❌ Profit expectations
-❌ Financial advice
-❌ Unrealistic future claims
+## Supply & Vesting Structure
 
-All development plans and ecosystem directions:
+- **Initial Circulating Supply:** 2,000,000 APEM  
+- **Locked Supply:** 148,000,000 APEM  
 
-Are subject to feasibility
+The majority of tokens are secured in an on-chain PinkLock smart contract with a fixed vesting schedule extending from 2027 to 2041.
 
-Depend on project progress
+This structure ensures:
+- Controlled emissions
+- No early supply shocks
+- Fully automated, verifiable unlocks
 
-May evolve over time
 
-Cryptocurrency carries financial risk.
-Only participate if you fully understand the risk involved.
+## Liquidity
 
-🧾 License & Usage
+- **Liquidity Allocation:** 1,000,000 APEM  
+- Paired with BNB for decentralized exchange trading  
+- Liquidity tokens are locked to support market stability  
 
-This project is published for:
+---
 
-Community transparency
+## Security & Transparency
 
-Open documentation reference
+- Ownership renounced  
+- Contract verified on BscScan  
+- No mint function  
+- No hidden supply  
+- Vesting controlled by audited smart contracts  
+
+All locks and unlocks are publicly verifiable on-chain.
+
+---
+
+## Community-Driven Approach
+
+Ape Mood is not a hype-based or pump-oriented token.
+Development and ecosystem expansion follow a transparent, long-term, and community-aligned philosophy.
+
+No public fundraising or investment programs are conducted by the project.
+
+---
+
+## Official Links
+
+- **Website:** https://apemood.com  
+- **Whitepaper:** https://apemood.com/whitepaper.pdf  
+- **BscScan:** https://bscscan.com/token/0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35  
+- **Vesting Proof:** https://www.pinksale.finance/pinklock/bsc/record/1443116
+
+## Contact
+
+- **Email:** contact@apemood.com
+- **X (Twitter):** https://x.com/apemood
+- **Telegram:** https://t.me/apemoodofficial
+- **Founder LinkedIn:** https://www.linkedin.com/in/abdur-rehman-2459b83a1/
+
+---
+
+## Disclaimer
+
+Ape Mood (APEM) is a decentralized digital token.
+It does not represent equity, ownership, or guaranteed financial returns.
+
+Nothing in this repository constitutes financial advice.
+Participants are responsible for conducting their own research.
+
+
+
+
+
 
 Development lifecycle visibility
