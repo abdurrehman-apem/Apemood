@@ -383,7 +383,41 @@ body {
     <a href="#founder">Founder</a>
   </nav>
 </header>
+<section id="bullish-signals" class="card">
+  <h2>📈 Bullish Signals</h2>
 
+  <div class="controls">
+    <label>
+      Timeframe:
+      <select id="tf">
+        <option value="15m" selected>15m</option>
+        <option value="1h">1h</option>
+        <option value="4h">4h</option>
+      </select>
+    </label>
+
+    <label>
+      Scan count:
+      <select id="scanCount">
+        <option value="40">40</option>
+        <option value="60" selected>60</option>
+        <option value="80">80</option>
+      </select>
+    </label>
+
+    <button id="refreshBullishBtn">Refresh</button>
+  </div>
+
+  <div id="bullishList" class="grid"></div>
+</section>
+
+<section id="trending-coins" class="card">
+  <h2>🔥 Trending Coins</h2>
+
+  <button id="refreshTrendingBtn">Refresh</button>
+
+  <div id="trendingList" class="grid"></div>
+</section>
 <div class="container">
 <h1>Ape Mood (APEM)</h1>
 
@@ -661,7 +695,7 @@ function openWhitepaper(){
   window.open("whitepaper.pdf","_blank");
 }
 </script>
-
+<script src="./assets/js/market-widgets.js"></script>
 
 <footer style="margin-top:60px;padding:30px 16px;text-align:center;color:#bfbfbf;font-size:14px;background:#05070c;">
   <div style="max-width:900px;margin:0 auto;border:1px solid rgba(255,215,0,0.15);border-radius:14px;padding:22px;">
